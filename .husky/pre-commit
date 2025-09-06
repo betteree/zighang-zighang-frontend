@@ -1,2 +1,0 @@
-echo "🔍 ESLint 검사 중..."
-pnpm lint

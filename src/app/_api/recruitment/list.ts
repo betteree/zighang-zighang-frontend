@@ -1,4 +1,4 @@
-import type { GetRecruitmentsResponse } from "@/app/_types/recruitment/types";
+import type { GetRecruitmentsResponse } from "@/app/(pages)/recruitment/[slug]/_types/types";
 
 export type FetchParams = {
   page?: number;

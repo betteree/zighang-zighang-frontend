@@ -1,8 +1,8 @@
 import type { FetchParams } from "@/app/_api/recruitment/list";
-import type { FilterState } from "@/app/hooks/useFilterDialog";
-import { isAll } from "@/app/[category]/components/Filter/FilterBar";
-import { EXPERIENCE_MIN, EXPERIENCE_MAX } from "@/app/constants/filterOptions";
+import type { FilterState } from "@/app/(pages)/[category]/_hooks/useFilterDialog";
+import { EXPERIENCE_MIN, EXPERIENCE_MAX } from "@/app/_constants/filterOptions";
 import { toApiJob } from "@/app/_utils/jobFormat";
+import { isAll } from "./isAll";
 
 export function mapFiltersToParams(f: FilterState): FetchParams {
   const p: FetchParams = {};
