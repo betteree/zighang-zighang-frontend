@@ -295,3 +295,8 @@ body {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* 온보딩 완료 카드 무한 롤링 */
+.swiper-wrapper {
+  transition-timing-function: linear !important;
+}
