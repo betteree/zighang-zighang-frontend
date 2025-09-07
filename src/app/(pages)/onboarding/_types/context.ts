@@ -17,7 +17,7 @@ type 직무입력 = {
 
 type 경력입력 = {
   직군: string[];
-  직무: string[];
+  직무?: string[];
   경력?: number;
   학력?: string;
   지역?: string;
@@ -25,23 +25,25 @@ type 경력입력 = {
 
 type 학력입력 = {
   직군: string[];
-  직무: string[];
-  경력: number;
+  직무?: string[];
+  경력?: number;
   학력?: string;
   지역?: string;
 };
 
 type 지역입력 = {
   직군: string[];
-  직무: string[];
-  경력: number;
-  학력: string;
+  직무?: string[];
+  경력?: number;
+  학력?: string;
   지역?: string | null;
 };
 
 type 파일업로드 = Record<string, never>;
 type 완료 = Record<string, never>;
-
+type 모르겠어요 = {
+  직군?: string[];
+};
 export type {
   직군입력,
   직무입력,
@@ -50,4 +52,5 @@ export type {
   지역입력,
   파일업로드,
   완료,
+  모르겠어요,
 };

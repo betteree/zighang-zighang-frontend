@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.15",
+    "@storybook/addon-actions": "^9.0.8",
     "@storybook/test": "^8.6.14",
     "@tanstack/react-query": "^5.85.6",
     "@tanstack/react-query-devtools": "^5.85.9",

@@ -6,6 +6,7 @@ import {
   ExperienceStep,
   EducationStep,
   LocationStep,
+  ExploreJobStep,
 } from "./steps";
 import type {
   직군입력,
@@ -15,6 +16,7 @@ import type {
   지역입력,
   파일업로드,
   완료,
+  모르겠어요,
 } from "../_types/context";
 import { UploadStep } from "./upload/UploadStep";
 import SuccessStep from "./steps/SuccessStep";
@@ -49,6 +51,7 @@ export default function OnboardingFunnel() {
     지역입력: 지역입력;
     파일업로드: 파일업로드;
     완료: 완료;
+    모르겠어요: 모르겠어요;
   }>({
     id: "onboarding-funnel",
     initial: {
@@ -64,7 +67,18 @@ export default function OnboardingFunnel() {
             history.push("직무입력", (prev) => ({ ...prev, 직군 }))
           }
           onSkip={() =>
-            history.push("경력입력", () => ({ 직군: ["미정"], 직무: ["미정"] }))
+            history.push("모르겠어요", () => ({
+              직군: ["미정"],
+              직무: ["미정"],
+            }))
+          }
+        />
+      )}
+      모르겠어요={({ history }) => (
+        <ExploreJobStep
+          onBack={() => history.back()}
+          onNext={(직군) =>
+            history.push("학력입력", (prev) => ({ ...prev, 직군 }))
           }
         />
       )}
