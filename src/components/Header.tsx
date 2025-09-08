@@ -2,10 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Profile from "./Icons/Profile";
 
 export default function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -14,6 +16,21 @@ export default function Header() {
   const closeSidebar = () => {
     setIsSidebarOpen(false);
   };
+
+  useEffect(() => {
+    try {
+      const token = localStorage.getItem("zh_access_token");
+      setIsLoggedIn(Boolean(token));
+    } catch {}
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "zh_access_token") {
+        setIsLoggedIn(Boolean(e.newValue));
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
 
   return (
     <>
@@ -90,15 +107,27 @@ export default function Header() {
               </div>
             </div>
 
-            <Link href="/join" rel="nofollow" className="hidden md:block">
-              <div className="flex min-h-8 items-center justify-center px-2 text-[#6F00B6] md:min-h-10 md:rounded-lg md:border md:border-line md:px-4 md:py-[0px] ds-Button2-16sb">
-                로그인 / 회원가입
-              </div>
-            </Link>
+            {isLoggedIn ? (
+              <Link href="/mypage" aria-label="내 프로필" className="hidden md:block">
+                <Profile />
+              </Link>
+            ) : (
+              <Link href="/join" rel="nofollow" className="hidden md:block">
+                <div className="flex min-h-8 items-center justify-center px-2 text-[#6F00B6] md:min-h-10 md:rounded-lg md:border md:border-line md:px-4 md:py-[0px] ds-Button2-16sb">
+                  로그인 / 회원가입
+                </div>
+              </Link>
+            )}
 
-            <Link href="/join" rel="nofollow" className="block md:hidden">
-              <div className="text-[#6F00B6] font-semibold">로그인</div>
-            </Link>
+            {isLoggedIn ? (
+              <Link href="/mypage" aria-label="내 프로필" className="block md:hidden">
+                <Profile />
+              </Link>
+            ) : (
+              <Link href="/join" rel="nofollow" className="block md:hidden">
+                <div className="text-[#6F00B6] font-semibold">로그인</div>
+              </Link>
+            )}
 
             <button
               className="mr-3 rounded-md bg-transparent p-1 pb-1.5 hover:bg-gray-200 active:bg-gray-300 md:hidden"

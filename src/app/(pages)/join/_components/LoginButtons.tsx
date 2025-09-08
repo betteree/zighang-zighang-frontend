@@ -1,19 +1,13 @@
 "use client";
 
 import LoginButton from "./LoginButton";
+import { useLogin } from "@/app/_api/auth/useLogin";
 
 export default function LoginButtons() {
-  const handleKakaoLogin = () => {
-    console.log("카카오 로그인");
-  };
-
-  const handleNaverLogin = () => {
-    console.log("네이버 로그인");
-  };
-
-  const handleGoogleLogin = () => {
-    console.log("구글 로그인");
-  };
+  const login = useLogin();
+  const handleKakaoLogin = () => login.mutate({ provider: "kakao" });
+  const handleNaverLogin = () => login.mutate({ provider: "naver" });
+  const handleGoogleLogin = () => login.mutate({ provider: "google" });
 
   return (
     <div className="flex w-full flex-col items-center gap-2 px-7 md:gap-3 md:px-24">
