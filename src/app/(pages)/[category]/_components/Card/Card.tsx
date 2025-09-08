@@ -5,10 +5,11 @@ import View from "./View";
 import Bookmark from "./BookMark";
 import { toggleBookmark } from "./toggleBookmark";
 import { Job } from "@/app/_types/jobs";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Card({
   id,
-  href,
   company,
   title,
   location,
@@ -16,6 +17,8 @@ export default function Card({
   contractType,
   education,
   views,
+  companyImageUrl,
+  deadlineType,
   bookmarked: initialBookmarked = false,
 }: Job) {
   const [isBookmarked, setIsBookmarked] = useState(initialBookmarked);
@@ -53,27 +56,35 @@ export default function Card({
     return `hsl(${hue}, 70%, 70%)`;
   };
 
+  // 첫번째 지역만 렌더링
+  const firstlocation = location.split(",")[0]?.trim() ?? "";
+
   return (
     <div className="relative w-full md:flex-1 md:flex-grow md:self-stretch min-w-full">
-      <a
+      <Link
         target="_blank"
-        href={href?.trim() ? href : `/recruitments/${encodeURIComponent(id)}`}
+        href={`/recruitment/${id}`}
         className="flex flex-[1_0_0] items-center gap-2 rounded-[24px] border border-[#EDEDED] h-[120px] shadow-[0px_4px_30px_0px_#00000008] transition-shadow hover:shadow-[0px_6px_16px_rgba(0,0,0,0.08)] md:mx-0 md:h-[164px] md:pl-[20px]"
         rel="noopener noreferrer"
       >
         <div className="flex flex-1 flex-row items-center gap-2.5 md:gap-6">
           <section className="relative flex aspect-[1/1] flex-shrink-0 items-center justify-center rounded-xl md:rounded-2xl ml-2 w-[60px] md:ml-0 md:w-[80px] overflow-hidden">
-            {/* <img
-              alt={`${company} 채용 이미지`}
-              src={imageUrl}
-              className="aspect-[1/1] rounded-xl object-cover md:rounded-2xl w-[60px] md:w-[80px] border border-black/10"
-            /> */}
-            <div
-              style={{ backgroundColor: stringToColor(company) }}
-              className="flex items-center justify-center w-full h-full bg-violet-200 text-sm font-bold text-white"
-            >
-              {company.slice(0, 3)}
-            </div>
+            {companyImageUrl ? (
+              <Image
+                alt={`${company} 로고`}
+                src={companyImageUrl}
+                width={80}
+                height={80}
+                className="aspect-[1/1] rounded-xl object-cover md:rounded-2xl w-[60px] md:w-[80px] border border-black/10"
+              />
+            ) : (
+              <div
+                style={{ backgroundColor: stringToColor(company) }}
+                className="flex items-center justify-center w-full h-full bg-violet-200 text-sm font-bold text-white"
+              >
+                {company.slice(0, 3)}
+              </div>
+            )}
           </section>
 
           <div className="flex flex-col gap-[6px] md:gap-3">
@@ -95,7 +106,7 @@ export default function Card({
                 <span>·</span>
                 <span>{education}</span>
                 <span>·</span>
-                <span className="break-keep">{location}</span>
+                <span className="break-keep">{firstlocation}</span>
 
                 <span>
                   <div
@@ -134,14 +145,13 @@ export default function Card({
             <div className="flex h-1/2 items-center justify-center">
               <div className="text-[13px] font-medium leading-[20px] text-[#71717A]">
                 <div className="break-keep text-center ds-mobile-subtitle1">
-                  {/* {dday} */}
-                  D-3
+                  {deadlineType}
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </a>
+      </Link>
     </div>
   );
 }

@@ -24,14 +24,15 @@ export default function JobCardList({ jobs }: { jobs: Job[] }) {
             id={job.id}
             href={job.href}
             company={job.company}
+            companyImageUrl={job.companyImageUrl}
             title={job.title}
             location={job.location}
             experience={job.experience}
             contractType={job.contractType}
             education={job.education}
             imageUrl={job.imageUrl}
-            dday={job.dday}
             views={job.views}
+            deadlineType={job.deadlineType}
             hot={job.hot ?? false}
             bookmarked={job.bookmarked ?? false}
           />

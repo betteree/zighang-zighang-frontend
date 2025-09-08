@@ -2,7 +2,7 @@ export interface Recruitment {
   id: string;
   title: string;
   recruitmentUrl: string;
-  imageUrl: string | null;
+  imageUrl: string;
   locations: string[];
   minExperience: number;
   maxExperience: number;

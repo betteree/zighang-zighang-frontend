@@ -1,5 +1,4 @@
 import FilterOptionButton from "./FilterButton";
-
 type Props = {
   title: string;
   options: readonly string[];

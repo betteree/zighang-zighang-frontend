@@ -28,6 +28,7 @@ export default function FilterModal() {
     toggleHireType,
     toggleEducation,
     toggleRegion,
+    toggleDeadline,
     setExperience,
     resetAll,
   } = useFilterDialog();
@@ -111,7 +112,7 @@ export default function FilterModal() {
             note="중복 선택 가능"
             options={DEADLINE_TYPES}
             selected={(o) => filters.deadlineTypes.includes(o)}
-            onToggle={toggleHireType}
+            onToggle={toggleDeadline}
           />
         </div>
 
