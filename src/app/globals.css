@@ -300,3 +300,9 @@ body {
 .swiper-wrapper {
   transition-timing-function: linear !important;
 }
+
+/* react-mobile-picker 중앙 보조선 제거 (경력 휠) */
+.zh-picker-root > div:last-child,
+.zh-picker-root > div:last-child > div {
+  display: none !important;
+}

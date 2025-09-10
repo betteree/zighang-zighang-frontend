@@ -4,7 +4,7 @@ import { ArrowLeft } from "@/app/_components/Icons";
 
 interface StepHeaderProps {
   title: string;
-  subTitle?: string;
+  subTitle?: React.ReactNode;
   stepNumber: number;
   totalSteps: number;
   onBack?: () => void;
@@ -26,7 +26,11 @@ export function StepHeader({
 
       <h1 className="text-Heading3-18sb flex items-center justify-center gap-[6px] text-black">
         {title}{" "}
-        <span className="text-Subheading4-12m text-[#767678]">{subTitle}</span>
+        {subTitle != null && (
+          <span className="text-Subheading4-12m text-[#767678] inline-flex items-center gap-1">
+            {subTitle}
+          </span>
+        )}
       </h1>
       <ProgressIndicator stepNumber={stepNumber} totalSteps={totalSteps} />
     </div>

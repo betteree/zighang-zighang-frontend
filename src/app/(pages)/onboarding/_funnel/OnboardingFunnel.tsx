@@ -96,6 +96,7 @@ export default function OnboardingFunnel() {
         console.log("경력입력 context.직무:", context.직무);
         return (
           <ExperienceStep
+            jobs={context.직무}
             onBack={() => history.back()}
             onNext={(경력) => history.push("학력입력", { ...context, 경력 })}
           />

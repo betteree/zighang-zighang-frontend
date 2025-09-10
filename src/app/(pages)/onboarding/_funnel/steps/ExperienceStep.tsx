@@ -1,17 +1,223 @@
-export function ExperienceStep({
-  onNext,
-  onBack,
-}: {
+"use client";
+
+import React from "react";
+import { ExperienceWheel } from "./ExperienceWheel";
+import { RecruitCountBadge } from "./RecruitCountBadge";
+import { InfoCircle } from "../../_components/Icons/InfoCircle";
+import { InfoTooltip } from "../../_components/Tooltip/InfoTooltip";
+import {
+  StepContainer,
+  StepHeader,
+  StepActions,
+  ActionButton,
+} from "../../_components";
+const MIN_EXPERIENCE_YEARS = 0; // 0=신입
+const DEFAULT_EXPERIENCE_YEARS = 1; // 초기 표시 값
+const MAX_EXPERIENCE_YEARS = 10; // 10년+
+
+type Props = {
   onNext: (경력: number) => void;
   onBack: () => void;
-}) {
+  jobs?: string[]; // 직무 키 배열
+};
+
+export function ExperienceStep({ onNext, onBack, jobs = [] }: Props) {
+  const [selectedYears, setSelectedYears] = React.useState<number>(
+    DEFAULT_EXPERIENCE_YEARS
+  );
+
+  // 화면(휠 바깥) 스와이프로 연차 변경을 위한 refs
+  const pickerAreaRef = React.useRef<HTMLDivElement | null>(null);
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+  const touchStartYRef = React.useRef<number | null>(null);
+  const accumDeltaRef = React.useRef(0);
+  const lastTickRef = React.useRef<number>(0);
+  const SWIPE_STEP_PX = 50; // 1년 변화 기준 거리
+  const SWIPE_COOLDOWN_MS = 80; // 연속 변화 쿨다운
+  // 마우스 드래그용
+  const pointerStartYRef = React.useRef<number | null>(null);
+  const pointerActiveRef = React.useRef(false);
+  const stopPointerDrag = (e?: React.PointerEvent<HTMLDivElement>) => {
+    try {
+      e?.currentTarget?.releasePointerCapture?.(
+        (e as React.PointerEvent<HTMLDivElement>)?.pointerId
+      );
+    } catch {}
+    pointerActiveRef.current = false;
+    pointerStartYRef.current = null;
+    accumDeltaRef.current = 0;
+  };
+
+  // 스와이프/드래그 공통 증감 처리
+  const adjustByDelta = (deltaY: number) => {
+    const now = performance.now();
+    if (now - lastTickRef.current < SWIPE_COOLDOWN_MS) return;
+    accumDeltaRef.current += deltaY;
+
+    while (accumDeltaRef.current <= -SWIPE_STEP_PX) {
+      let stepped = false;
+      setSelectedYears((y) => {
+        if (y >= MAX_EXPERIENCE_YEARS) return y;
+        stepped = true;
+        return Math.min(MAX_EXPERIENCE_YEARS, y + 1);
+      });
+      if (!stepped) break;
+      accumDeltaRef.current += SWIPE_STEP_PX;
+      lastTickRef.current = now;
+    }
+    while (accumDeltaRef.current >= SWIPE_STEP_PX) {
+      let stepped = false;
+      setSelectedYears((y) => {
+        if (y <= MIN_EXPERIENCE_YEARS) return y;
+        stepped = true;
+        return Math.max(MIN_EXPERIENCE_YEARS, y - 1);
+      });
+      if (!stepped) break;
+      accumDeltaRef.current -= SWIPE_STEP_PX;
+      lastTickRef.current = now;
+    }
+  };
+
+  const handleWheelChange = (value: number) => setSelectedYears(value);
+
+  const canProceed = true; // 기본값 선택(1년)으로 바로 진행 가능
+  const handleNext = () => onNext(selectedYears);
+
+  // 화면 스와이프(휠 바깥에서만 동작)
+  const onTouchStartPage: React.TouchEventHandler<HTMLDivElement> = (e) => {
+    if (
+      pickerAreaRef.current &&
+      pickerAreaRef.current.contains(e.target as Node)
+    )
+      return;
+    touchStartYRef.current = e.touches[0].clientY;
+    accumDeltaRef.current = 0;
+    lastTickRef.current = performance.now();
+  };
+  const onTouchMovePage: React.TouchEventHandler<HTMLDivElement> = (e) => {
+    if (
+      pickerAreaRef.current &&
+      pickerAreaRef.current.contains(e.target as Node)
+    )
+      return;
+    if (touchStartYRef.current == null) return;
+    const currentY = e.touches[0].clientY;
+    const dy = currentY - touchStartYRef.current;
+    touchStartYRef.current = currentY;
+    adjustByDelta(dy);
+  };
+  const onTouchEndPage: React.TouchEventHandler<HTMLDivElement> = () => {
+    touchStartYRef.current = null;
+    accumDeltaRef.current = 0;
+  };
+
+  // 마우스 드래그로 연차 변경 (휠 내부 제외)
+  const onPointerDownPage: React.PointerEventHandler<HTMLDivElement> = (e) => {
+    if (e.pointerType === "touch") return; // 터치는 기존 핸들러 사용
+    // 마우스 드래그: 휠 영역 포함 전체에서 동작
+    try {
+      e.currentTarget.setPointerCapture?.(e.pointerId);
+    } catch {}
+    e.preventDefault();
+    containerRef.current = e.currentTarget;
+    pointerActiveRef.current = true;
+    pointerStartYRef.current = e.clientY;
+    accumDeltaRef.current = 0;
+    lastTickRef.current = performance.now();
+  };
+  const onPointerMovePage: React.PointerEventHandler<HTMLDivElement> = (e) => {
+    if (!pointerActiveRef.current || e.pointerType === "touch") return;
+    // 영역 이탈 시 드래그 종료
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (
+      rect &&
+      (e.clientX < rect.left ||
+        e.clientX > rect.right ||
+        e.clientY < rect.top ||
+        e.clientY > rect.bottom)
+    ) {
+      stopPointerDrag(e);
+      return;
+    }
+    const currentY = e.clientY;
+    const dy = currentY - (pointerStartYRef.current ?? currentY);
+    pointerStartYRef.current = currentY;
+    adjustByDelta(dy);
+  };
+  const onPointerUpPage: React.PointerEventHandler<HTMLDivElement> = (e) => {
+    stopPointerDrag(e);
+  };
+  const onPointerLeavePage: React.PointerEventHandler<HTMLDivElement> = (e) => {
+    if (!pointerActiveRef.current) return;
+    stopPointerDrag(e);
+  };
+  const onPointerCancelPage: React.PointerEventHandler<HTMLDivElement> = (
+    e
+  ) => {
+    if (!pointerActiveRef.current) return;
+    stopPointerDrag(e);
+  };
+
   return (
-    <div>
-      경력 선택
-      <button onClick={onBack}>이전</button>
-      <button onClick={() => onNext(2)}>다음</button>
-    </div>
+    <StepContainer>
+      <StepHeader
+        title="가고 싶은 직군의 경력이 어떻게 되세요?"
+        subTitle={
+          <InfoTooltip
+            content={
+              <div className="text-Body2-12r whitespace-pre-wrap leading-[17px] w-[252px]">
+                총 경력 연차는 지금까지 근무한 모든 기간의 합
+                (정규직·계약직·프리랜서 포함, 인턴)이며, 추후 언제든 수정할 수
+                있습니다.
+              </div>
+            }
+          >
+            <InfoCircle />
+          </InfoTooltip>
+        }
+        stepNumber={2}
+        totalSteps={4}
+        onBack={onBack}
+      />
+
+      <div
+        className="w-full flex flex-col items-center h-[calc(500px-55px)] select-none"
+        onTouchStart={onTouchStartPage}
+        onTouchMove={onTouchMovePage}
+        onTouchEnd={onTouchEndPage}
+        onPointerDown={onPointerDownPage}
+        onPointerMove={onPointerMovePage}
+        onPointerUp={onPointerUpPage}
+        onPointerLeave={onPointerLeavePage}
+        onPointerCancel={onPointerCancelPage}
+        ref={containerRef}
+      >
+        {/* 선택 영역 */}
+        <div className="flex flex-col items-center justify-center flex-1 relative w-full">
+          <div className="flex items-center gap-2 mb-3 mt-[108px]">
+            <span className="text-Heading2-20sb text-black">내 경력은</span>
+
+            <ExperienceWheel
+              ref={pickerAreaRef}
+              selected={selectedYears}
+              onChange={handleWheelChange}
+            />
+            <span className="text-Heading2-20sb text-black">이다.</span>
+          </div>
+
+          <RecruitCountBadge years={selectedYears} jobs={jobs} />
+        </div>
+
+        {/* 하단 액션 */}
+        <StepActions className="h-full flex items-end pb-[30px]">
+          <ActionButton
+            onClick={handleNext}
+            state={canProceed ? "abled" : "disabled"}
+          >
+            다음
+          </ActionButton>
+        </StepActions>
+      </div>
+    </StepContainer>
   );
 }
-
-
