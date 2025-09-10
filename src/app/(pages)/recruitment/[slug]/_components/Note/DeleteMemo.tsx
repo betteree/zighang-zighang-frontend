@@ -50,8 +50,13 @@ export default function DeleteMemo({
             id="delete-memo-desc"
             className="self-stretch text-center justify-start text-gray-600 text-sm font-normal font-['Pretendard'] leading-tight"
           >
-            ‘{title === "" ? "제목을 입력해주세요..." : title}’ 메모가
-            영구적으로 삭제됩니다
+            ‘
+            {title === ""
+              ? "제목을 입력해주세요..."
+              : title.length > 13
+              ? title.slice(0, 13) + "…"
+              : title}
+            ’ 메모가 영구적으로 삭제됩니다
           </div>
         </div>
         <div className="w-96 flex flex-col justify-start items-start gap-3">

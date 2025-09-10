@@ -79,14 +79,19 @@ const mockRecCount = {
   count: 43,
 };
 
-export default function RecruitmentPage() {
+export default async function RecruitmentPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
   return (
     <main className="flex min-h-screen flex-col items-center">
       <Header />
       <FilterSection />
-      <div className="flex w-full xl:mx-36 xl:max-w-[1200px] xl:justify-center xl:gap-[132px] xl:px-0">
+      <div className="flex w-full desktop:mx-36 desktop:max-w-[1200px] desktop:justify-center desktop:gap-[132px] desktop:px-0">
         <div className="flex w-full flex-col items-center">
-          <div className="flex w-full flex-col items-center px-4 xl:px-0">
+          <div className="flex w-full flex-col items-center px-4 desktop:px-0">
             <div className="flex w-full flex-col items-center py-5">
               <RecruitmentHeader recruitment={mockRecruitment} />
               <RecruitmentInfo />
@@ -100,13 +105,13 @@ export default function RecruitmentPage() {
             </section>
           </div>
           <Separator />
-          <div className="md:h-12"></div>
+          <div className="tablet:h-12"></div>
           <SimilarRecruitments
             recruitments={mockSimilarRecruitments}
             recCount={mockRecCount}
           />
         </div>
-        <SidebarActions />
+        <SidebarActions slug={slug} />
       </div>
       <Footer />
     </main>

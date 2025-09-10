@@ -8,7 +8,7 @@ export type KebabMenuProps = {
   type: string;
   note: Note | null;
   onToggle: () => void;
-  onDelete: (id: number) => void;
+  onDelete: (id: string) => void;
 };
 
 export default function KebabMenu({
