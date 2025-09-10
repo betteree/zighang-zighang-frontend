@@ -5,6 +5,7 @@ type 직군입력 = {
   경력?: number;
   학력?: string;
   지역?: string;
+  최근필터적용?: boolean;
 };
 
 type 직무입력 = {
@@ -13,6 +14,7 @@ type 직무입력 = {
   경력?: number;
   학력?: string;
   지역?: string;
+  최근필터적용?: boolean;
 };
 
 type 경력입력 = {
@@ -21,6 +23,7 @@ type 경력입력 = {
   경력?: number;
   학력?: string;
   지역?: string;
+  최근필터적용?: boolean;
 };
 
 type 학력입력 = {
@@ -29,6 +32,7 @@ type 학력입력 = {
   경력?: number;
   학력?: string;
   지역?: string;
+  최근필터적용?: boolean;
 };
 
 type 지역입력 = {
@@ -37,6 +41,7 @@ type 지역입력 = {
   경력?: number;
   학력?: string;
   지역?: string | null;
+  최근필터적용?: boolean;
 };
 
 type 파일업로드 = Record<string, never>;

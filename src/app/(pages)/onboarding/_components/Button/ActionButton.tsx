@@ -8,7 +8,7 @@ export function ActionButton({
   state?: "disabled" | "abled";
 }) {
   const getButtonClasses = () => {
-    const baseClasses = "flex items-center justify-center text-Button2-16sb w-[156px] h-[42px] text-white rounded-[8px] transition-all duration-200";
+    const baseClasses = "flex items-center justify-center text-Button2-16sb px-[64px] h-[42px] text-white rounded-[8px] transition-all duration-200";
     
     switch (state) {
       case "abled":

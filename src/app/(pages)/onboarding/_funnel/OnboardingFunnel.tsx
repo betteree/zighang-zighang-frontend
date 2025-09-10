@@ -8,6 +8,7 @@ import {
   LocationStep,
   ExploreJobStep,
 } from "./steps";
+import { IntroStep } from "./steps/IntroStep";
 import type {
   직군입력,
   직무입력,
@@ -44,6 +45,7 @@ function toApiPayload(
 
 export default function OnboardingFunnel() {
   const funnel = useFunnel<{
+    인트로: Record<string, never>;
     직군입력: 직군입력;
     직무입력: 직무입력;
     경력입력: 경력입력;
@@ -55,12 +57,19 @@ export default function OnboardingFunnel() {
   }>({
     id: "onboarding-funnel",
     initial: {
-      step: "직군입력",
+      step: "인트로",
       context: {},
     },
   });
   return (
     <funnel.Render
+      인트로={({ history }) => (
+        <IntroStep
+          onNext={(applyRecent) => {
+            history.push("직군입력", (prev) => ({ ...prev, 최근필터적용: applyRecent }));
+          }}
+        />
+      )}
       직군입력={({ history }) => (
         <JobCategoryStep
           onNext={(직군) =>

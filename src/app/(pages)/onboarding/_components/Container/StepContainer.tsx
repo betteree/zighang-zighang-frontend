@@ -22,7 +22,9 @@ export function StepContainer({
         className="w-[59px] h-[22px] mt-[25px] mb-[33px]"
       />
 
-      <div className="w-[815px] h-[500px] bg-white rounded-[16px]">{children}</div>
+      <div className="desktop:w-[815px] desktop:h-[500px] laptop:w-[710px] laptop:h-[436px] tablet:w-[564px] tablet:h-[436px] mobile:w-[343px] mobile:h-[214px] bg-white rounded-[16px]">
+        {children}
+      </div>
     </div>
   );
 }
