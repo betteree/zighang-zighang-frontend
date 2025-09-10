@@ -1,6 +1,6 @@
 import React, { useState, useMemo, ComponentType } from "react";
 import { onboardingJobCategories } from "@/app/_constants/onboardingJobCategories";
-import * as JobChips from "../../_jobChip";
+import * as JobChips from "../../_components/Chip";
 import { getChipMainColor } from "@/app/_constants/chipColors";
 import {
   StepContainer,

@@ -8,107 +8,107 @@ const LoadingChip = () => (
 
 const chipMap = {
   DesignChip: dynamic(
-    () => import("../../_jobChip/DesignChip").then((m) => m.DesignChip),
+    () => import("../../_components/Chip/DesignChip").then((m) => m.DesignChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
   GameChip: dynamic(
-    () => import("../../_jobChip/GameChip").then((m) => m.GameChip),
+    () => import("../../_components/Chip/GameChip").then((m) => m.GameChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
-  AiChip: dynamic(() => import("../../_jobChip/AiChip").then((m) => m.AiChip), {
+  AiChip: dynamic(() => import("../../_components/Chip/AiChip").then((m) => m.AiChip), {
     loading: () => <LoadingChip />,
     ssr: false,
   }),
-  ITChip: dynamic(() => import("../../_jobChip/ITChip").then((m) => m.ITChip), {
+  ITChip: dynamic(() => import("../../_components/Chip/ITChip").then((m) => m.ITChip), {
     loading: () => <LoadingChip />,
     ssr: false,
   }),
   StrategyChip: dynamic(
-    () => import("../../_jobChip/StrategyChip").then((m) => m.StrategyChip),
+    () => import("../../_components/Chip/StrategyChip").then((m) => m.StrategyChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
   ServiceChip: dynamic(
-    () => import("../../_jobChip/ServiceChip").then((m) => m.ServiceChip),
+    () => import("../../_components/Chip/ServiceChip").then((m) => m.ServiceChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
   EduChip: dynamic(
-    () => import("../../_jobChip/EduChip").then((m) => m.EduChip),
+    () => import("../../_components/Chip/EduChip").then((m) => m.EduChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
-  TMChip: dynamic(() => import("../../_jobChip/TMChip").then((m) => m.TMChip), {
+  TMChip: dynamic(() => import("../../_components/Chip/TMChip").then((m) => m.TMChip), {
     loading: () => <LoadingChip />,
     ssr: false,
   }),
   MediaChip: dynamic(
-    () => import("../../_jobChip/MediaChip").then((m) => m.MediaChip),
+    () => import("../../_components/Chip/MediaChip").then((m) => m.MediaChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
   MedicalChip: dynamic(
-    () => import("../../_jobChip/MedicalChip").then((m) => m.MedicalChip),
+    () => import("../../_components/Chip/MedicalChip").then((m) => m.MedicalChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
   FoodChip: dynamic(
-    () => import("../../_jobChip/FoodChip").then((m) => m.FoodChip),
+    () => import("../../_components/Chip/FoodChip").then((m) => m.FoodChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
   WelfareChip: dynamic(
-    () => import("../../_jobChip/WelfareChip").then((m) => m.WelfareChip),
+    () => import("../../_components/Chip/WelfareChip").then((m) => m.WelfareChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
   MarketingChip: dynamic(
-    () => import("../../_jobChip/MarketingChip").then((m) => m.MarketingChip),
+    () => import("../../_components/Chip/MarketingChip").then((m) => m.MarketingChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
   ProductChip: dynamic(
-    () => import("../../_jobChip/ProductChip").then((m) => m.ProductChip),
+    () => import("../../_components/Chip/ProductChip").then((m) => m.ProductChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
   SalesChip: dynamic(
-    () => import("../../_jobChip/SalesChip").then((m) => m.SalesChip),
+    () => import("../../_components/Chip/SalesChip").then((m) => m.SalesChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
   BankingChip: dynamic(
-    () => import("../../_jobChip/BankingChip").then((m) => m.BankingChip),
+    () => import("../../_components/Chip/BankingChip").then((m) => m.BankingChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
   ConstructionChip: dynamic(
     () =>
-      import("../../_jobChip/ConstructionChip").then((m) => m.ConstructionChip),
+      import("../../_components/Chip/ConstructionChip").then((m) => m.ConstructionChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
   FinanceChip: dynamic(
-    () => import("../../_jobChip/FinanceChip").then((m) => m.FinanceChip),
+    () => import("../../_components/Chip/FinanceChip").then((m) => m.FinanceChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
-  HRChip: dynamic(() => import("../../_jobChip/HRChip").then((m) => m.HRChip), {
+  HRChip: dynamic(() => import("../../_components/Chip/HRChip").then((m) => m.HRChip), {
     loading: () => <LoadingChip />,
     ssr: false,
   }),
   LegalChip: dynamic(
-    () => import("../../_jobChip/LegalChip").then((m) => m.LegalChip),
+    () => import("../../_components/Chip/LegalChip").then((m) => m.LegalChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
   LogisticsChip: dynamic(
-    () => import("../../_jobChip/LogisticsChip").then((m) => m.LogisticsChip),
+    () => import("../../_components/Chip/LogisticsChip").then((m) => m.LogisticsChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
   ManufacturingChip: dynamic(
     () =>
-      import("../../_jobChip/ManufacturingChip").then(
+      import("../../_components/Chip/ManufacturingChip").then(
         (m) => m.ManufacturingChip
       ),
     { loading: () => <LoadingChip />, ssr: false }
   ),
   RNDChip: dynamic(
-    () => import("../../_jobChip/RNDChip").then((m) => m.RNDChip),
+    () => import("../../_components/Chip/RNDChip").then((m) => m.RNDChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
   SecuritiesChip: dynamic(
-    () => import("../../_jobChip/SecuritiesChip").then((m) => m.SecuritiesChip),
+    () => import("../../_components/Chip/SecuritiesChip").then((m) => m.SecuritiesChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
   TradeChip: dynamic(
-    () => import("../../_jobChip/TradeChip").then((m) => m.TradeChip),
+    () => import("../../_components/Chip/TradeChip").then((m) => m.TradeChip),
     { loading: () => <LoadingChip />, ssr: false }
   ),
 } as const;

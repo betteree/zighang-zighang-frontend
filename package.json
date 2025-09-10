@@ -20,6 +20,7 @@
     "@tanstack/react-query-devtools": "^5.85.9",
     "@use-funnel/browser": "^0.0.15",
     "axios": "^1.11.0",
+    "clsx": "^2.1.1",
     "d3-geo": "^3.1.1",
     "d3-geo-projection": "^4.0.0",
     "next": "15.4.6",
@@ -28,6 +29,7 @@
     "react-dropzone": "^14.3.8",
     "react-error-boundary": "^6.0.0",
     "react-simple-maps": "^3.0.0",
+    "tailwind-merge": "^3.3.1",
     "swiper": "^11.2.10",
     "zighang": "link:"
   },
