@@ -5,12 +5,7 @@ import { ExperienceWheel } from "./ExperienceWheel";
 import { RecruitCountBadge } from "./RecruitCountBadge";
 import { InfoCircle } from "../../_components/Icons/InfoCircle";
 import { InfoTooltip } from "../../_components/Tooltip/InfoTooltip";
-import {
-  StepContainer,
-  StepHeader,
-  StepActions,
-  ActionButton,
-} from "../../_components";
+import { StepContainer, StepHeader, ActionButton } from "../../_components";
 const MIN_EXPERIENCE_YEARS = 0; // 0=신입
 const DEFAULT_EXPERIENCE_YEARS = 1; // 초기 표시 값
 const MAX_EXPERIENCE_YEARS = 10; // 10년+
@@ -81,15 +76,24 @@ export function ExperienceStep({ onNext, onBack, jobs = [] }: Props) {
   const handleWheelChange = (value: number) => setSelectedYears(value);
 
   const canProceed = true; // 기본값 선택(1년)으로 바로 진행 가능
-  const handleNext = () => onNext(selectedYears);
+  const handleNext = () => {
+    console.log("handleNext 호출됨, selectedYears:", selectedYears);
+    onNext(selectedYears);
+  };
 
-  // 화면 스와이프(휠 바깥에서만 동작)
+  const handleButtonClick = () => {
+    console.log("버튼 클릭됨!");
+    handleNext();
+  };
+
   const onTouchStartPage: React.TouchEventHandler<HTMLDivElement> = (e) => {
     if (
       pickerAreaRef.current &&
       pickerAreaRef.current.contains(e.target as Node)
     )
       return;
+    // 버튼 영역에서는 터치 이벤트 무시
+    if ((e.target as HTMLElement).closest("button")) return;
     touchStartYRef.current = e.touches[0].clientY;
     accumDeltaRef.current = 0;
     lastTickRef.current = performance.now();
@@ -100,6 +104,8 @@ export function ExperienceStep({ onNext, onBack, jobs = [] }: Props) {
       pickerAreaRef.current.contains(e.target as Node)
     )
       return;
+    // 버튼 영역에서는 터치 이벤트 무시
+    if ((e.target as HTMLElement).closest("button")) return;
     if (touchStartYRef.current == null) return;
     const currentY = e.touches[0].clientY;
     const dy = currentY - touchStartYRef.current;
@@ -114,6 +120,8 @@ export function ExperienceStep({ onNext, onBack, jobs = [] }: Props) {
   // 마우스 드래그로 연차 변경 (휠 내부 제외)
   const onPointerDownPage: React.PointerEventHandler<HTMLDivElement> = (e) => {
     if (e.pointerType === "touch") return; // 터치는 기존 핸들러 사용
+    // 버튼 영역에서는 포인터 이벤트 무시
+    if ((e.target as HTMLElement).closest("button")) return;
     // 마우스 드래그: 휠 영역 포함 전체에서 동작
     try {
       e.currentTarget.setPointerCapture?.(e.pointerId);
@@ -209,14 +217,16 @@ export function ExperienceStep({ onNext, onBack, jobs = [] }: Props) {
         </div>
 
         {/* 하단 액션 */}
-        <StepActions className="h-full flex items-end pb-[30px]">
-          <ActionButton
-            onClick={handleNext}
-            state={canProceed ? "abled" : "disabled"}
-          >
-            다음
-          </ActionButton>
-        </StepActions>
+        <div className="h-full flex items-end pb-[30px] pointer-events-none">
+          <div className="pointer-events-auto">
+            <ActionButton
+              onClick={handleButtonClick}
+              state={canProceed ? "abled" : "disabled"}
+            >
+              다음
+            </ActionButton>
+          </div>
+        </div>
       </div>
     </StepContainer>
   );

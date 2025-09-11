@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { StepContainer } from "../../_components";
 import RecruitmentCardList from "../../_components/RecommendCard/RecruitmentCardList";
+import type { RecruitmentItem } from "../../_types/context";
 
 // 임시 데이터 api 연동시 삭제
 const mock = [
@@ -87,8 +88,23 @@ const mock = [
   },
 ];
 
-export default function SuccessStep({ name }: { name: string }) {
+export default function SuccessStep({
+  name,
+  onComplete,
+}: {
+  name: string;
+  recruitments?: RecruitmentItem[];
+  onComplete?: () => void;
+}) {
   const router = useRouter();
+
+  const handleComplete = () => {
+    if (onComplete) {
+      onComplete();
+    } else {
+      router.push("/");
+    }
+  };
   return (
     <StepContainer>
       <div className="flex flex-col items-center">
@@ -110,7 +126,7 @@ export default function SuccessStep({ name }: { name: string }) {
         </section>
         <button
           className="text-white text-base font-semibold px-10 py-3 bg-violet-500 rounded-lg mt-11"
-          onClick={() => router.push("/")}
+          onClick={handleComplete}
         >
           공고 탐색 시작
         </button>

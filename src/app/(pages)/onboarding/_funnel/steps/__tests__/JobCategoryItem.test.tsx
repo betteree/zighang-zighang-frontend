@@ -29,7 +29,7 @@ describe("JobCategoryItem", () => {
       "px-[18px]",
       "rounded-lg",
       "border-[1px]",
-      "text-Badge1-14m",
+      "text-Heading5-14sb",
       "transition-all",
       "tracking-tight"
     );

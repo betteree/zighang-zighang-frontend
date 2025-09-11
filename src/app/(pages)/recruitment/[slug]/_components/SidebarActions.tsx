@@ -5,7 +5,7 @@ export default function SidebarActions({ slug }: { slug: string }) {
   return (
     <>
       {/* 데스크톱 사이드바 */}
-      <div className="relative z-40 hidden flex-col desktop:flex">
+      <div className="relative z-40 flex-col flex">
         <div className="sticky top-16 flex min-w-[360px] flex-col gap-2 py-9">
           <div className="flex gap-2">
             <button className="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 border border-[#D5D7DA] bg-white hover:bg-zinc-100 active:bg-zinc-200 transition-colors h-12 min-w-12 p-2 !border !border-[#EDEDED] !bg-[#FAFAFA]">
@@ -56,7 +56,7 @@ export default function SidebarActions({ slug }: { slug: string }) {
       </div>
 
       {/* 모바일 하단 액션 바 */}
-      <div className="fixed bottom-0 left-0 z-[50] w-full border-t border-t-line bg-white shadow-lg desktop:hidden">
+      <div className="fixed bottom-0 left-0 z-[50] w-full border-t border-t-line bg-white shadow-lg hidden">
         <div className="flex items-center justify-between gap-2 px-4 py-3">
           <button className="inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 border border-[#D5D7DA] bg-white hover:bg-zinc-100 active:bg-zinc-200 transition-colors h-12 min-w-12 p-2 !border !border-[#EDEDED] !bg-[#FAFAFA]">
             <Image

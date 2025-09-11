@@ -82,7 +82,7 @@ export const ExperienceWheel = forwardRef<HTMLDivElement, ExperienceWheelProps>(
                       className={`flex items-center justify-center select-none}`}
                       style={{ height: itemHeight }}
                     >
-                      {opt === 0 ? "신입" : `${opt}년 이상`}
+                      {opt === 0 ? "신입" : `${opt}년 이하`}
                     </div>
                   )}
                 </Picker.Item>

@@ -89,9 +89,9 @@ export default async function RecruitmentPage({
     <main className="flex min-h-screen flex-col items-center">
       <Header />
       <FilterSection />
-      <div className="flex w-full desktop:mx-36 desktop:max-w-[1200px] desktop:justify-center desktop:gap-[132px] desktop:px-0">
+      <div className="flex w-full mx-36 max-w-[1200px] justify-center gap-[132px] px-0">
         <div className="flex w-full flex-col items-center">
-          <div className="flex w-full flex-col items-center px-4 desktop:px-0">
+          <div className="flex w-full flex-col items-center px-0">
             <div className="flex w-full flex-col items-center py-5">
               <RecruitmentHeader recruitment={mockRecruitment} />
               <RecruitmentInfo />

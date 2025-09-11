@@ -9,8 +9,24 @@ import {
   UploadedFile,
 } from "../../_components/FileUpload/types/type";
 
-export function UploadStep({ onNext }: { onNext: () => void }) {
+type ApiOnboardingPayload = {
+  interestedJobs: string[];
+  interestedJobCategories: string[];
+  careerYear: number;
+  educationLevel: string;
+  graduationStatus: string;
+  preferredRegion: string;
+};
+
+type UploadStepProps = {
+  onNext: (file: File | null, apiPayload: ApiOnboardingPayload) => Promise<void>;
+  apiPayload: ApiOnboardingPayload;
+  isLoading?: boolean;
+};
+
+export function UploadStep({ onNext, apiPayload, isLoading = false }: UploadStepProps) {
   const [file, setFile] = useState<UploadedFile | undefined>(undefined);
+  const [actualFile, setActualFile] = useState<File | null>(null);
   const [status, setStatus] = useState<UploadStatus>("loading");
   const [progress, setProgress] = useState<number>(0);
   const timerRef = useRef<number | null>(null);
@@ -28,11 +44,9 @@ export function UploadStep({ onNext }: { onNext: () => void }) {
     };
 
     setFile(uploaded);
+    setActualFile(f);
     setStatus("loading");
     setProgress(0);
-
-    // 실제 업로드 API 호출 위치
-    // await fetch("/api/upload", { method: "POST", body: form });
 
     // 진행률 시뮬레이션
     if (timerRef.current) window.clearInterval(timerRef.current);
@@ -56,12 +70,17 @@ export function UploadStep({ onNext }: { onNext: () => void }) {
   const handleRemove = (id: string) => {
     if (file?.id !== id) return;
     setFile(undefined);
+    setActualFile(null);
     setStatus("loading");
     setProgress(0);
     if (timerRef.current) {
       window.clearInterval(timerRef.current);
       timerRef.current = null;
     }
+  };
+
+  const handleSubmit = async () => {
+    await onNext(actualFile, apiPayload);
   };
 
   useEffect(() => {
@@ -115,23 +134,23 @@ export function UploadStep({ onNext }: { onNext: () => void }) {
 
         <div className="flex gap-2 h-full items-end mt-1">
           <button
-            onClick={onNext}
+            onClick={() => onNext(null, apiPayload)}
             className=" flex-1 min-w-[150px] rounded-lg py-2 font-semibold border border-neutral-300"
           >
             넘어가기
           </button>
 
           <button
-            disabled={!file}
-            onClick={onNext}
+            disabled={!file || isLoading}
+            onClick={handleSubmit}
             className={` flex-1 min-w-[150px] rounded-lg py-2 font-semibold transition-all duration-200
     ${
-      file
+      file && !isLoading
         ? "bg-violet-500 text-white"
         : "bg-gray-100 text-gray-400 cursor-not-allowed"
     }`}
           >
-            다음
+            {isLoading ? "등록 중..." : "이력서 등록하기"}
           </button>
         </div>
       </div>

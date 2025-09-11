@@ -15,7 +15,7 @@ export function EducationStep({
   onNext,
   onBack,
 }: {
-  onNext: (학력: string) => void;
+  onNext: (학력: string, 졸업상태: string) => void;
   onBack: () => void;
 }) {
   const SCHOOL_OPTIONS = useMemo(
@@ -41,9 +41,9 @@ export function EducationStep({
   const isValid = useMemo(() => !!school && !!graduation, [school, graduation]);
 
   const handleSubmit = useCallback(() => {
-    if (!isValid || !school) return;
-    onNext(school);
-  }, [isValid, school, onNext]);
+    if (!isValid || !school || !graduation) return;
+    onNext(school, graduation);
+  }, [isValid, school, graduation, onNext]);
 
   return (
     <StepContainer>

@@ -72,12 +72,8 @@
   --font-weight-bold: 700;
 
   /* 커스텀 브레이크포인트: HTML에서 hbp:* 사용 가능 */
+
   --breakpoint-hbp: 64rem; /* 1024px */
-  --breakpoint-*: initial;
-  --breakpoint-mobile: 22.5rem;
-  --breakpoint-tablet: 48rem;
-  --breakpoint-laptop: 64.0625rem;
-  --breakpoint-desktop: 88.5rem;
 }
 
 /* 다크 모드 토큰 덮어쓰기 */

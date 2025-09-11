@@ -14,6 +14,7 @@ function buildAuthorizeUrl(provider: Provider): string {
     ? currentOrigin.includes("localhost:3000")
     : process.env.NODE_ENV !== "production";
 
+  // 로컬 개발 환경에서는 강제로 localhost 사용
   const redirectOrigin = isDev
     ? devRedirectOrigin
     : prodRedirectOrigin || currentOrigin;
@@ -21,7 +22,9 @@ function buildAuthorizeUrl(provider: Provider): string {
   const base = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
   // 서버가 /auth/callback 을 추가로 붙이는 정책이므로 여기서는 루트로 전달
-  const redirectParam = encodeURIComponent(`${redirectOrigin}/`);
+  // 로컬 개발 환경에서는 명시적으로 localhost를 사용
+  const finalRedirectUri = isDev ? "http://localhost:3000/" : `${redirectOrigin}/`;
+  const redirectParam = encodeURIComponent(finalRedirectUri);
   const path = `/oauth2/authorization/${provider}?redirect_uri=${redirectParam}`;
 
   if (
