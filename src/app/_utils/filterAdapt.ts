@@ -28,6 +28,6 @@ export default function filterAdapt(r: Recruitment): Job {
     deadlineType: deeadline,
     views: 0,
     jobGroup: r.jobs[0] ?? "기타",
-    bookmarked: false,
+    bookmarked: r.isBookmarked,
   };
 }

@@ -16,8 +16,16 @@ import { useInfiniteRecruitments } from "@/app/_api/recruitment/useRecruitments"
 import { Job } from "@/app/_types/jobs";
 import filterAdapt from "@/app/_utils/filterAdapt";
 import ResultHeaderConnector from "./Filter/ResultHeaderConnector";
+import { useInfiniteBookmarks } from "@/app/_api/bookmark/list";
+import { useAuthState } from "@/app/_api/auth/useAuthState";
 
-export default function CategoryClient({ slug }: { slug: string }) {
+export default function CategoryClient({
+  slug,
+  active,
+}: {
+  slug: string;
+  active: string;
+}) {
   const slugToJobGroup = (s: string) =>
     jobCategories.find((c) => c.href.slice(1) === s)?.name ?? "전체";
 
@@ -27,11 +35,15 @@ export default function CategoryClient({ slug }: { slug: string }) {
   );
 
   return (
-    <div className="relative w-full overflow-visible px-0 md:mx-auto md:max-w-screen-xl md:px-10">
+    <div className="relative w-full overflow-visible px-0 laptop:mx-auto laptop:max-w-screen-xl laptop:px-10">
       <FilterDialogProvider initial={initial}>
-        <FilterBar />
-        <ResultHeaderConnector />
-        <Inner />
+        {active === "all" && (
+          <>
+            <FilterBar />
+            <ResultHeaderConnector />
+          </>
+        )}
+        <Inner active={active} />
         <FilterModal />
       </FilterDialogProvider>
     </div>
@@ -39,9 +51,20 @@ export default function CategoryClient({ slug }: { slug: string }) {
 }
 
 // 공고 카드 데이터 받아오는 쪽
-function Inner() {
+function Inner({ active }: { active: string }) {
   const { filters } = useFilterDialog();
   const params = useMemo(() => mapFiltersToParams(filters), [filters]);
+  const { isLoggedIn } = useAuthState();
+
+  const isSaved = active === "saved";
+
+  const savedQ = useInfiniteBookmarks(
+    { size: 20 },
+    { enabled: isSaved && isLoggedIn }
+  );
+  const allQ = useInfiniteRecruitments(params, { enabled: !isSaved });
+
+  const query = isSaved ? savedQ : allQ;
 
   const {
     data,
@@ -50,7 +73,7 @@ function Inner() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteRecruitments({ ...params });
+  } = query;
 
   if (status === "pending")
     return <div className="p-4 text-center">Loading…</div>;
@@ -63,11 +86,13 @@ function Inner() {
 
   const pages = data?.pages ?? [];
   const content = pages.flatMap((p) => p?.data?.content ?? []);
-  const jobs: Job[] = content.map(filterAdapt);
+  const jobs: Job[] = content
+    .map(filterAdapt)
+    .map((j) => ({ ...j, bookmarked: isSaved ? true : j.bookmarked }));
 
   return (
     <main className="p-4 space-y-4">
-      <JobCardList jobs={jobs} />
+      <JobCardList jobs={jobs} isLoggedIn={isLoggedIn} isSaved={isSaved} />
       <AutoLoader
         canLoad={!!hasNextPage}
         loading={!!isFetchingNextPage}

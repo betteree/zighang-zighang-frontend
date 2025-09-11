@@ -16,7 +16,8 @@ export function useRecruitments(params: FetchParams = {}) {
 }
 
 export function useInfiniteRecruitments(
-  params: Omit<FetchParams, "page" | "size"> = {}
+  params: Omit<FetchParams, "page" | "size"> = {},
+  options?: { enabled?: boolean }
 ) {
   return useInfiniteQuery({
     queryKey: ["recruitments:infinite", params],
@@ -29,6 +30,7 @@ export function useInfiniteRecruitments(
       const hasNext = current + 1 < totalPage;
       return hasNext ? current + 1 : undefined;
     },
+    enabled: options?.enabled ?? true,
     staleTime: 60_000,
     gcTime: 5 * 60_000,
   });

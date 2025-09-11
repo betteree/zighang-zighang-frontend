@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useTransition } from "react";
 import View from "./View";
 import Bookmark from "./BookMark";
-import { toggleBookmark } from "./toggleBookmark";
 import { Job } from "@/app/_types/jobs";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useBookmark } from "@/app/_api/bookmark/useBookmark";
+import { useAuthState } from "@/app/_api/auth/useAuthState";
 
 export default function Card({
   id,
@@ -19,31 +20,29 @@ export default function Card({
   views,
   companyImageUrl,
   deadlineType,
-  bookmarked: initialBookmarked = false,
+  bookmarked,
 }: Job) {
-  const [isBookmarked, setIsBookmarked] = useState(initialBookmarked);
-  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  const { isLoggedIn } = useAuthState();
+  const { isBookmarked, mutate, isPending } = useBookmark(id, !!bookmarked);
 
-  const onToggle = () => {
-    setIsBookmarked((prev) => {
-      const next = !prev;
-      startTransition(async () => {
-        try {
-          await toggleBookmark(id, next);
-        } catch {
-          setIsBookmarked(prev);
-          // 실패 시에 정확히 직전 상태로 롤백하도록 함
-        }
-      });
-      return next;
-    });
-    startTransition(async () => {
-      try {
-        await toggleBookmark(id, !isBookmarked);
-      } catch {
-        setIsBookmarked(initialBookmarked);
+  const handleClick = async () => {
+    // 로그인 상태 확인
+    if (!isLoggedIn) {
+      router.push("/join");
+      return;
+    }
+
+    const next = !isBookmarked;
+    try {
+      await mutate(next);
+    } catch (err) {
+      if ((err as Error).message === "UNAUTHORIZED") {
+        alert("로그인이 필요합니다.");
+      } else {
+        alert("북마크 처리에 실패했습니다.");
       }
-    });
+    }
   };
 
   // 배경색 랜덤 변경
@@ -133,9 +132,7 @@ export default function Card({
         >
           <div className="flex h-full w-full flex-col">
             <Bookmark
-              onClick={() => {
-                onToggle();
-              }}
+              onClick={handleClick}
               active={isBookmarked}
               disabled={isPending}
             />

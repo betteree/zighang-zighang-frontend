@@ -16,6 +16,7 @@ export interface Recruitment {
   companyName: string;
   companyImageUrl: string | null;
   companySize: string;
+  isBookmarked: boolean;
 }
 
 export interface PageMeta {
