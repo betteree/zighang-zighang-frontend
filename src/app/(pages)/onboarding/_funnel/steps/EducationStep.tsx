@@ -14,9 +14,13 @@ import { GraduationChip } from "../../_components/Chip/GraduationChip";
 export function EducationStep({
   onNext,
   onBack,
+  initialEducation,
+  initialGraduationStatus,
 }: {
   onNext: (학력: string, 졸업상태: string) => void;
   onBack: () => void;
+  initialEducation?: string;
+  initialGraduationStatus?: string;
 }) {
   const SCHOOL_OPTIONS = useMemo(
     () => [
@@ -35,8 +39,8 @@ export function EducationStep({
     []
   );
 
-  const [school, setSchool] = useState<string | null>(null);
-  const [graduation, setGraduation] = useState<string | null>(null);
+  const [school, setSchool] = useState<string | null>(initialEducation || null);
+  const [graduation, setGraduation] = useState<string | null>(initialGraduationStatus || null);
 
   const isValid = useMemo(() => !!school && !!graduation, [school, graduation]);
 
@@ -49,8 +53,8 @@ export function EducationStep({
     <StepContainer>
       <StepHeader
         title="최종학력이 어떻게 되세요?"
-        stepNumber={4}
-        totalSteps={5}
+        stepNumber={3}
+        totalSteps={4}
         onBack={onBack}
       />
 

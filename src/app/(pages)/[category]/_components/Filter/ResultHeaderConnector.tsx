@@ -21,7 +21,7 @@ export default function ResultHeaderConnector({
   const params = useMemo(() => mapFiltersToParams(filters), [filters]);
   const { data } = useRecruitments({ ...params, page: 0, size: 1 });
 
-  const total = data?.data?.page?.totalElements ?? 0;
+  const total = data?.data?.totalElements ?? 0;
 
   return (
     <ResultHeader
