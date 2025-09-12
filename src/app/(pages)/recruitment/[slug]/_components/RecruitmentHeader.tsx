@@ -1,33 +1,38 @@
-import Image from 'next/image';
+import Image from "next/image";
+import { Job } from "@/app/_types/jobs";
 
 interface RecruitmentHeaderProps {
-  recruitment: {
-    title: string;
-    company: {
-      name: string;
-    };
-    imageUrl: string;
-    hits: number;
-  };
+  job: Job;
 }
 
-export default function RecruitmentHeader({ recruitment }: RecruitmentHeaderProps) {
+export default function RecruitmentHeader({ job }: RecruitmentHeaderProps) {
   return (
     <div className="flex w-full items-start gap-5">
-      <section
-        className="relative flex aspect-[1/1] flex-shrink-0 items-center justify-center rounded-xl md:rounded-2xl w-16 md:w-[100px]"
-        style={{ backgroundColor: '#4ec06c' }}
-      >
-        <span className="font-bold text-white text-[9px] md:text-xs whitespace-pre-line text-center leading-[12px] md:leading-[18px]">
-          Amazon WebSe..
-        </span>
+      <section className="relative flex aspect-[1/1] flex-shrink-0 items-center justify-center rounded-xl md:rounded-2xl w-16 md:w-[100px] overflow-hidden bg-gray-100">
+        {job.companyImageUrl ? (
+          <Image
+            src={job.companyImageUrl}
+            alt={`${job.company} 로고`}
+            width={100}
+            height={100}
+            className="w-full h-full object-cover border-1 rounded-2xl border-[rgba(0,0,0,0.1)]"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-[#4ec06c]">
+            <span className="font-bold text-white text-[9px] md:text-xs whitespace-pre-line text-center leading-[12px] md:leading-[18px] p-1">
+              {job.company.length > 10
+                ? job.company.substring(0, 10) + ".."
+                : job.company}
+            </span>
+          </div>
+        )}
       </section>
       <div className="flex w-full flex-col gap-2">
         <h1 className="break-all text-xl font-semibold text-black md:gap-5 md:text-[26px]">
-          {recruitment.title}
+          {job.title}
         </h1>
         <span className="w-fit text-sm font-medium text-[#5E5E5E] md:text-lg">
-          {recruitment.company.name}
+          {job.company}
         </span>
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center gap-1">
@@ -50,7 +55,7 @@ export default function RecruitmentHeader({ recruitment }: RecruitmentHeaderProp
                 className="h-[9px] w-[15px] md:h-[12px] md:w-[19px]"
                 src="https://zighang.com/icon/eye.svg"
               />
-              <div>{recruitment.hits}</div>
+              <div>{job.views}</div>
             </div>
           </div>
           <button

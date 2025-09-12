@@ -26,7 +26,7 @@ export default function filterAdapt(r: Recruitment): Job {
     education: edu,
     imageUrl: r.imageUrl, //지금은 이미지를 받아올 수 없으므로 제목으로
     deadlineType: deeadline,
-    views: 0,
+    views: r.views,
     jobGroup: r.jobs[0] ?? "기타",
     bookmarked: r.isBookmarked,
   };

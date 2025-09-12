@@ -1,3 +1,5 @@
+"use client";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FilterSection from "./_components/FilterSection";
@@ -7,23 +9,10 @@ import RecruitmentContent from "./_components/RecruitmentContent";
 import Separator from "./_components/Separator";
 import SimilarRecruitments from "./_components/SimilarRecruitments";
 import SidebarActions from "./_components/SidebarActions";
-
-const mockRecruitment = {
-  uid: "13f8be02-f11b-4294-b6b6-d46e5a71e16b",
-  title: "Solution Architect, Public sector",
-  company: {
-    name: "AmazonWebServicesKorea",
-  },
-  imageUrl: "https://d2juy7qzamcf56.cloudfront.net/company/default.svg",
-  hits: 41,
-  content:
-    '<main><img src="https://d2juy7qzamcf56.cloudfront.net/2025-08-14/a08240a0-e53f-4acc-b2b7-f928b92d3a2f.png" /></main>',
-  recruitmentJobs: {
-    "IT·개발": ["DevOps·SRE"],
-  },
-  types: [3],
-  careers: [1],
-};
+import { useRecruitmentDetail } from "@/app/_api/recruitment/detail/useRecruitmentDetail";
+import { useParams } from "next/navigation";
+import filterAdapt from "@/app/_utils/filterAdapt";
+import { toDisplayJobDot } from "@/app/_utils/jobFormat";
 
 const mockSimilarRecruitments = [
   {
@@ -79,27 +68,77 @@ const mockRecCount = {
   count: 43,
 };
 
-export default async function RecruitmentPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
+function RecruitmentPageContent({ slug }: { slug: string }) {
+  const {
+    data: recruitmentData,
+    isLoading,
+    error,
+  } = useRecruitmentDetail(slug);
+
+  if (isLoading) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div>
+        </div>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center">
+        <div className="text-center text-red-600">
+          <p className="text-xl mb-4">
+            공고를 불러오는 중 오류가 발생했습니다.
+          </p>
+          <p>
+            {error instanceof Error
+              ? error.message
+              : "알 수 없는 오류가 발생했습니다."}
+          </p>
+        </div>
+      </main>
+    );
+  }
+
+  const recruitment = recruitmentData?.data;
+
+  if (!recruitment) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center">
+        <div className="text-center">
+          <p className="text-xl">공고를 찾을 수 없습니다.</p>
+        </div>
+      </main>
+    );
+  }
+
+  const adaptedJob = filterAdapt(recruitment);
+
+  // jobGroup을 toDisplayJobDot으로 변환
+  const displayJob = {
+    ...adaptedJob,
+    jobGroup: adaptedJob.jobGroup
+      ? toDisplayJobDot(adaptedJob.jobGroup)
+      : adaptedJob.jobGroup,
+  };
+
   return (
     <main className="flex min-h-screen flex-col items-center">
       <Header />
-      <FilterSection />
+      <FilterSection job={displayJob} />
       <div className="flex w-full mx-36 max-w-[1200px] justify-center gap-[132px] px-0">
         <div className="flex w-full flex-col items-center">
           <div className="flex w-full flex-col items-center px-0">
             <div className="flex w-full flex-col items-center py-5">
-              <RecruitmentHeader recruitment={mockRecruitment} />
-              <RecruitmentInfo />
+              <RecruitmentHeader job={displayJob} />
+              <RecruitmentInfo job={displayJob} />
             </div>
             <div className="w-full"></div>
             <p className="hidden"></p>
             <div className="h-9"></div>
-            <RecruitmentContent />
+            <RecruitmentContent job={displayJob} />
             <section className="w-full">
               <div className="h-9"></div>
             </section>
@@ -111,9 +150,14 @@ export default async function RecruitmentPage({
             recCount={mockRecCount}
           />
         </div>
-        <SidebarActions slug={slug} />
+        <SidebarActions slug={slug} job={displayJob} />
       </div>
       <Footer />
     </main>
   );
+}
+
+export default function RecruitmentPage() {
+  const { slug } = useParams<{ slug: string }>();
+  return <RecruitmentPageContent slug={slug} />;
 }

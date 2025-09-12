@@ -1,6 +1,11 @@
-import Image from 'next/image';
+import Image from "next/image";
+import { Job } from "@/app/_types/jobs";
 
-export default function RecruitmentInfo() {
+interface RecruitmentInfoProps {
+  job: Job;
+}
+
+export default function RecruitmentInfo({ job }: RecruitmentInfoProps) {
   return (
     <>
       <div className="h-5"></div>
@@ -14,10 +19,10 @@ export default function RecruitmentInfo() {
               height={20}
               src="https://zighang.com/icon/calendar.svg"
             />
-            <div className="text-sm font-semibold">상시채용</div>
+            <div className="text-sm font-semibold">{job.deadlineType}</div>
           </div>
           <div className="text-xs font-normal text-[#71717A]">
-            8월 15일 게시
+            게시일 정보 없음
           </div>
         </div>
       </div>
@@ -26,34 +31,44 @@ export default function RecruitmentInfo() {
         <div className="flex w-full flex-col gap-2 rounded-lg bg-[#F6F6FA] md:flex-1 md:gap-[13px]">
           <section className="grid gap-4 px-6 py-5 md:grid-cols-2 md:gap-3">
             <div className="flex w-full items-center justify-start gap-2 text-sm font-medium md:gap-1">
-              <span className="min-w-20 flex-[0] flex-shrink-0 text-[#8E8E8E]">경력</span>
+              <span className="min-w-20 flex-[0] flex-shrink-0 text-[#8E8E8E]">
+                경력
+              </span>
               <div className="flex w-full flex-[4] justify-start text-black">
-                <div>1년차 이상</div>
+                <div>{job.experience}</div>
               </div>
             </div>
             <div className="flex w-full items-center justify-start gap-2 text-sm font-medium md:gap-1">
-              <span className="min-w-20 flex-[0] flex-shrink-0 text-[#8E8E8E]">근무지역</span>
+              <span className="min-w-20 flex-[0] flex-shrink-0 text-[#8E8E8E]">
+                근무지역
+              </span>
               <div className="flex w-full flex-[4] justify-start text-black">
-                <div>서울</div>
+                <div>{job.location}</div>
               </div>
             </div>
             <div className="flex w-full items-center justify-start gap-2 text-sm font-medium md:gap-1">
-              <span className="min-w-20 flex-[0] flex-shrink-0 text-[#8E8E8E]">학력</span>
+              <span className="min-w-20 flex-[0] flex-shrink-0 text-[#8E8E8E]">
+                학력
+              </span>
               <div className="flex w-full flex-[4] justify-start text-black">
-                <div>학력 무관</div>
+                <div>{job.education}</div>
               </div>
             </div>
             <div className="flex w-full items-center justify-start gap-2 text-sm font-medium md:gap-1">
-              <span className="min-w-20 flex-[0] flex-shrink-0 text-[#8E8E8E]">근무형태</span>
+              <span className="min-w-20 flex-[0] flex-shrink-0 text-[#8E8E8E]">
+                근무형태
+              </span>
               <div className="flex w-full flex-[4] justify-start text-black">
-                <div>정규직</div>
+                <div>{job.contractType}</div>
               </div>
             </div>
             <div className="col-span-2 flex items-center">
               <div className="flex w-full items-center justify-start gap-2 text-sm font-medium md:gap-1">
-                <span className="min-w-20 flex-[0] flex-shrink-0 text-[#8E8E8E]">직무</span>
+                <span className="min-w-20 flex-[0] flex-shrink-0 text-[#8E8E8E]">
+                  직무
+                </span>
                 <div className="flex w-full flex-[4] justify-start text-black">
-                  <div>DevOps·SRE</div>
+                  <div>{job.jobGroup}</div>
                 </div>
               </div>
             </div>
