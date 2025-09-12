@@ -96,7 +96,7 @@ export function RecruitCountBadge({ years, jobs, className = "" }: Props) {
         <span className="text-[#9F55CE]">
           {query.isFetching
             ? "…"
-            : `${query.data?.data?.totalElements ?? 0}개 공고`}
+            : `${query.data?.data?.page?.totalElements ?? 0}개 공고`}
         </span>
         <span className="text-black">를</span>
       </span>

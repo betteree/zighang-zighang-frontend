@@ -11,12 +11,11 @@ export function IntroStep({
   onNext: (applyRecentFilter: boolean) => void;
 }) {
   const [applyRecent, setApplyRecent] = React.useState(false);
-  
   return (
     <StepContainer>
       <div className="relative w-full h-full rounded-[16px]">
         <Image
-          src="/Onboardingbackground.svg"
+          src="/Onboardingbackground.png"
           alt="background"
           fill
           className="object-cover rounded-[16px]"

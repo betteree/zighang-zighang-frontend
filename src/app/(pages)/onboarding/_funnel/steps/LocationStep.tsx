@@ -15,13 +15,11 @@ import { SIDO_GEO } from "../../_types/onBoradingMap";
 export function LocationStep({
   onBack,
   onSubmit,
-  initialRegion,
 }: {
   onBack: () => void;
   onSubmit: (지역: string | null) => void;
-  initialRegion?: string;
 }) {
-  const [region, setRegion] = useState<RegionValue | null>(initialRegion as RegionValue || null);
+  const [region, setRegion] = useState<RegionValue | null>(null);
   const isValid = useMemo(() => !!region, [region]);
 
   const handleSelect = useCallback(
@@ -50,8 +48,8 @@ export function LocationStep({
     <StepContainer>
       <StepHeader
         title="원하는 근무 지역이 어떻게 되세요?"
-        stepNumber={4}
-        totalSteps={4}
+        stepNumber={5}
+        totalSteps={5}
         onBack={onBack}
       />
       <div className="flex items-center justify-center mt-6">

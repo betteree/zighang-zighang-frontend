@@ -16,12 +16,10 @@ export function JobStep({
   jobGroup,
   onNext,
   onBack,
-  initialSelected = [],
 }: {
   jobGroup: string[];
   onNext: (직무: string[]) => void;
   onBack: () => void;
-  initialSelected?: string[];
 }) {
   type JobChipProps = {
     isSelected?: boolean;
@@ -39,24 +37,7 @@ export function JobStep({
   // 직군별 선택값을 저장
   const [selectedJobsByGroup, setSelectedJobsByGroup] = useState<
     Record<string, string[]>
-  >(() => {
-    // initialSelected를 그룹별로 분류
-    const grouped: Record<string, string[]> = {};
-    if (initialSelected.length > 0) {
-      jobGroup.forEach(group => {
-        const found = onboardingJobCategories.find(cat => cat.name === group);
-        if (found) {
-          const jobsInGroup = initialSelected.filter(job => 
-            found.jobs.some(j => j === job)
-          );
-          if (jobsInGroup.length > 0) {
-            grouped[group] = jobsInGroup;
-          }
-        }
-      });
-    }
-    return grouped;
-  });
+  >({});
   const currentSelectedJobs =
     (currentGroup && selectedJobsByGroup[currentGroup]) ?? [];
   const isLastGroup = groupIndex >= (jobGroup?.length ?? 0) - 1;
