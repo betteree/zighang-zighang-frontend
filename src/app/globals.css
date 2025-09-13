@@ -71,8 +71,8 @@
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
-  /* 커스텀 브레이크포인트: HTML에서 hbp:* 사용 가능 */
 
+  --breakpoint-md: 88.5rem; /* 1416px */
   --breakpoint-hbp: 64rem; /* 1024px */
 }
 
