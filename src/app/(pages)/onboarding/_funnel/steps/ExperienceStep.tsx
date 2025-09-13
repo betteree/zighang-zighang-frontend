@@ -14,11 +14,12 @@ type Props = {
   onNext: (경력: number) => void;
   onBack: () => void;
   jobs?: string[]; // 직무 키 배열
+  initialExperience?: number; // 초기 경력값
 };
 
-export function ExperienceStep({ onNext, onBack, jobs = [] }: Props) {
+export function ExperienceStep({ onNext, onBack, jobs = [], initialExperience }: Props) {
   const [selectedYears, setSelectedYears] = React.useState<number>(
-    DEFAULT_EXPERIENCE_YEARS
+    initialExperience ?? DEFAULT_EXPERIENCE_YEARS
   );
 
   // 화면(휠 바깥) 스와이프로 연차 변경을 위한 refs

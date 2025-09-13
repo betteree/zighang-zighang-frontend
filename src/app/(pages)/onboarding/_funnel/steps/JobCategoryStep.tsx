@@ -12,12 +12,14 @@ import { JobCategoryItem } from "./JobCategoryItem";
 export function JobCategoryStep({
   onNext,
   onSkip,
+  initialSelected = [],
 }: {
   onNext: (직군: string[]) => void;
   onSkip: () => void;
+  initialSelected?: string[];
 }) {
   const [selectedCategories, setSelectedCategories] = React.useState<string[]>(
-    []
+    initialSelected
   );
 
   const handleCategoryClick = (category: string) => {

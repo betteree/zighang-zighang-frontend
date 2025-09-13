@@ -21,14 +21,15 @@ type ApiOnboardingPayload = {
 type UploadStepProps = {
   onNext: (file: File | null, apiPayload: ApiOnboardingPayload) => Promise<void>;
   apiPayload: ApiOnboardingPayload;
-  isLoading?: boolean;
 };
 
-export function UploadStep({ onNext, apiPayload, isLoading = false }: UploadStepProps) {
+export function UploadStep({ onNext, apiPayload }: UploadStepProps) {
   const [file, setFile] = useState<UploadedFile | undefined>(undefined);
   const [actualFile, setActualFile] = useState<File | null>(null);
   const [status, setStatus] = useState<UploadStatus>("loading");
   const [progress, setProgress] = useState<number>(0);
+  const [isSkipLoading, setIsSkipLoading] = useState(false);
+  const [isSubmitLoading, setIsSubmitLoading] = useState(false);
   const timerRef = useRef<number | null>(null);
 
   const handleFiles = (files: File[]) => {
@@ -80,7 +81,21 @@ export function UploadStep({ onNext, apiPayload, isLoading = false }: UploadStep
   };
 
   const handleSubmit = async () => {
-    await onNext(actualFile, apiPayload);
+    setIsSubmitLoading(true);
+    try {
+      await onNext(actualFile, apiPayload);
+    } finally {
+      setIsSubmitLoading(false);
+    }
+  };
+
+  const handleSkip = async () => {
+    setIsSkipLoading(true);
+    try {
+      await onNext(null, apiPayload);
+    } finally {
+      setIsSkipLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -134,23 +149,27 @@ export function UploadStep({ onNext, apiPayload, isLoading = false }: UploadStep
 
         <div className="flex gap-2 h-full items-end mt-1">
           <button
-            onClick={() => onNext(null, apiPayload)}
-            className=" flex-1 min-w-[150px] rounded-lg py-2 font-semibold border border-neutral-300"
+            disabled={isSkipLoading}
+            onClick={handleSkip}
+            className={`flex-1 min-w-[150px] rounded-lg py-2 font-semibold border border-neutral-300 transition-all duration-200 ${
+              isSkipLoading
+                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                : "hover:bg-gray-50"
+            }`}
           >
-            넘어가기
+            {isSkipLoading ? "넘어가는 중..." : "넘어가기"}
           </button>
 
           <button
-            disabled={!file || isLoading}
+            disabled={!file || isSubmitLoading}
             onClick={handleSubmit}
-            className={` flex-1 min-w-[150px] rounded-lg py-2 font-semibold transition-all duration-200
-    ${
-      file && !isLoading
-        ? "bg-violet-500 text-white"
-        : "bg-gray-100 text-gray-400 cursor-not-allowed"
-    }`}
+            className={`flex-1 min-w-[150px] rounded-lg py-2 font-semibold transition-all duration-200 ${
+              file && !isSubmitLoading
+                ? "bg-violet-500 text-white"
+                : "bg-gray-100 text-gray-400 cursor-not-allowed"
+            }`}
           >
-            {isLoading ? "등록 중..." : "이력서 등록하기"}
+            {isSubmitLoading ? "등록 중..." : "이력서 등록하기"}
           </button>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { useFunnel } from "@use-funnel/browser";
 import { useRouter } from "next/navigation";
 import { useSubmitOnboarding } from "@/app/_api/user/useOnboarding";
-import { mapJobGroup, mapEducationLevel, mapGraduationStatus } from "../_utils/mapping";
+import { mapJobGroup, mapEducationLevel, mapGraduationStatus, saveOnboardingFiltersToStorage, loadOnboardingFiltersFromStorage, mapApiParamsToOnboarding } from "../_utils/mapping";
 import {
   JobCategoryStep,
   JobStep,
@@ -74,15 +74,35 @@ export default function OnboardingFunnel() {
       인트로={({ history }) => (
         <IntroStep
           onNext={(applyRecent) => {
+            let initialContext: Partial<지역입력> = { 최근필터적용: applyRecent };
+            
+            // 최근 필터 적용이 체크된 경우 로컬 스토리지에서 데이터 불러오기
+            if (applyRecent) {
+              const savedFilters = loadOnboardingFiltersFromStorage();
+              if (savedFilters) {
+                const onboardingData = mapApiParamsToOnboarding(savedFilters);
+                initialContext = {
+                  ...initialContext,
+                  직군: onboardingData.직군,
+                  직무: onboardingData.직무,
+                  경력: onboardingData.경력,
+                  학력: onboardingData.학력,
+                  졸업상태: onboardingData.졸업상태,
+                  지역: onboardingData.지역,
+                };
+              }
+            }
+            
             history.push("직군입력", (prev) => ({
               ...prev,
-              최근필터적용: applyRecent,
-            }));
+              ...initialContext,
+            } as 직군입력));
           }}
         />
       )}
-      직군입력={({ history }) => (
+      직군입력={({ history, context }) => (
         <JobCategoryStep
+          initialSelected={context.직군 || []}
           onNext={(직군) =>
             history.push("직무입력", (prev) => ({ ...prev, 직군 }))
           }
@@ -105,6 +125,7 @@ export default function OnboardingFunnel() {
       직무입력={({ context, history }) => (
         <JobStep
           jobGroup={context.직군}
+          initialSelected={context.직무 || []}
           onBack={() => history.back()}
           onNext={(직무) => {
             console.log("직무입력 onNext 전달값:", 직무);
@@ -115,6 +136,7 @@ export default function OnboardingFunnel() {
       경력입력={({ context, history }) => (
         <ExperienceStep
           jobs={context.직무}
+          initialExperience={context.경력}
           onBack={() => history.back()}
           onNext={(경력) =>
             history.push("학력입력", (prev) => ({ ...prev, 경력 }))
@@ -123,14 +145,17 @@ export default function OnboardingFunnel() {
       )}
       학력입력={({ context, history }) => (
         <EducationStep
+          initialSchool={context.학력}
+          initialGraduation={context.졸업상태}
           onBack={() => history.back()}
           onNext={(학력, 졸업상태) =>
             history.push("지역입력", { ...context, 학력, 졸업상태 })
           }
         />
       )}
-      지역입력={({ history }) => (
+      지역입력={({ context, history }) => (
         <LocationStep
+          initialRegion={context.지역 || undefined}
           onBack={() => history.back()}
           onSubmit={(지역) => {
             // 지역 정보를 context에 저장하고 파일업로드 단계로 이동
@@ -144,10 +169,19 @@ export default function OnboardingFunnel() {
         return (
           <UploadStep
             apiPayload={apiPayload}
-            isLoading={submitOnboardingMutation.isPending}
             onNext={async (file, payload) => {
               try {
                 const responseData = await submitOnboardingMutation.mutateAsync({ payload, file });
+                
+                // 온보딩 데이터를 로컬 스토리지에 저장
+                saveOnboardingFiltersToStorage({
+                  직군: context.직군 || [],
+                  직무: context.직무 || [],
+                  경력: context.경력 || 0,
+                  학력: context.학력 || "",
+                  졸업상태: context.졸업상태 || "",
+                  지역: context.지역 || "",
+                });
                 
                 // API 응답 데이터를 완료 단계로 전달
                 history.push("완료", { 

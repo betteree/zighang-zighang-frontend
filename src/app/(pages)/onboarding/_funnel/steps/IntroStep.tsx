@@ -15,7 +15,7 @@ export function IntroStep({
     <StepContainer>
       <div className="relative w-full h-full rounded-[16px]">
         <Image
-          src="/Onboardingbackground.png"
+          src="/Onboardingbackground.svg"
           alt="background"
           fill
           className="object-cover rounded-[16px]"
