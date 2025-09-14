@@ -1,13 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { StepContainer } from "../../_components";
 import FileUploadCard from "../../_components/FileUpload/FileUploadCard";
 import FileUploadList from "../../_components/FileUpload/FileUploadList";
-import {
-  UploadStatus,
-  UploadedFile,
-} from "../../_components/FileUpload/types/type";
+import { UploadedFile } from "../../_components/FileUpload/types/type";
+import { useProgressSimulation } from "@/app/_hooks/useProgressSimulation";
 
 type ApiOnboardingPayload = {
   interestedJobs: string[];
@@ -19,18 +17,24 @@ type ApiOnboardingPayload = {
 };
 
 type UploadStepProps = {
-  onNext: (file: File | null, apiPayload: ApiOnboardingPayload) => Promise<void>;
+  onNext: (
+    file: File | null,
+    apiPayload: ApiOnboardingPayload
+  ) => Promise<void>;
   apiPayload: ApiOnboardingPayload;
+  isLoading?: boolean;
 };
 
 export function UploadStep({ onNext, apiPayload }: UploadStepProps) {
   const [file, setFile] = useState<UploadedFile | undefined>(undefined);
   const [actualFile, setActualFile] = useState<File | null>(null);
-  const [status, setStatus] = useState<UploadStatus>("loading");
-  const [progress, setProgress] = useState<number>(0);
+  const { progress, status, startSimulation, setError, cleanup } =
+    useProgressSimulation({
+      increment: 30,
+      interval: 200,
+    });
   const [isSkipLoading, setIsSkipLoading] = useState(false);
   const [isSubmitLoading, setIsSubmitLoading] = useState(false);
-  const timerRef = useRef<number | null>(null);
 
   const handleFiles = (files: File[]) => {
     const f = files[0];
@@ -46,38 +50,19 @@ export function UploadStep({ onNext, apiPayload }: UploadStepProps) {
 
     setFile(uploaded);
     setActualFile(f);
-    setStatus("loading");
-    setProgress(0);
 
-    // 진행률 시뮬레이션
-    if (timerRef.current) window.clearInterval(timerRef.current);
-    timerRef.current = window.setInterval(() => {
-      setProgress((p) => {
-        const next = Math.min(100, p + 30);
-        if (next >= 100) {
-          window.clearInterval(timerRef.current!);
-          timerRef.current = null;
-          setStatus("success");
-        }
-        return next;
-      });
-    }, 200);
+    // 진행률 시뮬레이션 시작
+    startSimulation();
   };
 
   const handleError = () => {
-    setStatus("error");
+    setError();
   };
 
   const handleRemove = (id: string) => {
     if (file?.id !== id) return;
     setFile(undefined);
     setActualFile(null);
-    setStatus("loading");
-    setProgress(0);
-    if (timerRef.current) {
-      window.clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
   };
 
   const handleSubmit = async () => {
@@ -99,10 +84,8 @@ export function UploadStep({ onNext, apiPayload }: UploadStepProps) {
   };
 
   useEffect(() => {
-    return () => {
-      if (timerRef.current) window.clearInterval(timerRef.current);
-    };
-  }, []);
+    return cleanup;
+  }, [cleanup]);
 
   return (
     <StepContainer>

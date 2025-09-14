@@ -11,6 +11,11 @@ type Props = {
   maxSizeMB?: number;
   disabled?: boolean;
   hasFile?: boolean;
+  modal?: boolean;
+  width?: string | number;
+  height?: string | number;
+  className?: string;
+  error?: string | null;
 };
 
 export default function FileUploadCard({
@@ -21,22 +26,73 @@ export default function FileUploadCard({
   maxSizeMB = 15,
   disabled = false,
   hasFile,
+  modal = false,
+  width,
+  height,
+  className,
+  error: externalError,
 }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setDragging] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [internalError, setInternalError] = useState<string | null>(null);
   const liveId = useId();
+
+  // 외부 에러와 내부 에러를 합쳐서 사용
+  const error = externalError || internalError;
+
+  // modal 상태에 따른 스타일 조절
+  const getContainerStyles = () => {
+    const baseStyles = [
+      "bg-white flex justify-center shadow-sm transition outline-none relative",
+      disabled
+        ? "opacity-60 cursor-not-allowed"
+        : isDragging
+        ? "border-violet-400 ring-4 ring-violet-100"
+        : "border-zinc-200 hover:shadow",
+      hasFile ? "h-[200px]" : "h-[228px]",
+      // modal 상태일 때는 블러 처리하지 않음
+      error && !modal ? "blur-sm select-none" : "",
+    ];
+
+    if (modal) {
+      baseStyles.push("!shadow-none");
+    } else {
+      baseStyles.push("w-[526px] rounded-2xl border");
+    }
+
+    if (className) {
+      baseStyles.push(className);
+    }
+
+    return baseStyles.join(" ");
+  };
+
+  const getButtonStyles = () => {
+    const baseStyles = [
+      "h-8 px-4.5 py-1.5 rounded-full text-sm font-semibold text-white shadow-sm cursor-pointer",
+      "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-violet-200",
+      disabled ? "opacity-60 cursor-not-allowed" : "",
+    ];
+
+    if (modal) {
+      baseStyles.push("bg-black text-white");
+    } else {
+      baseStyles.push("bg-violet-600 hover:bg-violet-700");
+    }
+
+    return baseStyles.join(" ");
+  };
 
   const showError = useCallback(
     (msg: string) => {
-      setError(msg);
+      setInternalError(msg);
       onError?.(msg);
     },
     [onError]
   );
 
   const clearError = useCallback(() => {
-    setError(null);
+    setInternalError(null);
   }, []);
 
   const validateAndEmit = useCallback(
@@ -106,17 +162,19 @@ export default function FileUploadCard({
       <div
         role="group"
         aria-labelledby={`${liveId}-title`}
-        className={[
-          "w-[526px] rounded-2xl border bg-white flex justify-center",
-          "shadow-sm transition outline-none relative",
-          disabled
-            ? "opacity-60 cursor-not-allowed"
-            : isDragging
-            ? "border-violet-400 ring-4 ring-violet-100"
-            : "border-zinc-200 hover:shadow",
-          hasFile ? "h-[200px]" : "h-[228px]",
-          error ? "blur-sm select-none" : "",
-        ].join(" ")}
+        className={getContainerStyles()}
+        style={{
+          width: width
+            ? typeof width === "number"
+              ? `${width}px`
+              : width
+            : undefined,
+          height: height
+            ? typeof height === "number"
+              ? `${height}px`
+              : height
+            : undefined,
+        }}
         onDragEnter={(e) => {
           if (disabled) return;
           e.preventDefault();
@@ -163,12 +221,7 @@ export default function FileUploadCard({
             type="button"
             onClick={() => inputRef.current?.click()}
             disabled={disabled}
-            className={[
-              " h-8 px-4.5 py-1.5 rounded-full text-sm ",
-              "font-semibold bg-violet-600 text-white shadow-sm",
-              "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-violet-200",
-              disabled ? "opacity-60 cursor-not-allowed" : "",
-            ].join(" ")}
+            className={getButtonStyles()}
           >
             파일 업로드
           </button>
@@ -184,7 +237,7 @@ export default function FileUploadCard({
           />
         </div>
       </div>
-      {error && (
+      {error && !modal && (
         <div
           role="alert"
           aria-live="assertive"
@@ -201,7 +254,9 @@ export default function FileUploadCard({
           title="클릭해서 닫기"
         >
           <div className="px-4 py-2 rounded-md bg-white/85 backdrop-blur-sm border border-rose-200 shadow">
-            <p className="text-sm font-semibold text-rose-700">{error}</p>
+            <p className="text-sm font-semibold text-rose-700 text-center">
+              {error}
+            </p>
           </div>
         </div>
       )}

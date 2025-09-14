@@ -23,7 +23,7 @@ export function FileUploadItem({
 
   return (
     <div
-      className="group h-20 w-full max-w-[526px] relative flex items-center gap-3 rounded-xl border border-white bg-white shadow-sm overflow-hidden"
+      className="group h-20 w-full relative flex items-center gap-3 rounded-xl border border-white bg-white shadow-sm overflow-hidden min-w-0"
       aria-label={`${file.name} 업로드됨`}
     >
       {/* 체크무늬 배경 */}
@@ -54,9 +54,11 @@ export function FileUploadItem({
             <FileIcon />
           </div>
 
-          <div className="min-w-0 flex-1 ml-1.5">
-            <div className="flex items-center gap-2">
-              <span className="font-semibold text-sm ">{file.name}</span>
+          <div className="min-w-0 flex-1 ml-1.5 overflow-hidden">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="font-semibold text-sm truncate block w-full">
+                {file.name}
+              </span>
             </div>
 
             <div className="flex items-center gap-1.5">

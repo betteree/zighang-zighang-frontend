@@ -2,12 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Profile from "./Icons/Profile";
 
 export default function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const pathname = usePathname();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -35,7 +37,7 @@ export default function Header() {
   return (
     <>
       <header className="relative w-full md:px-10">
-        <div className="relative z-10 box-border flex w-full flex-row items-center justify-between py-5 md:py-3">
+        <div className="relative z-10 box-border flex w-full flex-row items-center justify-between py-3 md:py-3">
           <div className="ml-3 flex items-center gap-5">
             <Link href="/" className="mr-4 flex-shrink-0 md:flex-shrink">
               <Image
@@ -54,7 +56,9 @@ export default function Header() {
                 <Link href="/" className="pointer-events-auto relative">
                   <div className="text-[#353535] ds-web-navi">채용 공고</div>
                 </Link>
-                <div className="absolute w-full border border-primary/80"></div>
+                {pathname === "/" && (
+                  <div className="absolute w-full border border-primary/80"></div>
+                )}
               </div>
               <div
                 className="relative hidden hbp:block"
@@ -63,35 +67,28 @@ export default function Header() {
                 <Link href="/company" className="pointer-events-auto relative">
                   <div className="text-[#353535] ds-web-navi">기업별</div>
                 </Link>
+                {pathname === "/company" && (
+                  <div className="absolute w-full border border-primary/80"></div>
+                )}
               </div>
               <div className="relative hidden sm:block">
                 <Link href="/today" className="pointer-events-auto relative">
                   <div className="text-[#353535] ds-web-navi">실시간 공고</div>
                 </Link>
+                {pathname === "/today" && (
+                  <div className="absolute w-full border border-primary/80"></div>
+                )}
               </div>
               <div
                 className="relative hidden hbp:block"
                 style={{ display: "hidden" }}
               >
-                <Link
-                  href="https://tally.so/r/nPYly5"
-                  className="pointer-events-auto relative"
-                  target="_blank"
-                >
-                  <div className="text-[#353535] ds-web-navi">공고 제보</div>
+                <Link href="/personal" className="pointer-events-auto relative">
+                  <div className="text-[#353535] ds-web-navi">맞춤 공고</div>
                 </Link>
-              </div>
-              <div
-                className="relative hidden hbp:block"
-                style={{ display: "hidden" }}
-              >
-                <Link
-                  href="https://linktr.ee/zighang_chat"
-                  className="pointer-events-auto relative"
-                  target="_blank"
-                >
-                  <div className="text-[#353535] ds-web-navi">오픈 채팅</div>
-                </Link>
+                {pathname === "/personal" && (
+                  <div className="absolute w-full border border-primary/80"></div>
+                )}
               </div>
             </div>
           </div>
@@ -101,6 +98,9 @@ export default function Header() {
                 <Link href="/hiring" className="pointer-events-auto relative">
                   <div className="text-[#353535] ds-web-navi">기업회원</div>
                 </Link>
+                {pathname === "/hiring" && (
+                  <div className="absolute w-full border border-primary/80"></div>
+                )}
               </div>
             </div>
 
