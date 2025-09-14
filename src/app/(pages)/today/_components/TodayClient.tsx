@@ -1,42 +1,27 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
-import JobCardList from "./Card/JobCardList";
-import FilterBar from "./Filter/FilterBar";
-import FilterModal from "./Filter/FilterModal";
-import { jobCategories } from "@/app/_constants/jobCategories";
+import JobCardList from "../../[category]/_components/Card/JobCardList";
+import FilterBar from "../../[category]/_components/Filter/FilterBar";
+import FilterModal from "../../[category]/_components/Filter/FilterModal";
 import {
   FilterDialogProvider,
   DEFAULT,
   type FilterState,
   useFilterDialog,
-} from "@/app/(pages)/[category]/_hooks/useFilterDialog";
+} from "../../[category]/_hooks/useFilterDialog";
 import { mapFiltersToParams } from "@/app/_utils/mapFiltersToParams";
 import { useInfiniteRecruitments } from "@/app/_api/recruitment/useRecruitments";
 import { Job } from "@/app/_types/jobs";
 import filterAdapt from "@/app/_utils/filterAdapt";
-import ResultHeaderConnector from "./Filter/ResultHeaderConnector";
+import ResultHeaderConnector from "../../[category]/_components/Filter/ResultHeaderConnector";
 import { useInfiniteBookmarks } from "@/app/_api/bookmark/list";
 import { useAuthState } from "@/app/_api/auth/useAuthState";
 
-export default function CategoryClient({
-  slug,
-  active,
-}: {
-  slug: string;
-  active: string;
-}) {
-  const slugToJobGroup = (s: string) =>
-    jobCategories.find((c) => c.href.slice(1) === s)?.name ?? "전체";
-
-  const initial = useMemo<FilterState>(() => {
-    const baseState = { ...DEFAULT, jobGroup: slugToJobGroup(slug) };
-    return baseState;
-  }, [slug]);
-
+export default function TodayClient({ active }: { active: string }) {
   return (
     <div className="relative w-full overflow-visible px-0 laptop:mx-auto laptop:max-w-screen-xl laptop:px-10">
-      <FilterDialogProvider initial={initial}>
+      <FilterDialogProvider mode="today">
         {active === "all" && (
           <>
             <FilterBar />

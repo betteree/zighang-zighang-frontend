@@ -29,7 +29,7 @@ function Chip({
 }
 
 export default function FilterBar() {
-  const { openDialog, filters, resetAll } = useFilterDialog();
+  const { openDialog, filters, resetAll, mode } = useFilterDialog();
 
   const activeJobGroup = filters.jobGroup !== "전체";
   const activeJobRole = !isAll(filters.jobRoles);
@@ -42,7 +42,7 @@ export default function FilterBar() {
   const activeDeadline = !isAll(filters.deadlineTypes ?? ["전체"]);
 
   const anyFilterActive =
-    activeJobGroup ||
+    (mode === "today" ? activeJobGroup : false) ||
     activeJobRole ||
     activeHireType ||
     activeEducation ||
@@ -65,11 +65,13 @@ export default function FilterBar() {
       </div>
 
       <div className="flex items-center gap-2 overflow-x-auto">
-        <Chip
-          label="직군"
-          active={!!activeJobGroup}
-          onClick={() => openDialog("jobGroup")}
-        />
+        {mode === "today" && (
+          <Chip
+            label="직군"
+            active={!!activeJobGroup}
+            onClick={() => openDialog("jobGroup")}
+          />
+        )}
         <Chip
           label="직무"
           active={activeJobRole}

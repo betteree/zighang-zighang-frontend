@@ -23,6 +23,7 @@ export default function FilterModal() {
     open,
     closeDialog,
     filters,
+    mode,
     setJobGroup,
     toggleJobRole,
     toggleHireType,
@@ -58,12 +59,14 @@ export default function FilterModal() {
         </div>
 
         <div className="flex-1 overflow-y-auto px-6 py-6 space-y-8">
-          <FilterSection
-            title="직군"
-            options={JOB_GROUP}
-            selected={(o) => filters.jobGroup === o}
-            onToggle={setJobGroup}
-          />
+          {mode === "today" && (
+            <FilterSection
+              title="직군"
+              options={JOB_GROUP}
+              selected={(o) => filters.jobGroup === o}
+              onToggle={setJobGroup}
+            />
+          )}
           <FilterSection
             title="직무"
             note="중복 선택 가능"

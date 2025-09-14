@@ -5,9 +5,18 @@ import {
   useCallback,
   useMemo,
   useState,
+  useEffect,
+  useRef,
   type ReactNode,
 } from "react";
 import { EXPERIENCE_MIN, EXPERIENCE_MAX } from "@/app/_constants/filterOptions";
+import { loadOnboardingFiltersFromStorage } from "../../onboarding/_utils/mapping";
+import {
+  jobGroupReverseMap,
+  jobReverseMap,
+  educationReverseMap,
+  mapFilterStateToApiParams,
+} from "../_utils/filterMapping";
 
 export type FilterState = {
   jobGroup: string;
@@ -33,6 +42,7 @@ type Ctx = {
   open: boolean;
   section: Section;
   filters: FilterState;
+  mode: "category" | "today";
   openDialog: (s?: Section) => void;
   closeDialog: () => void;
   setJobGroup: (id: string) => void;
@@ -66,16 +76,84 @@ const toggleIn = (list: string[], id: string) => {
   return base.length ? base : ["전체"];
 };
 
+// API 파라미터를 필터 상태로 변환하는 함수
+function mapApiParamsToFilterState(apiParams: {
+  jobCategories?: string[];
+  jobs?: string[];
+  minExperience?: number;
+  maxExperience?: number;
+  educations?: string[];
+  locations?: string[];
+}): FilterState {
+  return {
+    jobGroup: apiParams.jobCategories?.[0]
+      ? jobGroupReverseMap[apiParams.jobCategories[0]] ||
+        apiParams.jobCategories[0]
+      : "전체",
+    jobRoles:
+      apiParams.jobs && apiParams.jobs.length > 0
+        ? apiParams.jobs.map((job) => jobReverseMap[job] || job)
+        : ["전체"],
+    hireTypes: ["전체"],
+    educations:
+      apiParams.educations && apiParams.educations.length > 0
+        ? [
+            educationReverseMap[apiParams.educations[0]] ||
+              apiParams.educations[0],
+          ]
+        : ["전체"],
+    regions:
+      apiParams.locations && apiParams.locations.length > 0
+        ? apiParams.locations
+        : ["전체"],
+    deadlineTypes: ["전체"],
+    experience: {
+      min: apiParams.minExperience || 0,
+      max: apiParams.maxExperience || 10,
+    },
+  };
+}
+
 export function FilterDialogProvider({
   children,
   initial = DEFAULT,
+  mode = "category",
 }: {
   children: ReactNode;
   initial?: FilterState;
+  mode?: "category" | "today";
 }) {
   const [open, setOpen] = useState(false);
   const [section, setSection] = useState<Section>("all");
   const [filters, setFilters] = useState<FilterState>(initial);
+  const hasLoadedFromStorage = useRef(false);
+
+  // today 모드일 때만 초기 로드 시 localStorage에서 데이터 로드
+  useEffect(() => {
+    if (mode === "today" && !hasLoadedFromStorage.current) {
+      const savedFilters = loadOnboardingFiltersFromStorage();
+      console.log(
+        "[today] 페이지 로드됨 - loadOnboardingFiltersFromStorage 결과:",
+        savedFilters
+      );
+
+      if (savedFilters) {
+        const filterState = mapApiParamsToFilterState(savedFilters);
+        console.log("변환된 필터 상태:", filterState);
+        setFilters(filterState);
+      }
+      hasLoadedFromStorage.current = true;
+    }
+  }, [mode]);
+
+  // today 모드일 때만 필터 변경사항을 localStorage에 저장
+  useEffect(() => {
+    if (mode === "today") {
+      const apiParams = mapFilterStateToApiParams(filters);
+      localStorage.setItem("userFilters", JSON.stringify(apiParams));
+      console.log("필터 변경됨, userFilters에 저장:", apiParams);
+    }
+  }, [filters, mode]);
 
   const openDialog = useCallback(
     (s: Section = "all") => {
@@ -132,6 +210,7 @@ export function FilterDialogProvider({
       open,
       section,
       filters,
+      mode,
       openDialog,
       closeDialog,
       setJobGroup,
@@ -147,6 +226,7 @@ export function FilterDialogProvider({
       open,
       section,
       filters,
+      mode,
       openDialog,
       closeDialog,
       setJobGroup,

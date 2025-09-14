@@ -65,10 +65,7 @@ export default function Header() {
                 </Link>
               </div>
               <div className="relative hidden sm:block">
-                <Link
-                  href="/pages/jobs/today"
-                  className="pointer-events-auto relative"
-                >
+                <Link href="/today" className="pointer-events-auto relative">
                   <div className="text-[#353535] ds-web-navi">실시간 공고</div>
                 </Link>
               </div>
