@@ -5,6 +5,7 @@ import { useState } from "react";
 import FileList from "./file/fileList";
 import FileUploadModal from "./file/fileUploadModal";
 import FileExploreModal from "./file/fileExploreModal";
+import UserName from "@/app/(pages)/personal/_components/UserName";
 
 type UploadAreaProps = {
   onFilesChange?: (hasFiles: boolean) => void;
@@ -50,7 +51,8 @@ export default function UploadArea({
         <div>
           <p className="text-black text-xl font-semibold">업로드한 파일</p>
           <p className="text-zinc-800 text-sm font-medium">
-            최적 공고를 위해 민수님이 업로드하신 자기소개서/이력서 내역이에요
+            최적 공고를 위해 <UserName showFirstLetterOnly={true} />
+            님이 업로드하신 자기소개서/이력서 내역이에요
           </p>
         </div>
 

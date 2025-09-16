@@ -3,6 +3,7 @@
 import { Dialog } from "@headlessui/react";
 import { useState, useEffect } from "react";
 import ProgressIcon from "../../_Icons/progressIcon"; // ✅ 아까 만든 아이콘 컴포넌트 import
+import UserName from "@/app/(pages)/personal/_components/UserName";
 
 type FileExploreModalProps = {
   open: boolean;
@@ -46,7 +47,8 @@ export default function FileExploreModal({
           >
             <p className="text-violet-500 text-sm font-semibold">공고 탐색</p>
             <p className="text-center font-medium">
-              민수님의 맞춤 공고를 찾는 중이에요
+              <UserName showFirstLetterOnly={true} />
+              님의 맞춤 공고를 찾는 중이에요
             </p>
           </div>
 

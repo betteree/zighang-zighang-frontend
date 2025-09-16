@@ -32,6 +32,7 @@ export default function Header() {
 
   const handleLogout = () => {
     localStorage.removeItem("zh_access_token");
+    localStorage.removeItem("user_name");
     setIsLoggedIn(false);
     setIsProfileDropdownOpen(false);
   };

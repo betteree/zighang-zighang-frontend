@@ -11,21 +11,21 @@ export default function PersonalBanner({ hasFiles }: PersonalBannerProps) {
   }
 
   return (
-    <div className="max-w-[786px] md:w-[786px] h-64 flex justify-between bg-gradient-to-br from-violet-500 via-violet-500/70 to-violet-500 rounded-lg">
+    <div className="max-w-[786px] md:w-[786px] h-64 flex justify-between rounded-lg">
       {/* 모바일 배너 */}
       <Image
-        src="/banner/mobile_banner.png"
+        src="/banner/mobile_banner.svg"
         alt="MobileBanner"
-        width={786}
-        height={250}
+        width={788}
+        height={238}
         className="block md:hidden"
       />
       {/* PC 배너 */}
       <Image
-        src="/banner/pc_banner.png"
+        src="/banner/pc_banner.svg"
         alt="PcBanner"
-        width={786}
-        height={250}
+        width={788}
+        height={238}
         className="hidden md:block"
       />
     </div>

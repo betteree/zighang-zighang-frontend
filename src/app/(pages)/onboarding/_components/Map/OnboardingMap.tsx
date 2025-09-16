@@ -65,7 +65,7 @@ function MapBase({
   className,
 }: {
   geographies: FeatureCollection | string;
-  value: RegionValue | null;
+  value: RegionValue[];
   onSelect: (next: Exclude<RegionValue, "전체" | "해외">) => void;
   className?: string;
 }) {
@@ -103,10 +103,9 @@ function MapBase({
               const region = normalizeToRegionValue(props);
 
               // 전체 선택하면 다 선택되도록
-              const selected =
-                value === "전체"
-                  ? !!region
-                  : value !== "해외" && region === value;
+              const selected = value.includes("전체")
+                ? !!region
+                : value.includes(region as RegionValue);
 
               // 해당 지도의 중심 찾기
               const centroid = geoCentroid(
@@ -117,8 +116,8 @@ function MapBase({
               const label = region ?? "";
 
               // 전체 선택했을 때 라벨이 모두 표시되지 않게
-              // 단일 상태일 때만
-              if (value !== "전체" && selected && label) {
+              // 다중 선택 상태일 때만
+              if (!value.includes("전체") && selected && label) {
                 labelInfos.push({
                   key: geo.rsmKey,
                   centroid,

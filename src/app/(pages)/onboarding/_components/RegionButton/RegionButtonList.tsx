@@ -10,7 +10,7 @@ export default function RegionButtonList({
   value,
   onChange,
 }: {
-  value: RegionValue | null;
+  value: RegionValue[];
   onChange: (next: RegionValue) => void;
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -19,8 +19,10 @@ export default function RegionButtonList({
   );
 
   useEffect(() => {
-    if (!value) return;
-    const el = itemRefs.current[value];
+    if (value.length === 0) return;
+    // 첫 번째 선택된 항목으로 스크롤
+    const firstSelected = value[0];
+    const el = itemRefs.current[firstSelected];
     if (el && containerRef.current) {
       el.scrollIntoView({
         block: "center",
@@ -52,7 +54,7 @@ export default function RegionButtonList({
             itemRefs.current[label] = node;
           }}
           label={label}
-          active={value === label}
+          active={value.includes(label)}
           onClick={() => onChange(label)}
         />
       ))}

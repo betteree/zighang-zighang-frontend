@@ -33,9 +33,9 @@ export function mapJobGroup(직군: string): string {
 // 학력 매핑 함수
 export function mapEducationLevel(학력: string): string {
   const educationMap: Record<string, string> = {
-    "초등학교": "초등학교",
-    "중학교": "중학교", 
-    "고등학교": "고등학교",
+    초등학교: "초등학교",
+    중학교: "중학교",
+    고등학교: "고등학교",
     "대학교(2,3년)": "대학교_2_3년",
     "대학교(4년)": "대학교_4년",
     "대학원(석사)": "대학원_석사",
@@ -48,9 +48,9 @@ export function mapEducationLevel(학력: string): string {
 export function mapGraduationStatus(졸업상태: string): string {
   const graduationMap: Record<string, string> = {
     "재학 중": "재학중",
-    "휴학 중": "휴학중", 
-    "졸업유예": "졸업유예",
-    "졸업": "졸업",
+    "휴학 중": "휴학중",
+    졸업유예: "졸업유예",
+    졸업: "졸업",
   };
   return graduationMap[졸업상태] || 졸업상태;
 }
@@ -62,7 +62,7 @@ export function mapOnboardingToApiParams(onboardingData: {
   경력: number;
   학력: string;
   졸업상태: string;
-  지역: string;
+  지역: string[] | null;
 }) {
   return {
     jobCategories: onboardingData.직군.map(mapJobGroup),
@@ -70,7 +70,7 @@ export function mapOnboardingToApiParams(onboardingData: {
     minExperience: onboardingData.경력,
     maxExperience: onboardingData.경력,
     educations: [mapEducationLevel(onboardingData.학력)],
-    locations: [onboardingData.지역],
+    locations: onboardingData.지역,
   };
 }
 
@@ -81,24 +81,27 @@ export function saveOnboardingFiltersToStorage(onboardingData: {
   경력: number;
   학력: string;
   졸업상태: string;
-  지역: string;
+  지역: string[] | null;
 }) {
   try {
     const apiParams = mapOnboardingToApiParams(onboardingData);
-    localStorage.setItem('userFilters', JSON.stringify(apiParams));
-    console.log('온보딩 필터 데이터가 로컬 스토리지에 저장되었습니다:', apiParams);
+    localStorage.setItem("userFilters", JSON.stringify(apiParams));
+    console.log(
+      "온보딩 필터 데이터가 로컬 스토리지에 저장되었습니다:",
+      apiParams
+    );
   } catch (error) {
-    console.error('로컬 스토리지 저장 실패:', error);
+    console.error("로컬 스토리지 저장 실패:", error);
   }
 }
 
 // 로컬 스토리지에서 필터 데이터 불러오는 함수
 export function loadOnboardingFiltersFromStorage() {
   try {
-    const stored = localStorage.getItem('userFilters');
+    const stored = localStorage.getItem("userFilters");
     return stored ? JSON.parse(stored) : null;
   } catch (error) {
-    console.error('로컬 스토리지 불러오기 실패:', error);
+    console.error("로컬 스토리지 불러오기 실패:", error);
     return null;
   }
 }
@@ -114,50 +117,55 @@ export function mapApiParamsToOnboarding(apiParams: {
 }) {
   // 직군 역매핑
   const jobGroupReverseMap: Record<string, string> = {
-    "IT_개발": "IT ⋅ 개발",
-    "AI_데이터": "AI · 데이터",
-    "게임": "게임",
-    "디자인": "디자인",
-    "기획_전략": "기획 · 전략",
-    "마케팅_광고": "마케팅 · 광고",
-    "상품기획_MD": "상품기획 · MD",
-    "영업": "영업",
-    "무역_물류": "무역",
-    "운송_배송": "운송",
-    "법률_법무": "법률",
-    "HR_총무": "HR · 총무",
-    "회계_재무_세무": "회계 · 재무 · 세무",
-    "증권_운용": "증권 · 운용",
-    "은행_카드_보험": "은행 · 카드 · 보험",
-    "엔지니어링_RND": "엔지니어링",
-    "건설_건축": "건설",
-    "생산_기능직": "생산 · 기능직",
-    "의료_보건": "의료 · 보건",
-    "공공_복지": "공공 · 복지",
-    "교육": "교육",
-    "미디어_엔터": "미디어 · 엔터",
-    "고객상담_TM": "고객상담 · TM",
-    "서비스": "서비스",
-    "식음료": "식음료",
+    IT_개발: "IT ⋅ 개발",
+    AI_데이터: "AI · 데이터",
+    게임: "게임",
+    디자인: "디자인",
+    기획_전략: "기획 · 전략",
+    마케팅_광고: "마케팅 · 광고",
+    상품기획_MD: "상품기획 · MD",
+    영업: "영업",
+    무역_물류: "무역",
+    운송_배송: "운송",
+    법률_법무: "법률",
+    HR_총무: "HR · 총무",
+    회계_재무_세무: "회계 · 재무 · 세무",
+    증권_운용: "증권 · 운용",
+    은행_카드_보험: "은행 · 카드 · 보험",
+    엔지니어링_RND: "엔지니어링",
+    건설_건축: "건설",
+    생산_기능직: "생산 · 기능직",
+    의료_보건: "의료 · 보건",
+    공공_복지: "공공 · 복지",
+    교육: "교육",
+    미디어_엔터: "미디어 · 엔터",
+    고객상담_TM: "고객상담 · TM",
+    서비스: "서비스",
+    식음료: "식음료",
   };
 
   // 학력 역매핑
   const educationReverseMap: Record<string, string> = {
-    "초등학교": "초등학교",
-    "중학교": "중학교",
-    "고등학교": "고등학교",
-    "대학교_2_3년": "대학교(2,3년)",
-    "대학교_4년": "대학교(4년)",
-    "대학원_석사": "대학원(석사)",
-    "대학원_박사": "대학원(박사)",
+    초등학교: "초등학교",
+    중학교: "중학교",
+    고등학교: "고등학교",
+    대학교_2_3년: "대학교(2,3년)",
+    대학교_4년: "대학교(4년)",
+    대학원_석사: "대학원(석사)",
+    대학원_박사: "대학원(박사)",
   };
 
   return {
-    직군: apiParams.jobCategories?.map(category => jobGroupReverseMap[category] || category) || [],
+    직군:
+      apiParams.jobCategories?.map(
+        (category) => jobGroupReverseMap[category] || category
+      ) || [],
     직무: apiParams.jobs || [],
     경력: apiParams.minExperience || 0,
-    학력: apiParams.educations?.[0] ? educationReverseMap[apiParams.educations[0]] || apiParams.educations[0] : "",
+    학력: apiParams.educations?.[0]
+      ? educationReverseMap[apiParams.educations[0]] || apiParams.educations[0]
+      : "",
     졸업상태: "졸업", // 기본값
-    지역: apiParams.locations?.[0] || "",
+    지역: apiParams.locations ?? null,
   };
 }

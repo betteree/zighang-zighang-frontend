@@ -35,13 +35,18 @@ function CallbackInner() {
       const result = await response.json();
       const user = result.data;
 
+      // 사용자 이름만 로컬 스토리지에 저장
+      if (user.name) {
+        localStorage.setItem("user_name", user.name);
+      }
+
       // 온보딩이 필요한지 체크
       const needsOnboarding =
         user.interestedJobs.length === 0 ||
         user.interestedJobCategories.length === 0 ||
         user.careerYear === 0 ||
         user.educationLevel === null ||
-        user.preferredRegion === null;
+        user.preferredRegion.length === 0;
 
       const next = needsOnboarding ? "/onboarding" : "/";
       router.replace(next);

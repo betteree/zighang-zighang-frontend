@@ -15,38 +15,66 @@ import { SIDO_GEO } from "../../_types/onBoradingMap";
 export function LocationStep({
   onBack,
   onSubmit,
-  initialRegion,
+  initialRegion = [],
 }: {
   onBack: () => void;
-  onSubmit: (지역: string | null) => void;
-  initialRegion?: string;
+  onSubmit: (지역: string[] | null) => void;
+  initialRegion?: string[];
 }) {
-  const [region, setRegion] = useState<RegionValue | null>(
-    (initialRegion as RegionValue) || null
-  );
-  const isValid = useMemo(() => !!region, [region]);
+  const [regions, setRegions] = useState<RegionValue[]>(() => {
+    if (!initialRegion) return [];
+    return initialRegion as RegionValue[];
+  });
+  const isValid = useMemo(() => regions.length > 0, [regions]);
 
   const handleSelect = useCallback(
     (next: Exclude<RegionValue, "전체" | "해외">) => {
-      setRegion(next);
+      setRegions((prev) => {
+        if (prev.includes(next)) {
+          // 이미 선택된 지역이면 제거
+          return prev.filter((region) => region !== next);
+        } else {
+          // 선택되지 않은 지역이면 기존 선택 완전 초기화 후 새로 선택한 것만 추가
+          return [next];
+        }
+      });
     },
     []
   );
   const handleChange = useCallback((next: RegionValue) => {
-    setRegion(next);
+    console.log("handleChange next:", next);
+    setRegions((prev) => {
+      if (next === "전체") {
+        return ["전체"];
+      } else if (next === "해외") {
+        if (prev.includes("해외")) {
+          return prev.filter((region) => region !== "해외");
+        } else {
+          return ["해외"];
+        }
+      } else {
+        if (prev.includes(next)) {
+          return prev.filter((region) => region !== next);
+        } else {
+          return [
+            ...prev.filter((region) => region !== "전체" && region !== "해외"),
+            next,
+          ];
+        }
+      }
+    });
   }, []);
 
   const handleSubmit = useCallback(() => {
-    if (!region) return;
+    if (regions.length === 0) return;
 
-    if (region === "전체") {
+    if (regions.includes("전체")) {
       onSubmit(null);
-    } else if (region === "해외") {
-      onSubmit("해외");
     } else {
-      onSubmit(region); // 나머지 지역
+      const uniq = Array.from(new Set(regions));
+      onSubmit(uniq);
     }
-  }, [region, onSubmit]);
+  }, [regions, onSubmit]);
 
   return (
     <StepContainer>
@@ -68,12 +96,12 @@ export function LocationStep({
       <div className="flex flex-col md:flex-row items-center justify-center mt-6">
         <OnboardingMap
           geographies={SIDO_GEO}
-          value={region}
+          value={regions}
           onSelect={handleSelect}
         ></OnboardingMap>
         <div className="flex flex-col gap-2 ">
           <RegionButtonList
-            value={region}
+            value={regions}
             onChange={(next) => handleChange(next)}
           ></RegionButtonList>
           <StepActions>

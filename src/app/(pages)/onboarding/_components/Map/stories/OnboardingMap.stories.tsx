@@ -5,7 +5,6 @@ import { OnboardingMap } from "../OnboardingMap";
 import { SIDO_GEO } from "../../../_types/onBoradingMap";
 import { RegionValue } from "../../../_types/regionTypes";
 
-
 const meta: Meta<typeof OnboardingMap> = {
   title: "Onboarding/Map/Map",
   component: OnboardingMap,
@@ -25,30 +24,36 @@ type Story = StoryObj<typeof OnboardingMap>;
 
 export const Interactive: Story = {
   render: (args) => {
-    const [value, setValue] = useState<RegionValue | null>(null);
+    const [value, setValue] = useState<RegionValue[]>([]);
 
     return (
       <div className="flex flex-col items-center gap-4">
-        <OnboardingMap {...args} value={value} onSelect={(r) => setValue(r)} />
+        <OnboardingMap
+          {...args}
+          value={value}
+          onSelect={(r) => setValue([r])}
+        />
 
-        <div className="text-sm text-zinc-700">선택: {value ?? "없음"}</div>
+        <div className="text-sm text-zinc-700">
+          선택: {value.length > 0 ? value.join(", ") : "없음"}
+        </div>
 
         <div className="flex gap-2">
           <button
             className="px-3 py-1 rounded border"
-            onClick={() => setValue("전체")}
+            onClick={() => setValue(["전체"])}
           >
             전체
           </button>
           <button
             className="px-3 py-1 rounded border"
-            onClick={() => setValue("해외")}
+            onClick={() => setValue(["해외"])}
           >
             해외
           </button>
           <button
             className="px-3 py-1 rounded border"
-            onClick={() => setValue(null)}
+            onClick={() => setValue([])}
           >
             초기화
           </button>

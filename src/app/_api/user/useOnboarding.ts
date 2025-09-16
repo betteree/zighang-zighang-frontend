@@ -9,7 +9,7 @@ type OnboardingPayload = {
   careerYear: number;
   educationLevel: string;
   graduationStatus: string;
-  preferredRegion: string;
+  preferredRegion: string[] | null;
 };
 
 async function submitOnboarding(
@@ -22,10 +22,10 @@ async function submitOnboarding(
   }
 
   const formData = new FormData();
-  
+
   // request 필드에 JSON 데이터 추가
   formData.append("request", JSON.stringify(payload));
-  
+
   // resumeFile 필드에 파일 추가 (파일이 있는 경우)
   if (file) {
     formData.append("resumeFile", file);
@@ -34,7 +34,7 @@ async function submitOnboarding(
   const response = await fetch("/api/users/filter", {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
     body: formData,
   });
@@ -48,8 +48,13 @@ async function submitOnboarding(
 
 export function useSubmitOnboarding() {
   return useMutation({
-    mutationFn: ({ payload, file }: { payload: OnboardingPayload; file?: File | null }) =>
-      submitOnboarding(payload, file),
+    mutationFn: ({
+      payload,
+      file,
+    }: {
+      payload: OnboardingPayload;
+      file?: File | null;
+    }) => submitOnboarding(payload, file),
     onSuccess: (data) => {
       console.log("온보딩 제출 성공:", data);
     },

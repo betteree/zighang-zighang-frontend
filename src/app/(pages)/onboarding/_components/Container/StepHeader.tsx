@@ -29,7 +29,7 @@ export function StepHeader({
         <span className="sr-only md:not-sr-only md:inline">이전</span>
       </button>
 
-      <h1 className="text-Heading3-18sb sr-only md:flex items-center justify-center gap-[6px] text-black">
+      <h1 className="text-Heading3-18sb sr-only md:not-sr-only md:flex items-center justify-center gap-[6px] text-black">
         {title}{" "}
         {subTitle != null && (
           <span className="text-Subheading4-12m text-[#767678] inline-flex items-center gap-1">

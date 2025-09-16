@@ -12,15 +12,7 @@ import FileUploadList from "../../_components/FileUpload/FileUploadList";
 import { UploadedFile } from "../../_components/FileUpload/types/type";
 import { useProgressSimulation } from "@/app/_hooks/useProgressSimulation";
 import { ArrowLeft } from "@/app/_components/Icons";
-
-type ApiOnboardingPayload = {
-  interestedJobs: string[];
-  interestedJobCategories: string[];
-  careerYear: number;
-  educationLevel: string;
-  graduationStatus: string;
-  preferredRegion: string;
-};
+import { ApiOnboardingPayload } from "../OnboardingFunnel";
 
 type UploadStepProps = {
   onNext: (

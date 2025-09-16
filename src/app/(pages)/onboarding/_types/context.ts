@@ -4,7 +4,7 @@ type 직군입력 = {
   직무?: string[];
   경력?: number;
   학력?: string;
-  지역?: string;
+  지역?: string[] | null;
   최근필터적용?: boolean;
 };
 
@@ -13,7 +13,7 @@ type 직무입력 = {
   직무?: string[];
   경력?: number;
   학력?: string;
-  지역?: string;
+  지역?: string[] | null;
   최근필터적용?: boolean;
 };
 
@@ -23,7 +23,7 @@ type 경력입력 = {
   경력?: number;
   학력?: string;
   졸업상태?: string;
-  지역?: string;
+  지역?: string[] | null;
   최근필터적용?: boolean;
 };
 
@@ -33,7 +33,7 @@ type 학력입력 = {
   경력?: number;
   학력?: string;
   졸업상태?: string;
-  지역?: string;
+  지역?: string[] | null;
   최근필터적용?: boolean;
 };
 
@@ -43,7 +43,7 @@ type 지역입력 = {
   경력?: number;
   학력?: string;
   졸업상태?: string;
-  지역?: string | null;
+  지역?: string[] | null;
   최근필터적용?: boolean;
 };
 
@@ -53,7 +53,7 @@ type 파일업로드 = {
   경력?: number;
   학력?: string;
   졸업상태?: string;
-  지역?: string | null;
+  지역?: string[] | null;
   최근필터적용?: boolean;
 };
 
@@ -75,7 +75,7 @@ export type UserData = {
   interestedJobCategories: string[];
   careerYear: number;
   educationLevel: string;
-  preferredRegion: string;
+  preferredRegion: string[] | null;
 };
 
 export type OnboardingApiResponse = {

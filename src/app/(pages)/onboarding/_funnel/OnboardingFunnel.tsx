@@ -31,26 +31,23 @@ import type {
 import { UploadStep } from "./upload/UploadStep";
 import SuccessStep from "./steps/SuccessStep";
 
-type ApiOnboardingPayload = {
+export type ApiOnboardingPayload = {
   interestedJobs: string[];
   interestedJobCategories: string[];
   careerYear: number;
   educationLevel: string;
   graduationStatus: string;
-  preferredRegion: string;
+  preferredRegion: string[] | null;
 };
 
-function toApiPayload(
-  context: 지역입력,
-  지역: string | null | undefined
-): ApiOnboardingPayload {
+function toApiPayload(context: 지역입력): ApiOnboardingPayload {
   return {
     interestedJobs: context.직군.map(mapJobGroup),
     interestedJobCategories: context.직무 || [],
     careerYear: context.경력 || 0,
     educationLevel: mapEducationLevel(context.학력 || ""),
     graduationStatus: mapGraduationStatus(context.졸업상태 || "졸업"),
-    preferredRegion: 지역 || "",
+    preferredRegion: context.지역 ?? null,
   };
 }
 
@@ -167,16 +164,20 @@ export default function OnboardingFunnel() {
       )}
       지역입력={({ context, history }) => (
         <LocationStep
-          initialRegion={context.지역 || undefined}
+          initialRegion={context.지역 || []}
           onBack={() => history.back()}
           onSubmit={(지역) => {
             // 지역 정보를 context에 저장하고 파일업로드 단계로 이동
-            history.push("파일업로드", (prev) => ({ ...prev, 지역 }));
+
+            history.push("파일업로드", (prev) => ({
+              ...prev,
+              지역: Array.isArray(지역) ? Array.from(new Set(지역)) : null,
+            }));
           }}
         />
       )}
       파일업로드={({ context, history }) => {
-        const apiPayload = toApiPayload(context, context.지역);
+        const apiPayload = toApiPayload(context);
 
         return (
           <UploadStep
@@ -188,14 +189,13 @@ export default function OnboardingFunnel() {
                   { payload, file }
                 );
 
-                // 온보딩 데이터를 로컬 스토리지에 저장
                 saveOnboardingFiltersToStorage({
                   직군: context.직군 || [],
                   직무: context.직무 || [],
                   경력: context.경력 || 0,
                   학력: context.학력 || "",
                   졸업상태: context.졸업상태 || "",
-                  지역: context.지역 || "",
+                  지역: context.지역 ?? null,
                 });
 
                 // API 응답 데이터를 완료 단계로 전달
