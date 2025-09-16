@@ -5,20 +5,12 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Profile from "./Icons/Profile";
-
-// 토큰 가져오기 함수
-function getAccessToken(): string | null {
-  try {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem("zh_access_token");
-  } catch {
-    return null;
-  }
-}
+import ProfileDropdown from "./ProfileDropdown";
 
 export default function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -30,17 +22,22 @@ export default function Header() {
     setIsSidebarOpen(false);
   };
 
-  const handlePersonalClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    const token = getAccessToken();
+  const toggleProfileDropdown = () => {
+    setIsProfileDropdownOpen(!isProfileDropdownOpen);
+  };
 
-    if (token) {
-      // 로그인된 경우 맞춤공고 페이지로 이동
-      router.push("/personal");
-    } else {
-      // 로그인되지 않은 경우 로그인 페이지로 이동
-      router.push("/join");
-    }
+  const closeProfileDropdown = () => {
+    setIsProfileDropdownOpen(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("zh_access_token");
+    setIsLoggedIn(false);
+    setIsProfileDropdownOpen(false);
+  };
+
+  const handlePersonalClick = () => {
+    router.push("/personal");
   };
 
   useEffect(() => {
@@ -132,13 +129,20 @@ export default function Header() {
             </div>
 
             {isLoggedIn ? (
-              <Link
-                href="/mypage"
-                aria-label="내 프로필"
-                className="hidden md:block"
-              >
-                <Profile />
-              </Link>
+              <div className="relative hidden md:block z-50">
+                <button
+                  onClick={toggleProfileDropdown}
+                  aria-label="내 프로필"
+                  className="relative"
+                >
+                  <Profile />
+                </button>
+                <ProfileDropdown
+                  isOpen={isProfileDropdownOpen}
+                  onClose={closeProfileDropdown}
+                  onLogout={handleLogout}
+                />
+              </div>
             ) : (
               <Link href="/join" rel="nofollow" className="hidden md:block">
                 <div className="flex min-h-8 items-center justify-center px-2 text-[#6F00B6] md:min-h-10 md:rounded-lg md:border md:border-line md:px-4 md:py-[0px] ds-Button2-16sb">
@@ -148,13 +152,20 @@ export default function Header() {
             )}
 
             {isLoggedIn ? (
-              <Link
-                href="/mypage"
-                aria-label="내 프로필"
-                className="block md:hidden"
-              >
-                <Profile />
-              </Link>
+              <div className="relative block md:hidden z-50">
+                <button
+                  onClick={toggleProfileDropdown}
+                  aria-label="내 프로필"
+                  className="relative"
+                >
+                  <Profile />
+                </button>
+                <ProfileDropdown
+                  isOpen={isProfileDropdownOpen}
+                  onClose={closeProfileDropdown}
+                  onLogout={handleLogout}
+                />
+              </div>
             ) : (
               <Link href="/join" rel="nofollow" className="block md:hidden">
                 <div className="text-[#6F00B6] font-semibold">로그인</div>

@@ -19,7 +19,7 @@ export default function JobCategoryGrid({ categories }: JobCategoryGridProps) {
 
   useEffect(() => {
     const updateColumns = () => {
-      if (window.innerWidth >= 1024) {
+      if (window.innerWidth >= 1416) {
         setColumns(5);
       } else if (window.innerWidth >= 768) {
         setColumns(4);
@@ -37,22 +37,22 @@ export default function JobCategoryGrid({ categories }: JobCategoryGridProps) {
   const emptyCells = totalCells - categories.length;
 
   return (
-    <div className="relative flex w-full flex-col items-center gap-4 px-0 py-0 md:gap-9 md:py-8 lg:py-0">
-      <div className="mx-auto grid w-full max-w-[900px] grid-cols-3 gap-[1px] overflow-hidden rounded-[20px] md:grid-cols-4 lg:grid-cols-5">
+    <div className="relative flex w-full flex-col items-center gap-4 px-0 py-0 lg:gap-9 lg:py-8 xl:py-0">
+      <div className="mx-auto grid w-full max-w-[900px] grid-cols-3 gap-[1px] overflow-hidden rounded-[20px] lg:grid-cols-4 xl:grid-cols-5">
         {categories.map((category) => (
           <Link
             key={category.href}
             href={category.href}
-            className="relative flex h-[44px] w-full items-center gap-2 bg-[#f7f7f7] px-2 py-0 md:h-[68px] md:px-4"
+            className="relative flex h-[44px] w-full items-center gap-2 bg-[#f7f7f7] px-2 py-0 lg:h-[68px] lg:px-4"
           >
             <Image
               alt={category.name}
               width={20}
               height={20}
-              className="h-3.5 w-3.5 flex-shrink-0 md:h-5 md:w-5"
+              className="h-3.5 w-3.5 flex-shrink-0 lg:h-5 lg:w-5"
               src={category.icon}
             />
-            <p className="w-fit whitespace-nowrap text-xs font-normal leading-normal text-black md:text-base md:font-medium">
+            <p className="w-fit whitespace-nowrap text-xs font-normal leading-normal text-black lg:text-base lg:font-medium">
               <span className="tracking-[0.05px]">{category.name}</span>
             </p>
           </Link>
@@ -62,7 +62,7 @@ export default function JobCategoryGrid({ categories }: JobCategoryGridProps) {
         {Array.from({ length: emptyCells }, (_, index) => (
           <div
             key={`empty-${index}`}
-            className="h-[44px] w-full bg-[#f7f7f7] md:h-[68px]"
+            className="h-[44px] w-full bg-[#f7f7f7] lg:h-[68px]"
           />
         ))}
       </div>
