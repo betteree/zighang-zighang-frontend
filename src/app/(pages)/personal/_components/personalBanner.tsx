@@ -1,12 +1,12 @@
 import Image from "next/image";
 
 interface PersonalBannerProps {
-  files?: Array<{ id: string; name: string; uploadedAt: string }>;
+  hasFiles: boolean;
 }
 
-export default function PersonalBanner({ files = [] }: PersonalBannerProps) {
+export default function PersonalBanner({ hasFiles }: PersonalBannerProps) {
   // 파일이 하나라도 있으면 배너를 숨김
-  if (files.length > 0) {
+  if (hasFiles) {
     return null;
   }
 

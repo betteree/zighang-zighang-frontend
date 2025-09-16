@@ -1,7 +1,7 @@
 "use client";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation, Pagination, FreeMode } from "swiper/modules";
+import { Autoplay, FreeMode } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";

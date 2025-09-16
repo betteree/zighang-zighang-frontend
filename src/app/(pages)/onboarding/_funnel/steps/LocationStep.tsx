@@ -57,13 +57,13 @@ export function LocationStep({
         onBack={onBack}
       />
 
-      <p className="text-Heading2-20sb md:hidden items-center justify-center gap-[6px] text-black p-7 pb-0">
+      <div className="text-Heading2-20sb md:hidden items-center justify-center gap-[6px] text-black p-7 pb-0">
         <span className="flex">
           원하는
           <p className="text-violet-500 ml-[6px]">근무 지역</p>이
         </span>
         어떻게 되세요?
-      </p>
+      </div>
 
       <div className="flex flex-col md:flex-row items-center justify-center mt-6">
         <OnboardingMap

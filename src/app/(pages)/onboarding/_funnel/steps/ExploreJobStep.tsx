@@ -55,12 +55,12 @@ export function ExploreJobStep({
       />
 
       {!showPreview && (
-        <h1 className="text-Heading2-20sb md:hidden items-center justify-center gap-[6px] text-black p-7 pb-0">
+        <div className="text-Heading2-20sb md:hidden items-center justify-center gap-[6px] text-black p-7 pb-0">
           <span className="flex">
             <p className="text-violet-500">성향에 맞는 카드</p>를
           </span>
           선택해주세요
-        </h1>
+        </div>
       )}
 
       <div className="h-full flex flex-col items-center mt-20">

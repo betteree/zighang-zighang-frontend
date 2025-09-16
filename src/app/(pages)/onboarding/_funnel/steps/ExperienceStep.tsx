@@ -198,7 +198,7 @@ export function ExperienceStep({
         totalSteps={4}
         onBack={onBack}
       />
-      <h1 className="text-Heading2-20sb md:hidden flex flex-col text-black p-7 pb-0">
+      <div className="text-Heading2-20sb md:hidden flex flex-col text-black p-7 pb-0">
         가고 싶은 직군의 <br />
         <span className="flex">
           <p className="text-violet-500">경력</p>이 어떻게 되세요?
@@ -214,7 +214,7 @@ export function ExperienceStep({
             <InfoCircle />
           </InfoTooltip>
         </span>
-      </h1>
+      </div>
       <div
         className="w-full flex flex-col items-center md:h-[calc(500px-55px)] select-none"
         onTouchStart={onTouchStartPage}

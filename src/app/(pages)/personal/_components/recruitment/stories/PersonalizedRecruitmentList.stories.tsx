@@ -78,6 +78,9 @@ const generateSampleData = (count: number) => {
     company: companies[index % companies.length],
     title: positions[index % positions.length],
     bookmarked: Math.random() > 0.5,
+    reason: `${
+      positions[index % positions.length]
+    } 경험과 기술 스택이 요구사항과 일치합니다.`,
   }));
 };
 

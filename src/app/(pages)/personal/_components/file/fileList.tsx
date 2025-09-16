@@ -1,24 +1,46 @@
 "use client";
 
+import React, { useState } from "react";
 import { EmptyFileIcon } from "../../_Icons/EmptyFileIcon";
 import FileRender from "./fileRender";
-
-type FileRow = {
-  id: string;
-  name: string;
-  type: string;
-  size: number;
-  url?: string;
-  uploadDate?: string;
-};
+import {
+  useResumes,
+  useDeleteResume,
+} from "@/app/_api/resume/hooks/useResumes";
 
 type FileListProps = {
-  files?: FileRow[]; // ❗ 옵셔널로 변경
-  onDelete: (id: string) => void;
+  onFilesChange?: (hasFiles: boolean) => void;
 };
 
-export default function FileList({ files = [], onDelete }: FileListProps) {
+export default function FileList({ onFilesChange }: FileListProps) {
+  const [deletingFileId, setDeletingFileId] = useState<string | null>(null);
+
+  // React Query hooks 사용
+  const { data: resumeData } = useResumes();
+  const deleteResumeMutation = useDeleteResume();
+
+  const files = resumeData?.resumes || [];
   const isEmpty = files.length === 0;
+
+  // 파일 목록이 변경될 때 부모에게 알림
+  React.useEffect(() => {
+    if (onFilesChange) {
+      onFilesChange(files.length > 0);
+    }
+  }, [files.length, onFilesChange]);
+
+  const handleDelete = async (id: string) => {
+    try {
+      setDeletingFileId(id);
+      await deleteResumeMutation.mutateAsync(id);
+      alert("삭제 완료!");
+    } catch (error) {
+      console.error("파일 삭제에 실패했습니다:", error);
+      alert("파일 삭제에 실패했습니다.");
+    } finally {
+      setDeletingFileId(null);
+    }
+  };
 
   return (
     <div className="w-full">
@@ -43,9 +65,17 @@ export default function FileList({ files = [], onDelete }: FileListProps) {
             {files.map((file, idx) => (
               <FileRender
                 key={file.id}
-                file={file}
+                file={{
+                  id: file.id,
+                  name: file.fileName,
+                  type: file.fileName.split(".").pop() || "",
+                  size: file.size,
+                  url: file.fileUrl,
+                  uploadDate: file.uploadDate,
+                }}
                 index={idx}
-                onDelete={onDelete}
+                onDelete={handleDelete}
+                isDeleting={deletingFileId === file.id}
               />
             ))}
           </ul>

@@ -6,38 +6,14 @@ import FileList from "./file/fileList";
 import FileUploadModal from "./file/fileUploadModal";
 import FileExploreModal from "./file/fileExploreModal";
 
-type FileRow = {
-  id: string;
-  name: string;
-  uploadedAt: string;
-};
-
 type UploadAreaProps = {
-  onFilesChange?: (files: FileRow[]) => void;
-  initialFiles?: FileRow[];
+  onFilesChange?: (hasFiles: boolean) => void;
+  onAnalysisModalChange?: (isOpen: boolean) => void;
 };
-
-export const mockFiles: FileRow[] = [
-  {
-    id: "1",
-    name: "이력서_김민수.pdf",
-    uploadedAt: "2025-09-10",
-  },
-  {
-    id: "2",
-    name: "자기소개서_김민수.docx",
-    uploadedAt: "2025-09-11",
-  },
-  {
-    id: "3",
-    name: "포트폴리오_프로젝트.pdf",
-    uploadedAt: "2025-09-12",
-  },
-];
 
 export default function UploadArea({
   onFilesChange,
-  initialFiles = [],
+  onAnalysisModalChange,
 }: UploadAreaProps) {
   const [showTooltip, setShowTooltip] = useState(true);
   const [openModal, setOpenModal] = useState(false);
@@ -47,14 +23,11 @@ export default function UploadArea({
     setOpenModal(true);
   };
 
-  const handleDelete = () => {
-    console.log(1);
-  };
-
   const handleUploadComplete = () => {
     setOpenModal(false);
     setShowExploreModal(true);
     setProgress(0);
+    onAnalysisModalChange?.(true);
 
     // 진행률 시뮬레이션 (공고 찾기 - 부드럽게)
     const interval = setInterval(() => {
@@ -63,6 +36,7 @@ export default function UploadArea({
           clearInterval(interval);
           setTimeout(() => {
             setShowExploreModal(false);
+            onAnalysisModalChange?.(false);
           }, 2000);
           return 100;
         }
@@ -120,7 +94,7 @@ export default function UploadArea({
         </div>
       </div>
 
-      <FileList onDelete={handleDelete} />
+      {!showExploreModal && <FileList onFilesChange={onFilesChange} />}
       <button
         type="button"
         onClick={handleUpload}
@@ -136,7 +110,9 @@ export default function UploadArea({
       />
       <FileExploreModal
         open={showExploreModal}
-        onClose={() => setShowExploreModal(false)}
+        onClose={() => {
+          setShowExploreModal(false);
+        }}
         progress={progress}
       />
     </div>

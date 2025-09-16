@@ -27,6 +27,7 @@ export const Default: Story = {
       company: "테크스타트업",
       title: "프론트엔드 개발자",
       bookmarked: false,
+      reason: "프론트엔드 개발 경험과 React 기술 스택이 일치합니다.",
     },
   },
 };

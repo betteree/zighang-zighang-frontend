@@ -6,8 +6,6 @@ import FilterBar from "../../[category]/_components/Filter/FilterBar";
 import FilterModal from "../../[category]/_components/Filter/FilterModal";
 import {
   FilterDialogProvider,
-  DEFAULT,
-  type FilterState,
   useFilterDialog,
 } from "../../[category]/_hooks/useFilterDialog";
 import { mapFiltersToParams } from "@/app/_utils/mapFiltersToParams";

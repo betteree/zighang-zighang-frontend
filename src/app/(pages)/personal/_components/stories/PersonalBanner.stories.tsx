@@ -9,9 +9,9 @@ const meta: Meta<typeof PersonalBanner> = {
   },
   tags: ["autodocs"],
   argTypes: {
-    files: {
-      control: "object",
-      description: "파일 목록 (파일이 있으면 배너가 숨겨짐)",
+    hasFiles: {
+      control: "boolean",
+      description: "파일 존재 여부 (파일이 있으면 배너가 숨겨짐)",
     },
   },
 };
@@ -21,41 +21,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    files: [],
+    hasFiles: false,
   },
 };
 
 export const WithFiles: Story = {
   args: {
-    files: [
-      {
-        id: "1",
-        name: "resume.pdf",
-        uploadedAt: "2024-01-15",
-      },
-    ],
-  },
-};
-
-export const EmptyFiles: Story = {
-  args: {
-    files: [],
-  },
-};
-
-export const MultipleFiles: Story = {
-  args: {
-    files: [
-      {
-        id: "1",
-        name: "resume.pdf",
-        uploadedAt: "2024-01-15",
-      },
-      {
-        id: "2",
-        name: "cover_letter.doc",
-        uploadedAt: "2024-01-16",
-      },
-    ],
+    hasFiles: true,
   },
 };

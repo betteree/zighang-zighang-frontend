@@ -1,3 +1,7 @@
+"use client";
+
+import { useDownloadResume } from "@/app/_api/resume/hooks/useResumes";
+
 interface FileRenderProps {
   file: {
     id: string;
@@ -9,9 +13,16 @@ interface FileRenderProps {
   };
   index: number;
   onDelete: (id: string) => void;
+  isDeleting?: boolean;
 }
 
-export default function FileRender({ file, index, onDelete }: FileRenderProps) {
+export default function FileRender({
+  file,
+  index,
+  onDelete,
+  isDeleting = false,
+}: FileRenderProps) {
+  const downloadResumeMutation = useDownloadResume();
   return (
     <div className="grid grid-cols-12 items-center p-3 md:px-7 md:py-2.5 bg-white border-b border-gray-200 hover:bg-gray-50 transition-colors">
       {/* 번호 */}
@@ -25,18 +36,12 @@ export default function FileRender({ file, index, onDelete }: FileRenderProps) {
       <div className="col-span-7">
         <button
           onClick={() => {
-            if (file.url) {
-              const link = document.createElement("a");
-              link.href = file.url;
-              link.download = file.name;
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-            }
+            downloadResumeMutation.mutate(file.id);
           }}
-          className="text-sm font-medium text-gray-900 hover:text-blue-600 hover:border-b hover:border-blue-600 transition-colors cursor-pointer text-left inline-block"
+          disabled={downloadResumeMutation.isPending}
+          className="text-sm font-medium text-gray-900 hover:text-blue-600 hover:border-b hover:border-blue-600 transition-colors cursor-pointer text-left inline-block disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {file.name}
+          {downloadResumeMutation.isPending ? "다운로드 중..." : file.name}
         </button>
       </div>
 
@@ -49,13 +54,17 @@ export default function FileRender({ file, index, onDelete }: FileRenderProps) {
 
       {/* 삭제 버튼 */}
       <div className="col-span-3 md:col-span-1 text-right ">
-        <button
-          onClick={() => onDelete(file.id)}
-          className="cursor-pointer p-1 text-gray-400 hover:text-red-500 transition-colors"
-          title="파일 삭제"
-        >
-          <DeleteIcon />
-        </button>
+        {isDeleting ? (
+          <div className="p-1 text-gray-500 text-xs">삭제 중...</div>
+        ) : (
+          <button
+            onClick={() => onDelete(file.id)}
+            className="cursor-pointer p-1 text-gray-400 hover:text-red-500 transition-colors"
+            title="파일 삭제"
+          >
+            <DeleteIcon />
+          </button>
+        )}
       </div>
     </div>
   );

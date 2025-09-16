@@ -47,14 +47,14 @@ export function JobCategoryStep({
         totalSteps={4}
       />
 
-      <p className="text-Heading2-20sb md:hidden items-center justify-center gap-[6px] text-black p-7 pb-0">
+      <div className="text-Heading2-20sb md:hidden items-center justify-center gap-[6px] text-black p-7 pb-0">
         <span className="flex">
           원하는 <p className="text-violet-500">직군</p>을 선택해주세요.
         </span>
         <span className="text-Subheading3-14m text-[#767678] inline-flex items-center gap-1">
           (최대 3개 선택)
         </span>
-      </p>
+      </div>
 
       <div className="w-full px-6 md:w-[613px] md:px-0 mt-5.5 md:mt-[80px] mx-auto pb-20 md:pb-0 grid grid-cols-3 md:flex md:flex-wrap gap-2 mb-[110px] md:[&>*:nth-child(1)]:ml-3 md:[&>*:nth-child(20)]:ml-3">
         {onboardingJobCategories.map((category) => (

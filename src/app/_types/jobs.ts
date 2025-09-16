@@ -15,3 +15,31 @@ export interface Job {
   bookmarked?: boolean;
   jobGroup?: string;
 }
+
+// 추천 채용공고 API 응답 타입
+export interface RecommendedRecruitment {
+  id: string;
+  title: string;
+  description: string;
+  recruitmentUrl: string;
+  imageUrl: string;
+  locations: string[];
+  minExperience: number;
+  maxExperience: number;
+  educations: string[];
+  employmentTypes: string[];
+  jobs: string[];
+  jobCategories: string[];
+  companyName: string;
+  companyDescription: string;
+  companyImageUrl: string | null;
+  isBookmarked: boolean;
+  reason: string;
+}
+
+export interface RecommendResponse {
+  success: boolean;
+  code: string | null;
+  message: string | null;
+  data: RecommendedRecruitment[];
+}

@@ -5,17 +5,16 @@ import PersonalBanner from "./personalBanner";
 import RecommendArea from "./recommendArea";
 import UploadArea from "./uploadArea";
 
-type FileRow = {
-  id: string;
-  name: string;
-  uploadedAt: string;
-};
-
 export default function PersonalMain() {
-  const [files, setFiles] = useState<FileRow[]>([]);
+  const [hasFiles, setHasFiles] = useState(false);
+  const [isAnalysisModalOpen, setIsAnalysisModalOpen] = useState(false);
 
-  const handleFileUpload = (newFiles: FileRow[]) => {
-    setFiles(newFiles);
+  const handleFileChange = (hasFiles: boolean) => {
+    setHasFiles(hasFiles);
+  };
+
+  const handleAnalysisModalChange = (isOpen: boolean) => {
+    setIsAnalysisModalOpen(isOpen);
   };
 
   return (
@@ -23,9 +22,16 @@ export default function PersonalMain() {
       <h2 className="text-black text-xl md:text-2xl font-semibold ">
         맞춤공고
       </h2>
-      <PersonalBanner files={files} />
-      <RecommendArea hasFiles={files.length > 0} onFileUpload={() => {}} />
-      <UploadArea onFilesChange={handleFileUpload} />
+      <PersonalBanner hasFiles={hasFiles} />
+      <RecommendArea
+        hasFiles={hasFiles}
+        isAnalysisModalOpen={isAnalysisModalOpen}
+        onFileUpload={() => {}}
+      />
+      <UploadArea
+        onFilesChange={handleFileChange}
+        onAnalysisModalChange={handleAnalysisModalChange}
+      />
     </div>
   );
 }

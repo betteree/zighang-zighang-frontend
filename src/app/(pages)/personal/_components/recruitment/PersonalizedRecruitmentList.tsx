@@ -41,25 +41,32 @@ interface RecruitmentItem {
   company: string;
   title: string;
   bookmarked?: boolean;
+  reason: string;
 }
 
 interface PersonalizedRecruitmentListProps {
   items: RecruitmentItem[];
   itemsPerPage?: number;
   className?: string;
+  currentPage?: number;
+  totalPages?: number;
+  onPageChange?: (page: number) => void;
 }
 
 export default function PersonalizedRecruitmentList({
   items,
   itemsPerPage,
   className = "",
+  currentPage: externalCurrentPage,
+  totalPages: externalTotalPages,
+  onPageChange,
 }: PersonalizedRecruitmentListProps) {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [internalCurrentPage, setInternalCurrentPage] = useState(1);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 1416);
     };
 
     checkIsMobile();
@@ -68,23 +75,35 @@ export default function PersonalizedRecruitmentList({
     return () => window.removeEventListener("resize", checkIsMobile);
   }, []);
 
-  // 반응형 itemsPerPage 설정
-  const currentItemsPerPage = itemsPerPage !== undefined ? itemsPerPage : 9;
+  // 외부에서 페이지네이션을 관리하는 경우와 내부에서 관리하는 경우 구분
+  const isExternalPagination =
+    externalCurrentPage !== undefined && onPageChange;
 
-  // 총 페이지 수 계산
-  const totalPages = Math.ceil(items.length / currentItemsPerPage);
+  const currentPage = isExternalPagination
+    ? externalCurrentPage
+    : internalCurrentPage;
+  const totalPages = isExternalPagination
+    ? externalTotalPages || 1
+    : Math.ceil(items.length / (itemsPerPage || (isMobile ? 3 : 9)));
 
-  // 현재 페이지에 해당하는 아이템들 계산
-  const startIndex = (currentPage - 1) * currentItemsPerPage;
-  const endIndex = startIndex + currentItemsPerPage;
-  const allCurrentItems = items.slice(startIndex, endIndex);
-
-  // 모바일에서는 3개만 표시, PC에서는 9개 표시
-  const currentItems = isMobile ? allCurrentItems.slice(0, 3) : allCurrentItems;
+  // 외부 페이지네이션인 경우 모든 아이템을 표시, 내부 페이지네이션인 경우 슬라이싱
+  const currentItems = isExternalPagination
+    ? items
+    : (() => {
+        const currentItemsPerPage =
+          itemsPerPage !== undefined ? itemsPerPage : isMobile ? 3 : 9;
+        const startIndex = (currentPage - 1) * currentItemsPerPage;
+        const endIndex = startIndex + currentItemsPerPage;
+        return items.slice(startIndex, endIndex);
+      })();
 
   // 페이지 변경 핸들러
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    if (isExternalPagination) {
+      onPageChange!(page);
+    } else {
+      setInternalCurrentPage(page);
+    }
   };
 
   // 페이지 번호 배열 생성
@@ -112,11 +131,14 @@ export default function PersonalizedRecruitmentList({
     <div
       className={`w-full ${className} items-center justify-center flex flex-col`}
     >
-      <PersonalizedRecruitmentBanner></PersonalizedRecruitmentBanner>
+      <PersonalizedRecruitmentBanner userName="민수" />
       {/* 그리드 레이아웃 */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 ">
-        {currentItems.map((item) => (
-          <PersonalizedRecruitmentCard key={item.id} item={item} />
+        {currentItems.map((item, index) => (
+          <PersonalizedRecruitmentCard
+            key={`${item.id}-${item.company}-${item.title}-${index}`}
+            item={item}
+          />
         ))}
       </div>
 

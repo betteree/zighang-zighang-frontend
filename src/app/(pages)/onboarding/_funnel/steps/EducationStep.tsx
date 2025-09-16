@@ -60,15 +60,12 @@ export function EducationStep({
         onBack={onBack}
       />
 
-      <p
-        role="heading"
-        className="text-Heading2-20sb md:hidden items-center justify-center gap-[6px] text-black p-7 pb-0 "
-      >
+      <div className="text-Heading2-20sb md:hidden items-center justify-center gap-[6px] text-black p-7 pb-0 ">
         <span className="flex">
           <p className="text-violet-500">최종학력</p>이
         </span>
         어떻게 되세요?
-      </p>
+      </div>
 
       <div className="w-full flex flex-col items-center md:h-[calc(500px-55px)]">
         <div className="mt-[58px] flex items-start gap-[16px]">

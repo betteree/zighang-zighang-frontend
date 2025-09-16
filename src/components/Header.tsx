@@ -2,14 +2,25 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Profile from "./Icons/Profile";
+
+// 토큰 가져오기 함수
+function getAccessToken(): string | null {
+  try {
+    if (typeof window === "undefined") return null;
+    return localStorage.getItem("zh_access_token");
+  } catch {
+    return null;
+  }
+}
 
 export default function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -17,6 +28,19 @@ export default function Header() {
 
   const closeSidebar = () => {
     setIsSidebarOpen(false);
+  };
+
+  const handlePersonalClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const token = getAccessToken();
+
+    if (token) {
+      // 로그인된 경우 맞춤공고 페이지로 이동
+      router.push("/personal");
+    } else {
+      // 로그인되지 않은 경우 로그인 페이지로 이동
+      router.push("/join");
+    }
   };
 
   useEffect(() => {
@@ -83,9 +107,12 @@ export default function Header() {
                 className="relative hidden hbp:block"
                 style={{ display: "hidden" }}
               >
-                <Link href="/personal" className="pointer-events-auto relative">
+                <button
+                  onClick={handlePersonalClick}
+                  className="pointer-events-auto relative cursor-pointer"
+                >
                   <div className="text-[#353535] ds-web-navi">맞춤 공고</div>
-                </Link>
+                </button>
                 {pathname === "/personal" && (
                   <div className="absolute w-full border border-primary/80"></div>
                 )}

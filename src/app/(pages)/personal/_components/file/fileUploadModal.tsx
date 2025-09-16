@@ -1,12 +1,13 @@
 "use client";
 
 import { Dialog } from "@headlessui/react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import FileUploadCard from "@/app/(pages)/onboarding/_components/FileUpload/FileUploadCard";
 import { FileUploadItem } from "@/app/(pages)/onboarding/_components/FileUpload/FileUploadItem";
 import CheckIcon from "@/app/(pages)/onboarding/_components/FileUpload/icons/checkIcon";
 import { UploadIcon } from "../../_Icons/UploadIcon";
 import { UploadedFile } from "@/app/(pages)/onboarding/_components/FileUpload/types/type";
+import { useUploadResume } from "@/app/_api/resume/hooks/useResumes";
 
 type FileUploadModalProps = {
   open: boolean;
@@ -21,6 +22,7 @@ export default function FileUploadModal({
 }: FileUploadModalProps) {
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [fileProgress, setFileProgress] = useState<
     Record<
@@ -28,8 +30,26 @@ export default function FileUploadModal({
       { progress: number; status: "loading" | "success" | "error" }
     >
   >({});
+  const [originalFilesMap, setOriginalFilesMap] = useState<
+    Record<string, File>
+  >({});
+  const uploadResumeMutation = useUploadResume();
+
+  // 모달이 열릴 때마다 상태 초기화
+  useEffect(() => {
+    if (open) {
+      setUploadedFiles([]);
+      setError(null);
+      setIsSubmitting(false);
+      setFileProgress({});
+      setOriginalFilesMap({});
+    }
+  }, [open]);
 
   const processFileSequentially = async (files: File[]) => {
+    const newOriginalFilesMap: Record<string, File> = {};
+    const newUploadedFiles: UploadedFile[] = [];
+
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const fileId = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -41,17 +61,24 @@ export default function FileUploadModal({
         uploadedAt: new Date().toISOString(),
       };
 
-      // 파일 추가
-      setUploadedFiles((prev) => [...prev, uploaded]);
+      // 파일 ID와 원본 파일 매핑
+      newOriginalFilesMap[fileId] = file;
+      newUploadedFiles.push(uploaded);
 
       // 진행률 초기화
       setFileProgress((prev) => ({
         ...prev,
         [fileId]: { progress: 0, status: "loading" },
       }));
+    }
 
-      // 시뮬레이션 시작
-      await simulateFileUpload(fileId);
+    // 상태 업데이트
+    setOriginalFilesMap(newOriginalFilesMap);
+    setUploadedFiles(newUploadedFiles);
+
+    // 시뮬레이션 애니메이션 (100%까지)
+    for (const uploadedFile of newUploadedFiles) {
+      await simulateFileUpload(uploadedFile.id);
     }
   };
 
@@ -59,7 +86,7 @@ export default function FileUploadModal({
     return new Promise((resolve) => {
       let progress = 0;
       const interval = setInterval(() => {
-        progress += 40;
+        progress += 20;
         if (progress >= 100) {
           progress = 100;
           clearInterval(interval);
@@ -74,7 +101,7 @@ export default function FileUploadModal({
             [fileId]: { progress, status: "loading" },
           }));
         }
-      }, 150);
+      }, 100);
     });
   };
 
@@ -82,11 +109,61 @@ export default function FileUploadModal({
     processFileSequentially(files);
   };
 
-  const handleComplete = () => {
-    if (onComplete) {
-      onComplete();
-    } else {
-      onClose();
+  const handleComplete = async () => {
+    if (uploadedFiles.length === 0) {
+      handleError("업로드할 파일이 없습니다.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // 현재 표시된 파일들만 실제 업로드 (삭제된 파일은 제외)
+      for (const uploadedFile of uploadedFiles) {
+        const file = originalFilesMap[uploadedFile.id];
+
+        if (!file) {
+          console.warn(
+            `파일 ${uploadedFile.id}에 해당하는 원본 파일을 찾을 수 없습니다.`
+          );
+          continue;
+        }
+
+        try {
+          // 실제 API 호출
+          const response = await uploadResumeMutation.mutateAsync(file);
+
+          if (response.success) {
+            // 업로드 성공 - 상태는 그대로 유지 (이미 success로 표시됨)
+            console.log(`파일 ${file.name} 업로드 성공`);
+          } else {
+            throw new Error(response.message || "업로드에 실패했습니다.");
+          }
+        } catch (error) {
+          // 개별 파일 업로드 실패
+          setFileProgress((prev) => ({
+            ...prev,
+            [uploadedFile.id]: { progress: 0, status: "error" },
+          }));
+          throw error;
+        }
+      }
+
+      // 모든 업로드 완료
+      if (onComplete) {
+        onComplete();
+      } else {
+        onClose();
+      }
+    } catch (error) {
+      console.error("파일 업로드 실패:", error);
+      handleError(
+        error instanceof Error
+          ? error.message
+          : "파일 업로드 중 오류가 발생했습니다."
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -206,6 +283,12 @@ export default function FileUploadModal({
                             delete newProgress[id];
                             return newProgress;
                           });
+                          // 파일 맵에서도 해당 파일 제거
+                          setOriginalFilesMap((prev) => {
+                            const newMap = { ...prev };
+                            delete newMap[id];
+                            return newMap;
+                          });
                         }}
                       />
                     ))}
@@ -232,13 +315,13 @@ export default function FileUploadModal({
                 <button
                   onClick={handleComplete}
                   className={`hidden md:block ml-auto text-white text-sm font-semibold h-9 px-7 py-2 rounded-lg ${
-                    uploadedFiles.length > 0
+                    uploadedFiles.length > 0 && !isSubmitting
                       ? "bg-violet-600 hover:bg-violet-700"
                       : "bg-neutral-400 cursor-not-allowed"
                   }`}
-                  disabled={uploadedFiles.length === 0}
+                  disabled={uploadedFiles.length === 0 || isSubmitting}
                 >
-                  완료
+                  {isSubmitting ? "제출 중..." : "완료"}
                 </button>
               </div>
               <div className="flex gap-2 mb-2">
@@ -251,13 +334,13 @@ export default function FileUploadModal({
                 <button
                   onClick={handleComplete}
                   className={`flex-1 md:hidden  text-white text-sm font-semibold h-9 px-7 py-2 rounded-lg ${
-                    uploadedFiles.length > 0
+                    uploadedFiles.length > 0 && !isSubmitting
                       ? "bg-violet-600 hover:bg-violet-700"
                       : "bg-neutral-400 cursor-not-allowed"
                   }`}
-                  disabled={uploadedFiles.length === 0}
+                  disabled={uploadedFiles.length === 0 || isSubmitting}
                 >
-                  완료
+                  {isSubmitting ? "제출 중..." : "완료"}
                 </button>
               </div>
             </div>
