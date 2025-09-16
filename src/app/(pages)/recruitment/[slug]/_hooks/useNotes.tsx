@@ -62,7 +62,18 @@ export function useNotes(recruitmentId?: string) {
 
   const pickNewest = (list: Memo[]) => {
     if (!list.length) return null;
-    const ts = (m: Memo) => new Date(m.updatedAt ?? m.createdAt ?? 0).getTime();
+    const ts = (m: Memo) => {
+      const dateStr = m.updatedAt ?? m.createdAt;
+      if (!dateStr) return 0;
+
+      const date = new Date(dateStr);
+      // 유효하지 않은 날짜인 경우 0 반환
+      if (isNaN(date.getTime())) {
+        console.warn(`Invalid date value: ${dateStr}`, m);
+        return 0;
+      }
+      return date.getTime();
+    };
     return [...list].sort((a, b) => ts(b) - ts(a))[0];
   };
 
@@ -70,9 +81,8 @@ export function useNotes(recruitmentId?: string) {
   const addNote = useCallback(async () => {
     try {
       await createMemoMutation.mutateAsync({
-        title: "제목",
-        content: "내용",
-        ...(recruitmentId ? { recruitmentId } : {}),
+        title: "제목 없음",
+        content: "",
       });
 
       const fresh = await queryClient.fetchQuery({

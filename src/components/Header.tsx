@@ -249,7 +249,7 @@ export default function Header() {
           </Link>
 
           <Link
-            href="/pages/jobs/today"
+            href="/today"
             className="pointer-events-auto box-border flex w-full px-2 py-2 text-base font-semibold text-[#353535]"
             onClick={closeSidebar}
           >
@@ -257,29 +257,11 @@ export default function Header() {
           </Link>
 
           <Link
-            href="https://tally.so/r/nPYly5"
-            target="_blank"
+            href="/personal"
             className="pointer-events-auto box-border flex w-full px-2 py-2 text-base font-semibold text-[#353535]"
             onClick={closeSidebar}
           >
-            <div>공고 제보</div>
-          </Link>
-
-          <Link
-            href="https://linktr.ee/zighang_chat"
-            target="_blank"
-            className="pointer-events-auto box-border flex w-full px-2 py-2 text-base font-semibold text-[#353535]"
-            onClick={closeSidebar}
-          >
-            <div>오픈 채팅</div>
-          </Link>
-
-          <Link
-            href="/hiring"
-            className="pointer-events-auto box-border flex w-full px-2 py-2 text-base font-semibold text-[#353535]"
-            onClick={closeSidebar}
-          >
-            <div>기업회원</div>
+            <div>맞춤 공고</div>
           </Link>
         </div>
       </div>

@@ -128,11 +128,11 @@ function RecruitmentPageContent({ slug }: { slug: string }) {
     <main className="flex min-h-screen flex-col items-center">
       <Header />
       <FilterSection job={displayJob} />
-      <div className="flex w-full mx-36 max-w-[1200px] justify-center gap-[132px] px-0">
+      <div className="flex w-full mx-36 max-w-[1200px] justify-center md:gap-[132px] px-0">
         <div className="flex w-full flex-col items-center">
           <div className="flex w-full flex-col items-center px-0">
-            <div className="flex w-full flex-col items-center py-5">
-              <RecruitmentHeader job={displayJob} />
+            <div className="flex w-full flex-col items-center py-5 px-3 md:px-0">
+              <RecruitmentHeader job={displayJob} slug={slug} />
               <RecruitmentInfo job={displayJob} />
             </div>
             <div className="w-full"></div>

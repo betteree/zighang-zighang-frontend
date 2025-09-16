@@ -60,7 +60,7 @@ export default function NotePad({ recruitmentId }: { recruitmentId: string }) {
 
   return (
     <>
-      <div className="h-96 inline-flex flex-col justify-start items-start">
+      <div className="hidden md:inline-flex h-[444px] w-58  flex-col justify-start items-start">
         {!isLargeOpen && editMode && isLoggedIn && selected ? (
           <div className="self-stretch h-11 pl-2.5 pr-3.5 py-2.5 bg-white rounded-tl-lg rounded-tr-lg outline outline-1 outline-offset-[-1px] outline-zinc-200 inline-flex justify-between items-center">
             <div className="flex items-center gap-2.5">
@@ -71,6 +71,13 @@ export default function NotePad({ recruitmentId }: { recruitmentId: string }) {
                 />
               </button>
             </div>
+            {selected && (
+              <div className="flex-1 px-3 min-w-0">
+                <div className="text-black text-sm font-medium truncate">
+                  {selected.title || "제목 없음"}
+                </div>
+              </div>
+            )}
             <KebabMenu
               type="small"
               note={selected}
@@ -142,9 +149,19 @@ export default function NotePad({ recruitmentId }: { recruitmentId: string }) {
                   </span>
                 ) : (
                   <span className="text-neutral-400 text-[10px] ml-auto">
-                    {selected?.createdAt
-                      ? new Date(selected.createdAt).toISOString().slice(0, 10)
-                      : new Date().toISOString().slice(0, 10)}
+                    {(() => {
+                      if (!selected?.createdAt) {
+                        return new Date().toISOString().slice(0, 10);
+                      }
+                      const date = new Date(selected.createdAt);
+                      if (isNaN(date.getTime())) {
+                        console.warn(
+                          `Invalid createdAt: ${selected.createdAt}`
+                        );
+                        return new Date().toISOString().slice(0, 10);
+                      }
+                      return date.toISOString().slice(0, 10);
+                    })()}
                   </span>
                 )}
               </p>
@@ -167,7 +184,11 @@ export default function NotePad({ recruitmentId }: { recruitmentId: string }) {
                   >
                     <div className="w-full px-3.5 py-2.5 text-purple-700 text-sm font-semibold leading-tight flex justify-between items-center">
                       <p>메모 추가</p>
-                      <button onClick={addNote} disabled={!isLoggedIn}>
+                      <button
+                        onClick={addNote}
+                        disabled={!isLoggedIn}
+                        className="cursor-pointer"
+                      >
                         <HoverIcon variant="plus" />
                       </button>
                     </div>

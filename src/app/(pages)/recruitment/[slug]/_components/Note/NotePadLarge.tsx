@@ -59,6 +59,13 @@ export default function NotePadLarge({
                 />
               </button>
             </div>
+            {selected && (
+              <div className="flex-1 px-3 min-w-0">
+                <div className="text-black text-sm font-medium truncate">
+                  {selected.title || "제목 없음"}
+                </div>
+              </div>
+            )}
             <KebabMenu
               type="large"
               onToggle={onToggle}
@@ -138,9 +145,19 @@ export default function NotePadLarge({
                   </span>
                 ) : (
                   <span className="text-neutral-400 text-[10px] ml-auto">
-                    {selected?.createdAt
-                      ? new Date(selected.createdAt).toISOString().slice(0, 10)
-                      : new Date().toISOString().slice(0, 10)}
+                    {(() => {
+                      if (!selected?.createdAt) {
+                        return new Date().toISOString().slice(0, 10);
+                      }
+                      const date = new Date(selected.createdAt);
+                      if (isNaN(date.getTime())) {
+                        console.warn(
+                          `Invalid createdAt: ${selected.createdAt}`
+                        );
+                        return new Date().toISOString().slice(0, 10);
+                      }
+                      return date.toISOString().slice(0, 10);
+                    })()}
                   </span>
                 )}
               </p>

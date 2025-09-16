@@ -12,12 +12,12 @@ const tabs = [
 
 export default function CategoryTabs({ active, onChange }: Props) {
   return (
-    <div className="relative w-full overflow-visible px-0 laptop:mx-auto laptop:max-w-screen-xl laptop:px-10">
+    <div className="relative w-full overflow-visible px-0 md:mx-auto md:max-w-screen-xl md:px-10">
       {tabs.map((tab) => (
         <button
           key={tab.key}
           onClick={() => onChange(tab.key)}
-          className={`text-lg font-semibold h-11 inline-flex items-center gap-2.5 ml-4 mt-1 transition-colors laptop:text-2xl laptop:h-16
+          className={`text-lg font-semibold h-11 inline-flex items-center gap-2.5 ml-4 mt-1 transition-colors md:text-2xl md:h-16
             border-b-[3px] ${
               active === tab.key
                 ? "border-neutral-700"

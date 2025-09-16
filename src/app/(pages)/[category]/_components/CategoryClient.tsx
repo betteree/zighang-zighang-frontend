@@ -35,7 +35,7 @@ export default function CategoryClient({
   }, [slug]);
 
   return (
-    <div className="relative w-full overflow-visible px-0 laptop:mx-auto laptop:max-w-screen-xl laptop:px-10">
+    <div className="relative w-full overflow-visible px-0 md:mx-auto md:max-w-screen-xl md:px-10">
       <FilterDialogProvider initial={initial}>
         {active === "all" && (
           <>

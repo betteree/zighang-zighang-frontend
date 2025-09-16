@@ -52,13 +52,13 @@ export default function FilterBar() {
 
   return (
     <div className="flex gap-2 mt-5">
-      <div className="flex items-center gap-1 laptop:gap-2">
+      <div className="flex items-center gap-1 md:gap-2">
         <Refresh activated={anyFilterActive} onClick={resetAll} />
 
         <div
           data-orientation="vertical"
           role="none"
-          className="shrink-0 mx-1 h-7 w-[1.5px] bg-[#DDDDE1] laptop:mx-2"
+          className="shrink-0 mx-1 h-7 w-[1.5px] bg-[#DDDDE1] md:mx-2"
         />
 
         <Filter activated={anyFilterActive} onClick={() => openDialog("all")} />

@@ -37,7 +37,7 @@ export type MemoResponse = {
 
 export type CreateMemoRequest = {
   title: string;
-  content: string;
+  content: string | null;
 };
 
 export type UpdateMemoRequest = {

@@ -26,7 +26,7 @@ export default function KebabMenu({
         <button
           onClick={() => setOpen((v) => !v)}
           type="button"
-          className="group inline-flex h-6 w-6 items-center justify-center disabled:opacity-50"
+          className="cursor-pointer group inline-flex h-6 w-6 items-center justify-center disabled:opacity-50"
           title="더보기"
         >
           <HoverIcon
@@ -40,7 +40,7 @@ export default function KebabMenu({
             {type == "large" ? (
               <button
                 onClick={onToggle}
-                className="text-xs font-medium px-3 py-2.5 hover:bg-neutral-100 flex gap-0.5 border-b border-b-neutral-200"
+                className="cursor-pointer text-xs font-medium px-3 py-2.5 hover:bg-neutral-100 flex gap-0.5 border-b border-b-neutral-200"
               >
                 <HoverIcon
                   variant="minimize"
@@ -51,7 +51,7 @@ export default function KebabMenu({
             ) : (
               <button
                 onClick={onToggle}
-                className="text-xs font-medium px-3 py-2.5 hover:bg-neutral-100 flex gap-0.5 border-b border-b-neutral-200"
+                className="cursor-pointer text-xs font-medium px-3 py-2.5 hover:bg-neutral-100 rounded-t-lg flex gap-0.5 border-b border-b-neutral-200"
               >
                 <HoverIcon
                   variant="maximize"
@@ -63,7 +63,7 @@ export default function KebabMenu({
 
             <button
               onClick={() => setDelConfirm(true)}
-              className="text-xs font-medium px-3 py-2.5 hover:bg-neutral-100 flex gap-0.5"
+              className="cursor-pointer text-xs font-medium px-3 py-2.5 hover:bg-neutral-100 rounded-b-lg  flex gap-0.5"
             >
               <HoverIcon
                 variant="trash"

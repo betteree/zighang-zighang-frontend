@@ -8,7 +8,7 @@ export interface Memo {
 
 export interface CreateMemoRequest {
   title: string;
-  content: string;
+  content: string | null;
 }
 
 export interface UpdateMemoRequest {

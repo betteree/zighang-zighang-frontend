@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Job } from "@/app/_types/jobs";
 
 interface RecruitmentInfoProps {
@@ -9,23 +8,7 @@ export default function RecruitmentInfo({ job }: RecruitmentInfoProps) {
   return (
     <>
       <div className="h-5"></div>
-      <div className="flex w-full items-center gap-[2px]">
-        <div className="flex min-h-11 w-full items-center gap-4 rounded-lg bg-[#7951FF]/10 md:min-h-12">
-          <div className="flex items-center gap-2 pl-4 text-[#7951FF] md:pl-5">
-            <Image
-              alt="달력 아이콘"
-              loading="lazy"
-              width={20}
-              height={20}
-              src="https://zighang.com/icon/calendar.svg"
-            />
-            <div className="text-sm font-semibold">{job.deadlineType}</div>
-          </div>
-          <div className="text-xs font-normal text-[#71717A]">
-            게시일 정보 없음
-          </div>
-        </div>
-      </div>
+      <div className="flex w-full items-center gap-[2px]"></div>
       <div className="h-2"></div>
       <div className="flex w-full flex-col gap-2 md:flex-row md:items-center md:gap-3">
         <div className="flex w-full flex-col gap-2 rounded-lg bg-[#F6F6FA] md:flex-1 md:gap-[13px]">
