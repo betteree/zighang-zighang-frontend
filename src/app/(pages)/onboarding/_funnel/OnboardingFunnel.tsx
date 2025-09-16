@@ -1,7 +1,14 @@
 import { useFunnel } from "@use-funnel/browser";
 import { useRouter } from "next/navigation";
 import { useSubmitOnboarding } from "@/app/_api/user/useOnboarding";
-import { mapJobGroup, mapEducationLevel, mapGraduationStatus, saveOnboardingFiltersToStorage, loadOnboardingFiltersFromStorage, mapApiParamsToOnboarding } from "../_utils/mapping";
+import {
+  mapJobGroup,
+  mapEducationLevel,
+  mapGraduationStatus,
+  saveOnboardingFiltersToStorage,
+  loadOnboardingFiltersFromStorage,
+  mapApiParamsToOnboarding,
+} from "../_utils/mapping";
 import {
   JobCategoryStep,
   JobStep,
@@ -32,7 +39,6 @@ type ApiOnboardingPayload = {
   graduationStatus: string;
   preferredRegion: string;
 };
-
 
 function toApiPayload(
   context: 지역입력,
@@ -74,8 +80,10 @@ export default function OnboardingFunnel() {
       인트로={({ history }) => (
         <IntroStep
           onNext={(applyRecent) => {
-            let initialContext: Partial<지역입력> = { 최근필터적용: applyRecent };
-            
+            let initialContext: Partial<지역입력> = {
+              최근필터적용: applyRecent,
+            };
+
             // 최근 필터 적용이 체크된 경우 로컬 스토리지에서 데이터 불러오기
             if (applyRecent) {
               const savedFilters = loadOnboardingFiltersFromStorage();
@@ -92,11 +100,15 @@ export default function OnboardingFunnel() {
                 };
               }
             }
-            
-            history.push("직군입력", (prev) => ({
-              ...prev,
-              ...initialContext,
-            } as 직군입력));
+
+            history.push(
+              "직군입력",
+              (prev) =>
+                ({
+                  ...prev,
+                  ...initialContext,
+                } as 직군입력)
+            );
           }}
         />
       )}
@@ -169,10 +181,13 @@ export default function OnboardingFunnel() {
         return (
           <UploadStep
             apiPayload={apiPayload}
+            onBack={() => history.back()}
             onNext={async (file, payload) => {
               try {
-                const responseData = await submitOnboardingMutation.mutateAsync({ payload, file });
-                
+                const responseData = await submitOnboardingMutation.mutateAsync(
+                  { payload, file }
+                );
+
                 // 온보딩 데이터를 로컬 스토리지에 저장
                 saveOnboardingFiltersToStorage({
                   직군: context.직군 || [],
@@ -182,11 +197,11 @@ export default function OnboardingFunnel() {
                   졸업상태: context.졸업상태 || "",
                   지역: context.지역 || "",
                 });
-                
+
                 // API 응답 데이터를 완료 단계로 전달
-                history.push("완료", { 
+                history.push("완료", {
                   recruitments: [],
-                  userData: responseData.data 
+                  userData: responseData.data,
                 });
               } catch (error) {
                 console.error("온보딩 제출 실패:", error);
@@ -198,10 +213,10 @@ export default function OnboardingFunnel() {
         );
       }}
       완료={({ context }) => (
-        <SuccessStep 
-          name={context.userData?.name || "사용자"} 
+        <SuccessStep
+          name={context.userData?.name || "사용자"}
           recruitments={context.recruitments}
-          onComplete={() => router.push("/")} 
+          onComplete={() => router.push("/")}
         />
       )}
     />

@@ -1,14 +1,20 @@
 import React from "react";
+import { ResponsiveStepActions } from "../Button";
 
 interface StepActionsProps {
   children: React.ReactNode;
   className?: string;
+  showBorder?: boolean;
 }
 
-export function StepActions({ children, className = "" }: StepActionsProps) {
+export function StepActions({
+  children,
+  className = "",
+  showBorder = true,
+}: StepActionsProps) {
   return (
-    <div className={`flex items-center justify-center gap-2 ${className}`}>
+    <ResponsiveStepActions className={className} showBorder={showBorder}>
       {children}
-    </div>
+    </ResponsiveStepActions>
   );
 }

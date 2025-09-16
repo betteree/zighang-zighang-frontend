@@ -1,7 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { StepContainer, StepHeader, ActionButton } from "../../_components";
+import {
+  StepContainer,
+  StepHeader,
+  StepActions,
+  ActionButton,
+} from "../../_components";
 import ExploreJobCarousel from "../../_components/ExploreJobCard/ExploreJobCarousel";
 import type { ExploreJobKey } from "@/app/_constants/exploreJobCard";
 import { EXPLORE_JOB_BY_KEY } from "@/app/_utils/exploreJobs";
@@ -49,6 +54,15 @@ export function ExploreJobStep({
         onBack={handleBack}
       />
 
+      {!showPreview && (
+        <h1 className="text-Heading2-20sb md:hidden items-center justify-center gap-[6px] text-black p-7 pb-0">
+          <span className="flex">
+            <p className="text-violet-500">성향에 맞는 카드</p>를
+          </span>
+          선택해주세요
+        </h1>
+      )}
+
       <div className="h-full flex flex-col items-center mt-20">
         <div className="w-full">
           {!showPreview ? (
@@ -62,11 +76,11 @@ export function ExploreJobStep({
           )}
         </div>
 
-        <div className="mt-auto mb-40">
+        <StepActions className="mt-auto md:mb-40">
           <ActionButton onClick={handleNext} state={nextState}>
             다음
           </ActionButton>
-        </div>
+        </StepActions>
       </div>
     </StepContainer>
   );

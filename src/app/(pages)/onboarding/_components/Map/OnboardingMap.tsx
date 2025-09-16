@@ -11,6 +11,7 @@ import {
 import type { Feature, Geometry, FeatureCollection } from "geojson";
 import { geoCentroid } from "d3-geo";
 import { REGION_OPTIONS, RegionValue } from "../../_types/regionTypes";
+import { useIsDesktop } from "@/app/_hooks/useIsDesktop";
 
 interface RegionProperties {
   CTP_KOR_NM?: string;
@@ -68,14 +69,23 @@ function MapBase({
   onSelect: (next: Exclude<RegionValue, "전체" | "해외">) => void;
   className?: string;
 }) {
+  const isDesktop = useIsDesktop();
+
+  // 모바일: 300x310, scale 2500
+  // PC: 400x400, scale 3000
+  const mapConfig = isDesktop
+    ? { width: 400, height: 400, scale: 3000 }
+    : { width: 300, height: 310, scale: 2500 };
+
   return (
     <div className={className}>
       <ComposableMap
-        width={400}
-        height={400}
+        width={mapConfig.width}
+        height={mapConfig.height}
         projection="geoMercator"
-        projectionConfig={{ scale: 3000, center: [127.4, 35.8] }}
-        style={{ width: 400, height: "auto" }}
+        projectionConfig={{ scale: mapConfig.scale, center: [127.4, 35.8] }}
+        style={{ width: mapConfig.width, height: "auto" }}
+        className="w-[200px] h-[200px] md:w-[400px] md:h-[400px]"
       >
         <Geographies geography={geographies}>
           {({ geographies }) => {

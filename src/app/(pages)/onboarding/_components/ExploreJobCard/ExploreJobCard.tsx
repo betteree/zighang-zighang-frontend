@@ -27,7 +27,7 @@ export default function ExploreJobCard({
       onClick={handleClick}
       aria-pressed={selected}
       className={[
-        "group w-[168px] h-[228px] text-left rounded-2xl border",
+        "group w-[168px] h-[234px] md:h-[228px] text-left rounded-2xl border",
         "border-gray-200 bg-white",
         "p-4 cursor-pointer",
         "shadow-[0_0_12px_rgba(0,0,0,0.08)]",
@@ -41,7 +41,7 @@ export default function ExploreJobCard({
       <div className="flex items-center gap-4 flex-col">
         <Icon className="w-13 h-13 shrink-0" />
         <div className="min-w-0">
-          <p className="font-semibold whitespace-pre-line text-gray-900 truncate text-center text-sm">
+          <p className=" whitespace-pre-line  truncate text-center text-Heading5-14sb">
             {category}
           </p>
         </div>

@@ -66,12 +66,18 @@ describe("ActionButton", () => {
       "items-center",
       "justify-center",
       "text-Button2-16sb",
-      "px-[64px]",
-      "h-[42px]", 
+      "w-full",
+      "md:w-auto",
+      "px-4",
+      "md:px-[64px]",
+      "h-[50px]",
+      "md:h-[42px]",
       "text-white",
       "rounded-[8px]",
       "transition-all",
-      "duration-200"
+      "duration-200",
+      "bg-gray-400",
+      "cursor-not-allowed"
     );
   });
 

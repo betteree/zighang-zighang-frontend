@@ -57,7 +57,7 @@ export default function FileUploadCard({
     if (modal) {
       baseStyles.push("!shadow-none");
     } else {
-      baseStyles.push("w-[526px] rounded-2xl border");
+      baseStyles.push("w-full min-w-[272px] md:w-[526px] rounded-2xl border");
     }
 
     if (className) {

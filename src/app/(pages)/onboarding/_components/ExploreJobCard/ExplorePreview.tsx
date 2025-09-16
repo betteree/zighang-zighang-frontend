@@ -22,18 +22,18 @@ export function ExplorePreview({
       <div className="flex items-center justify-center w-11 h-11 mb-4 rounded-full bg-violet-50">
         <Icon isSelected />
       </div>
-      <h2 className="text-xl font-semibold mb-1">
+      <h2 className="text-xl font-semibold mb-1 w-[240px] md:w-full text-center">
         {selectedCategory}을 선호하는군요!
       </h2>
       <p className="text-base text-neutral-500 font-semibold mb-6">
         성향에 맞는 직군을 추천해드릴게요!
       </p>
 
-      <div className="flex gap-2 max-w-xl flex-wrap justify-center">
+      <div className="flex gap-2 md:max-w-xl flex-wrap justify-center">
         {selectedJobs.map((job) => (
           <button
             key={job}
-            className="rounded-lg border border-neutral-100 shadow-md text-lg font-semibold px-7 py-3 bg-white"
+            className="rounded-lg border border-neutral-100 shadow-md text-lg font-semibold px-5 py-2 md:px-7 md:py-3 bg-white"
           >
             {job}
           </button>

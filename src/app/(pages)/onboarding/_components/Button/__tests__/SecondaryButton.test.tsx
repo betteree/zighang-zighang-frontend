@@ -70,13 +70,18 @@ describe("SecondaryButton", () => {
       "items-center",
       "justify-center",
       "text-Button2-16sb",
-      "w-[156px]",
-      "h-[42px]",
+      "w-full",
+      "md:w-[156px]",
+      "h-[50px]",
+      "md:h-[42px]",
       "rounded-[8px]",
       "transition-all",
       "duration-200",
       "border",
-      "border-[#C5C5C8]"
+      "border-[#C5C5C8]",
+      "bg-white",
+      "text-gray-700",
+      "cursor-pointer"
     );
   });
 

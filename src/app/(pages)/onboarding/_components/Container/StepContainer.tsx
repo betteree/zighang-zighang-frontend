@@ -12,17 +12,17 @@ export function StepContainer({
 }: StepContainerProps) {
   return (
     <div
-      className={`min-h-screen bg-[#F1F1F5] flex flex-col items-center ${className}`}
+      className={`min-h-screen md:bg-[#F1F1F5] flex flex-col items-center ${className}`}
     >
       <Image
         src="https://zighang.com/header_logo_new.svg"
         alt="logo"
         width={59}
         height={22}
-        className="w-[59px] h-[22px] mt-[25px] mb-[33px]"
+        className="hidden md:block md:w-[59px] md:h-[22px] md:mt-[25px] md:mb-[33px]"
       />
 
-      <div className="w-[815px] h-[500px] bg-white rounded-[16px]">
+      <div className="w-full h-screen md:w-[815px] md:h-[500px] bg-white md:rounded-[16px]">
         {children}
       </div>
     </div>

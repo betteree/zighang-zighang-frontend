@@ -49,7 +49,7 @@ export default function ExploreJobCarousel({
         type="button"
         onClick={() => swiper?.slidePrev()}
         disabled={atBeginning}
-        className={`absolute left-7 top-25 z-10 ${
+        className={`hidden md:block absolute left-7 top-25 z-10 ${
           atBeginning ? "cursor-not-allowed " : ""
         }`}
         aria-label="이전"
@@ -61,7 +61,7 @@ export default function ExploreJobCarousel({
         type="button"
         onClick={() => swiper?.slideNext()}
         disabled={atEnd}
-        className={`absolute right-7 top-25 z-10 ${
+        className={`hidden md:block absolute right-7 top-25 z-10 ${
           atEnd ? "cursor-not-allowed " : ""
         }`}
         aria-label="다음"
@@ -86,7 +86,18 @@ export default function ExploreJobCarousel({
           }}
           slidesPerGroup={1}
           spaceBetween={16}
-          slidesPerView={4.5}
+          slidesPerView="auto"
+          centeredSlides={true}
+          breakpoints={{
+            0: {
+              slidesPerView: 1.5,
+              centeredSlides: true,
+            },
+            768: {
+              slidesPerView: 4.5,
+              centeredSlides: false,
+            },
+          }}
           onSlideChange={(s) => {
             setAtBeginning(s.isBeginning);
             setAtEnd(s.isEnd);

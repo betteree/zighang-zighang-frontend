@@ -73,7 +73,12 @@ export default function Dropdown({
   );
 
   return (
-    <div ref={rootRef} className={`relative w-[509px] ${className ?? ""}`}>
+    <div
+      ref={rootRef}
+      className={`relative w-full min-w-[240px] md:w-[509px] ${
+        className ?? ""
+      }`}
+    >
       <button
         type="button"
         onClick={handleToggle}

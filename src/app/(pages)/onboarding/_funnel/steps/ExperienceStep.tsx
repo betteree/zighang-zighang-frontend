@@ -5,7 +5,12 @@ import { ExperienceWheel } from "./ExperienceWheel";
 import { RecruitCountBadge } from "./RecruitCountBadge";
 import { InfoCircle } from "../../_components/Icons/InfoCircle";
 import { InfoTooltip } from "../../_components/Tooltip/InfoTooltip";
-import { StepContainer, StepHeader, ActionButton } from "../../_components";
+import {
+  StepContainer,
+  StepHeader,
+  StepActions,
+  ActionButton,
+} from "../../_components";
 const MIN_EXPERIENCE_YEARS = 0; // 0=신입
 const DEFAULT_EXPERIENCE_YEARS = 1; // 초기 표시 값
 const MAX_EXPERIENCE_YEARS = 10; // 10년+
@@ -17,7 +22,12 @@ type Props = {
   initialExperience?: number; // 초기 경력값
 };
 
-export function ExperienceStep({ onNext, onBack, jobs = [], initialExperience }: Props) {
+export function ExperienceStep({
+  onNext,
+  onBack,
+  jobs = [],
+  initialExperience,
+}: Props) {
   const [selectedYears, setSelectedYears] = React.useState<number>(
     initialExperience ?? DEFAULT_EXPERIENCE_YEARS
   );
@@ -188,9 +198,25 @@ export function ExperienceStep({ onNext, onBack, jobs = [], initialExperience }:
         totalSteps={4}
         onBack={onBack}
       />
-
+      <h1 className="text-Heading2-20sb md:hidden flex flex-col text-black p-7 pb-0">
+        가고 싶은 직군의 <br />
+        <span className="flex">
+          <p className="text-violet-500">경력</p>이 어떻게 되세요?
+          <InfoTooltip
+            content={
+              <div className="text-Body2-12r whitespace-pre-wrap leading-[17px] w-[252px]">
+                총 경력 연차는 지금까지 근무한 모든 기간의 합
+                (정규직·계약직·프리랜서 포함, 인턴)이며, 추후 언제든 수정할 수
+                있습니다.
+              </div>
+            }
+          >
+            <InfoCircle />
+          </InfoTooltip>
+        </span>
+      </h1>
       <div
-        className="w-full flex flex-col items-center h-[calc(500px-55px)] select-none"
+        className="w-full flex flex-col items-center md:h-[calc(500px-55px)] select-none"
         onTouchStart={onTouchStartPage}
         onTouchMove={onTouchMovePage}
         onTouchEnd={onTouchEndPage}
@@ -203,7 +229,7 @@ export function ExperienceStep({ onNext, onBack, jobs = [], initialExperience }:
       >
         {/* 선택 영역 */}
         <div className="flex flex-col items-center justify-center flex-1 relative w-full">
-          <div className="flex items-center gap-2 mb-3 mt-[108px]">
+          <div className="flex items-center gap-2 mb-10 md:mb-5 mt-[108px]">
             <span className="text-Heading2-20sb text-black">내 경력은</span>
 
             <ExperienceWheel
@@ -218,16 +244,14 @@ export function ExperienceStep({ onNext, onBack, jobs = [], initialExperience }:
         </div>
 
         {/* 하단 액션 */}
-        <div className="h-full flex items-end pb-[30px] pointer-events-none">
-          <div className="pointer-events-auto">
-            <ActionButton
-              onClick={handleButtonClick}
-              state={canProceed ? "abled" : "disabled"}
-            >
-              다음
-            </ActionButton>
-          </div>
-        </div>
+        <StepActions className="w-full md:w-auto md:h-full md:items-end md:pb-[30px]">
+          <ActionButton
+            onClick={handleButtonClick}
+            state={canProceed ? "abled" : "disabled"}
+          >
+            다음
+          </ActionButton>
+        </StepActions>
       </div>
     </StepContainer>
   );

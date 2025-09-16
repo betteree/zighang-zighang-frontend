@@ -26,12 +26,18 @@ describe("JobCategoryItem", () => {
     const button = screen.getByRole("button", { name: label });
     expect(button).toHaveClass(
       "py-[9px]",
-      "px-[18px]",
+      "px-[8px]",
+      "md:px-[18px]",
       "rounded-lg",
       "border-[1px]",
       "text-Heading5-14sb",
       "transition-all",
-      "tracking-tight"
+      "tracking-tight",
+      "w-full",
+      "md:w-auto",
+      "border-[#EDEDED]",
+      "bg-white",
+      "text-gray-700"
     );
   });
 

@@ -40,7 +40,9 @@ export function EducationStep({
   );
 
   const [school, setSchool] = useState<string | null>(initialSchool || null);
-  const [graduation, setGraduation] = useState<string | null>(initialGraduation || null);
+  const [graduation, setGraduation] = useState<string | null>(
+    initialGraduation || null
+  );
 
   const isValid = useMemo(() => !!school && !!graduation, [school, graduation]);
 
@@ -58,7 +60,17 @@ export function EducationStep({
         onBack={onBack}
       />
 
-      <div className="w-full flex flex-col items-center h-[calc(500px-55px)]">
+      <p
+        role="heading"
+        className="text-Heading2-20sb md:hidden items-center justify-center gap-[6px] text-black p-7 pb-0 "
+      >
+        <span className="flex">
+          <p className="text-violet-500">최종학력</p>이
+        </span>
+        어떻게 되세요?
+      </p>
+
+      <div className="w-full flex flex-col items-center md:h-[calc(500px-55px)]">
         <div className="mt-[58px] flex items-start gap-[16px]">
           {/* 좌측 아이콘 + 진행선 */}
           <div className="flex flex-col items-center gap-[16px]">
@@ -90,7 +102,7 @@ export function EducationStep({
           </div>
         </div>
 
-        <StepActions className="h-full flex items-end pb-[30px]">
+        <StepActions className="w-full md:w-auto md:h-full md:items-end md:pb-[30px]">
           <ActionButton
             onClick={handleSubmit}
             state={isValid ? "abled" : "disabled"}

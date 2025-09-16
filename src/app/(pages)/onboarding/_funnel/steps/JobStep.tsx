@@ -129,23 +129,34 @@ export function JobStep({
         onBack={handleBack}
       />
 
-      <div className="w-full flex flex-col items-center h-[calc(500px-55px)]">
-        <div className="mt-[32px] mb-[16px]">
+      <div className="w-full flex flex-col md:items-center h-[calc(500px-55px)] mt-[32px]">
+        <div className=" mb-[1px] hidden md:block">
           <SelectedJobGroupChips
             selectedJobGroups={jobGroup}
             active={currentGroup}
           />
         </div>
 
-        <h3 className="text-Heading2-20sb text-center mb-[36.5px] flex items-center gap-1">
+        <h3 className="text-Heading2-20sb text-center mb-[15px] flex items-center gap-1 hidden md:flex">
           {CurrentChip ? (
             <CurrentChip isSelected backgroundless width={24} height={24} />
           ) : null}
           <span style={{ color: currentTextColor }}>{currentGroupLabel}</span>
           직군에서 어떤 직무에 관심 있으세요?
         </h3>
+        <div className="mb-[15px] md:hidden px-6">
+          <h3 className="text-Heading2-20sb ">
+            <span style={{ color: currentTextColor }}>{currentGroupLabel}</span>
+            직군에서
+            <br />
+            어떤 직무에 관심 있으세요?
+          </h3>
+          <span className="text-neutral-500 text-sm font-medium">
+            (중복 선택 가능)
+          </span>
+        </div>
 
-        <div className="w-[662px] max-w-full mx-auto flex flex-wrap gap-2 justify-center">
+        <div className="w-full px-6 grid grid-cols-3 md:w-[662px] md:px-0 mx-auto pb-20 md:pb-0 md:flex md:flex-wrap gap-2 justify-center">
           {availableJobs.map((job) => (
             <JobCategoryItem
               key={job}
@@ -156,7 +167,7 @@ export function JobStep({
           ))}
         </div>
 
-        <StepActions className="h-full flex items-end pb-[30px]">
+        <StepActions className="w-full md:h-full md:flex md:items-end md:pb-[60px] ">
           <SecondaryButton onClick={goNextGroup}>여기 없어요</SecondaryButton>
           <ActionButton
             onClick={goNextGroup}
