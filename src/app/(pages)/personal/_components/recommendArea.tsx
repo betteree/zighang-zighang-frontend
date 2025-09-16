@@ -2,9 +2,11 @@
 
 import PersonalizedRecruitmentCard from "./recruitment/PersonalizedRecruitmentCard";
 import PersonalizedRecruitmentList from "./recruitment/PersonalizedRecruitmentList";
-import { useState, useEffect } from "react";
 import { useAllRecommendedRecruitments } from "@/app/_api/recruitment/recommend/useRecommend";
 import type { RecommendedRecruitment } from "@/app/_types/jobs";
+import UserName from "./UserName";
+import { InfoCircle } from "../../onboarding/_components/Icons/InfoCircle";
+import InfoBubble from "./InfoBubble";
 
 // 임시 목업 데이터 (파일이 없을 때 사용)
 const mockRecruitments = [
@@ -56,8 +58,6 @@ export default function RecommendArea({
   hasFiles = false,
   isAnalysisModalOpen = false,
 }: RecommendAreaProps) {
-  const [isMobile, setIsMobile] = useState(false);
-
   // React Query로 추천 공고 데이터 가져오기
   const {
     data: recommendResponse,
@@ -70,31 +70,34 @@ export default function RecommendArea({
 
   const allRecommendedData = recommendResponse?.data || [];
 
-  useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkIsMobile();
-    window.addEventListener("resize", checkIsMobile);
-
-    return () => window.removeEventListener("resize", checkIsMobile);
-  }, []);
-
   // 페이지네이션은 이제 PersonalizedRecruitmentList에서 내부적으로 처리
 
   return (
     <div className="mt-5 ">
       <div className="flex justify-between items-center mb-4">
-        <div className="justify-center text-black text-lg md:text-xl font-semibold">
-          <span className="text-purple-800 text-lg md:text-xl font-semibold mr-1">
-            초개인화
-          </span>
-          추천 공고
-          <span className="text-purple-800 text-lg md:text-xl font-semibold ml-1">
-            {hasFiles ? allRecommendedData.length : "N"}
-          </span>
-          건
+        <div className="  justify-center text-black text-lg md:text-xl font-semibold">
+          {!hasFiles ? (
+            <>
+              <span className="text-purple-800 text-lg md:text-xl font-semibold mr-1">
+                초개인화
+              </span>
+              추천 공고
+              <span className="text-purple-800 text-lg md:text-xl font-semibold ml-1">
+                {allRecommendedData.length}
+              </span>
+              건
+            </>
+          ) : (
+            <>
+              <UserName showFirstLetterOnly={true} />
+              에게 맞는 <p className="md:hidden"></p>
+              <span className="md:ml-1 mr-0 text-purple-800 text-lg md:text-xl font-semibold">
+                TOP9 공고
+              </span>
+              를 보여드릴게요
+              <InfoBubble trigger={<InfoCircle />} />
+            </>
+          )}
         </div>
       </div>
 
@@ -118,16 +121,16 @@ export default function RecommendArea({
             </div>
           </div>
         ) : isSuccess && allRecommendedData.length > 0 ? (
-          // API 데이터가 있을 때 - 내부 페이지네이션 사용
+          // API 데이터가 있을 때
           <PersonalizedRecruitmentList
             items={transformRecommendedData(allRecommendedData)}
-            itemsPerPage={isMobile ? 3 : 9}
+            itemsPerPage={3}
           />
         ) : (
           // API 데이터가 없을 때 - 목업 데이터 표시
           <PersonalizedRecruitmentList
             items={mockRecruitments}
-            itemsPerPage={isMobile ? 3 : 9}
+            itemsPerPage={3}
           />
         )
       ) : hasFiles && isAnalysisModalOpen ? (

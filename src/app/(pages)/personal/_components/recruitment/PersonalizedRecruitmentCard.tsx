@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useBookmark } from "@/app/_api/bookmark/useBookmark";
 
 interface RecruitmentCardProps {
@@ -19,6 +20,7 @@ export default function RecruitmentCard({ item }: RecruitmentCardProps) {
   const { id, logo, company, title, bookmarked, reason } = item;
   const { isBookmarked, mutate, isPending } = useBookmark(id, !!bookmarked);
   const [activeTab, setActiveTab] = useState<"job" | "reason">("job");
+  const router = useRouter();
 
   const handleBookmarkClick = async () => {
     const next = !isBookmarked;
@@ -29,11 +31,21 @@ export default function RecruitmentCard({ item }: RecruitmentCardProps) {
     }
   };
 
+  const handleCardClick = () => {
+    router.push(`/recruitment/${id}`);
+  };
+
   return (
-    <div className="border border-gray-200 rounded-lg px-3.5 py-3 min-w-60 w-full h-34 hover:[box-shadow:0_8px_25px_rgba(0,0,0,0.1)] transition-shadow duration-200 cursor-pointer">
+    <div
+      className="border border-gray-200 rounded-lg px-3.5 py-3 w-full h-34 hover:[box-shadow:0_8px_25px_rgba(0,0,0,0.1)] transition-shadow duration-200 cursor-pointer"
+      onClick={handleCardClick}
+    >
       <div className="flex gap-1 items-cente mb-3.5">
         <button
-          onClick={() => setActiveTab("job")}
+          onClick={(e) => {
+            e.stopPropagation();
+            setActiveTab("job");
+          }}
           className={`cursor-pointer text-xs font-medium px-2.5 py-1 rounded-[20px] border inline-flex justify-start items-center gap-0.5 ${
             activeTab === "job"
               ? "text-violet-500 bg-white border-purple-200"
@@ -54,7 +66,10 @@ export default function RecruitmentCard({ item }: RecruitmentCardProps) {
           공고
         </button>
         <button
-          onClick={() => setActiveTab("reason")}
+          onClick={(e) => {
+            e.stopPropagation();
+            setActiveTab("reason");
+          }}
           className={`cursor-pointer text-xs font-medium px-2.5 py-1 rounded-[20px] border inline-flex justify-start items-center gap-0.5 ${
             activeTab === "reason"
               ? "text-violet-500 bg-white border-purple-200"
@@ -75,7 +90,10 @@ export default function RecruitmentCard({ item }: RecruitmentCardProps) {
           추천이유
         </button>
         <button
-          onClick={handleBookmarkClick}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleBookmarkClick();
+          }}
           disabled={isPending}
           className="cursor-pointer ml-auto disabled:opacity-50"
         >
@@ -94,8 +112,8 @@ export default function RecruitmentCard({ item }: RecruitmentCardProps) {
         </button>
       </div>
       {activeTab === "job" ? (
-        <div className="flex items-start  gap-2.5 mt-1.5 h-full">
-          <div className="w-16 h-16 bg-gray-100 border border-gray-200 flex items-center justify-center rounded-md overflow-hidden">
+        <div className="flex items-start gap-2.5 mt-1.5 h-full">
+          <div className="w-16 h-16 bg-gray-100 border border-gray-200 flex items-center justify-center rounded-md overflow-hidden flex-shrink-0">
             <Image
               src={logo}
               alt={`${company} 로고`}
@@ -104,15 +122,13 @@ export default function RecruitmentCard({ item }: RecruitmentCardProps) {
               height={60}
             />
           </div>
-          <div className="h-16 flex flex-col justify-between">
-            <p className="font-semibold text-base w-35 h-11 line-clamp-2">
-              {title}
-            </p>
+          <div className="h-16 flex flex-col justify-between flex-1 min-w-0">
+            <p className="font-semibold text-base h-11 line-clamp-2">{title}</p>
             <p className="text-neutral-400 font-medium text-xs">{company}</p>
           </div>
         </div>
       ) : (
-        <p className=" text-zinc-800 text-sm font-medium w-53">{reason}</p>
+        <p className=" text-zinc-800 text-sm font-medium flex-1">{reason}</p>
       )}
     </div>
   );

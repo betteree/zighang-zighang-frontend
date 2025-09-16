@@ -43,6 +43,9 @@ export default function FileRender({
         >
           {downloadResumeMutation.isPending ? "다운로드 중..." : file.name}
         </button>
+        <p className="md:hidden text-body2-12r text-neutral-500 text-xs">
+          {file.uploadDate}
+        </p>
       </div>
 
       {/* 업로드일 */}
