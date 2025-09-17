@@ -51,7 +51,7 @@ export default function FilterBar() {
     activeDeadline;
 
   return (
-    <div className="flex gap-2 mt-5">
+    <div className="flex gap-2 mt-5 ">
       <div className="flex items-center gap-1 md:gap-2">
         <Refresh activated={anyFilterActive} onClick={resetAll} />
 

@@ -1,21 +1,24 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import NoteItem from "./NoteItem";
 import HoverIcon from "../Icons/HoverIcon";
 import KebabMenu from "./KebabMenu";
-import NotePadLarge from "./NotePadLarge";
-import {
-  useNotes,
-  type Note,
-} from "@/app/(pages)/recruitment/[slug]/_hooks/useNotes";
+import { useNotes } from "@/app/(pages)/recruitment/[slug]/_hooks/useNotes";
 import { useAuthState } from "@/app/_api/auth/useAuthState";
 import { NoteIcon } from "../Icons/NoteIcon";
 
-export default function NotePad({ recruitmentId }: { recruitmentId: string }) {
+export default function NotePad({
+  recruitmentId,
+  isLargeOpen = false,
+  onToggleLarge,
+}: {
+  recruitmentId: string;
+  isLargeOpen?: boolean;
+  onToggleLarge?: () => void;
+}) {
   const { isLoggedIn } = useAuthState();
-  const [isLargeOpen, setIsLargeOpen] = useState(false);
   const notesHook = useNotes(recruitmentId);
   const [textareaKey, setTextareaKey] = useState(0);
 
@@ -34,8 +37,6 @@ export default function NotePad({ recruitmentId }: { recruitmentId: string }) {
     isLoading,
   } = notesHook;
 
-  const frozenNotesRef = useRef<Note[] | null>(null);
-
   useEffect(() => {
     if (saveStatus === "success") {
       setTextareaKey((k) => k + 1); // key 변경으로 강제 리렌더
@@ -43,26 +44,18 @@ export default function NotePad({ recruitmentId }: { recruitmentId: string }) {
   }, [saveStatus]);
 
   const handleToggleLarge = useCallback(() => {
-    setIsLargeOpen((prev) => {
-      const next = !prev;
-      if (next) {
-        // 펼쳐보기 열리면 현재 notes를 스냅샷
-        frozenNotesRef.current = notes.map((n) => ({ ...n }));
-      } else {
-        // 닫히면 스냅 샷 해제
-        frozenNotesRef.current = null;
-      }
-      return next;
-    });
-  }, [notes]);
+    if (onToggleLarge) {
+      onToggleLarge();
+    }
+  }, [onToggleLarge]);
 
-  const listFrozen = isLargeOpen ? frozenNotesRef.current ?? notes : notes;
+  const listFrozen = notes;
 
   return (
     <>
       <div className="hidden md:inline-flex h-[444px] w-58  flex-col justify-start items-start">
         {!isLargeOpen && editMode && isLoggedIn && selected ? (
-          <div className="self-stretch h-11 pl-2.5 pr-3.5 py-2.5 bg-white rounded-tl-lg rounded-tr-lg outline outline-1 outline-offset-[-1px] outline-zinc-200 inline-flex justify-between items-center">
+          <div className="self-stretch h-11 pl-2.5 pr-3.5 py-2.5 bg-white rounded-tl-lg rounded-tr-lg outline-1 outline-offset-[-1px] outline-zinc-200 inline-flex justify-between items-center">
             <div className="flex items-center gap-2.5">
               <button onClick={() => setEditMode(false)}>
                 <HoverIcon
@@ -86,7 +79,7 @@ export default function NotePad({ recruitmentId }: { recruitmentId: string }) {
             />
           </div>
         ) : (
-          <div className="self-stretch h-11 pl-4 pr-3.5 py-2.5 bg-white rounded-tl-lg rounded-tr-lg outline outline-1 outline-offset-[-1px] outline-zinc-200 inline-flex justify-between items-center">
+          <div className="self-stretch h-11 pl-4 pr-3.5 py-2.5 bg-white rounded-tl-lg rounded-tr-lg outline-1 outline-offset-[-1px] outline-zinc-200 inline-flex justify-between items-center">
             <div className="flex items-center gap-2.5">
               <div className="text-black text-base font-semibold leading-snug">
                 메모장
@@ -249,15 +242,6 @@ export default function NotePad({ recruitmentId }: { recruitmentId: string }) {
           </div>
         )}
       </div>
-
-      {isLargeOpen && (
-        <NotePadLarge
-          isOpen={isLargeOpen}
-          onToggle={handleToggleLarge}
-          isLoggedIn={isLoggedIn}
-          notesHook={notesHook}
-        />
-      )}
     </>
   );
 }

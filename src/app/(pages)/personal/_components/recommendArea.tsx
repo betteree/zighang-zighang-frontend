@@ -7,6 +7,7 @@ import type { RecommendedRecruitment } from "@/app/_types/jobs";
 import UserName from "./UserName";
 import { InfoCircle } from "../../onboarding/_components/Icons/InfoCircle";
 import InfoBubble from "./InfoBubble";
+import { useRouter } from "next/navigation";
 
 // 임시 목업 데이터 (파일이 없을 때 사용)
 const mockRecruitments = [
@@ -58,6 +59,8 @@ export default function RecommendArea({
   hasFiles = false,
   isAnalysisModalOpen = false,
 }: RecommendAreaProps) {
+  const router = useRouter();
+
   // React Query로 추천 공고 데이터 가져오기
   const {
     data: recommendResponse,
@@ -161,14 +164,14 @@ export default function RecommendArea({
 
           <div
             className="absolute z-20 left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
-                   w-56 h-20 px-4 py-4 bg-violet-50 rounded-lg
+                   w-56 h-26 px-4 py-6 bg-violet-50 rounded-lg
                    outline-1 outline-offset-[-1px] outline-purple-200
                    shadow-[0px_2px_5px_0px_rgba(163,163,163,0.10),0px_9px_9px_0px_rgba(163,163,163,0.09),0px_21px_13px_0px_rgba(163,163,163,0.05)]
-                   flex items-center justify-center text-center"
+                   flex flex-col items-center justify-center text-center"
           >
             <div className="leading-snug">
               <span className="text-black text-sm font-semibold">
-                자기소개서 업로드하고
+                자소서·이력서 업로드하고
                 <br />
               </span>
               <span className="text-violet-500 text-sm font-semibold">
@@ -178,6 +181,12 @@ export default function RecommendArea({
                 받아보세요
               </span>
             </div>
+            <button
+              className="text-white text-Subheading4-12m  bg-violet-500 rounded-lg w-44 px-12 py-2 mt-3 cursor-pointer"
+              onClick={() => router.push("/join")}
+            >
+              로그인
+            </button>
           </div>
         </div>
       )}

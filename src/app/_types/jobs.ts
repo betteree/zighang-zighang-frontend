@@ -14,6 +14,7 @@ export interface Job {
   hot?: boolean;
   bookmarked?: boolean;
   jobGroup?: string;
+  companyName?: string;
 }
 
 // 추천 채용공고 API 응답 타입

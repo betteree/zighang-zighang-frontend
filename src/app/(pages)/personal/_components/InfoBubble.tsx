@@ -12,7 +12,7 @@ export default function InfoBubble({
   trigger,
   lines = [
     "파일은 많을수록 좋아요!\n맞춤공고가 정교해진답니다.",
-    "새 공고가 등록되면 추천 공고도 즉시 업데이트돼요.",
+    "신규공고를 빠짐없이 반영해 항상 최적의 맞춤공고를 보여드릴게요!",
   ],
   mobileDefaultOpen = false,
   className = "",

@@ -59,7 +59,7 @@ export default function DeleteMemo({
             ’ 메모가 영구적으로 삭제됩니다
           </div>
         </div>
-        <div className="w-96 flex flex-col justify-start items-start gap-3">
+        <div className="w-full md:w-96 flex flex-col justify-start items-start gap-3">
           <div className="self-stretch inline-flex justify-center items-start gap-3">
             <button
               type="button"

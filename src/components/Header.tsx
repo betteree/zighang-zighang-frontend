@@ -38,7 +38,11 @@ export default function Header() {
   };
 
   const handlePersonalClick = () => {
-    router.push("/personal");
+    if (isLoggedIn) {
+      router.push("/personal");
+    } else {
+      router.push("/join");
+    }
   };
 
   useEffect(() => {

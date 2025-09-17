@@ -92,7 +92,7 @@ export default function Card({
             </div>
 
             <div className="flex items-center gap-2 break-all font-bold text-black">
-              <p className="max-w-[240px] text-sm md:text-lg md:max-w-[356px] ds-mobile-title2 leading-[140%]">
+              <p className="max-w-[240px] text-sm md:text-lg md:max-w-[356px] ds-mobile-title2 leading-[140%] line-clamp-2">
                 {title}
               </p>
             </div>

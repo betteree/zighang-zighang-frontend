@@ -127,7 +127,7 @@ export default function RecruitmentHeader({
             </div>
             <button
               onClick={handleShareClick}
-              className="cursor-pointer flex items-center gap-1 rounded-[8px] px-2 py-1.5 text-xs font-bold text-neutral-700 text-Heading5-14sb md:gap-1 hover:bg-gray-100 transition-colors"
+              className="hidden md:flex cursor-pointer items-center gap-1 rounded-[8px] px-2 py-1.5 text-xs font-bold text-neutral-700 text-Heading5-14sb md:gap-1 hover:bg-gray-100 transition-colors"
             >
               <ShareIcon width={16} height={16} />
               {isCopied ? "복사됨!" : "공유하기"}
