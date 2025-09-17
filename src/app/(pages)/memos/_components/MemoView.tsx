@@ -12,8 +12,8 @@ interface MemoViewProps {
   onViewChange?: (mode: "single" | "split") => void;
   leftSelectedMemo?: string | null;
   rightSelectedMemo?: string | null;
-  onLeftMemoChange?: (memoId: string | null) => void;
-  onRightMemoChange?: (memoId: string | null) => void;
+  onDeleteMemo?: (memoId: string) => void;
+  onMemoSelect?: (memoId: string) => void;
 }
 
 export default function MemoView({ 
@@ -23,8 +23,8 @@ export default function MemoView({
   onViewChange,
   leftSelectedMemo,
   rightSelectedMemo,
-  onLeftMemoChange,
-  onRightMemoChange
+  onDeleteMemo,
+  onMemoSelect
 }: MemoViewProps) {
   const [selectedView, setSelectedView] = useState<"single" | "split">(viewMode);
 
@@ -47,8 +47,8 @@ export default function MemoView({
           memoGroups={memoGroups}
           leftSelectedMemo={leftSelectedMemo}
           rightSelectedMemo={rightSelectedMemo}
-          onLeftMemoChange={onLeftMemoChange}
-          onRightMemoChange={onRightMemoChange}
+          onDeleteMemo={onDeleteMemo}
+          onMemoSelect={onMemoSelect}
         />
       </div>
     </div>

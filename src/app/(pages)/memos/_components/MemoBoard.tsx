@@ -3,96 +3,23 @@
 import { useState } from "react";
 import MemoList from "./MemoList";
 import MemoView from "./MemoView";
-import { MemoGroup } from "../_types/memoTypes";
-
-// API 응답 형식의 샘플 데이터
-const sampleMemoGroups: MemoGroup[] = [
-  {
-    recruitment: {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      title: "프론트엔드 개발자",
-      endDate: "2025-09-20T15:20:28.501Z",
-      deadlineType: "상시_채용",
-      companyName: "원티드",
-    },
-    memos: [
-      {
-        id: "memo-1",
-        createdAt: "2025-01-15T15:20:28.501Z",
-        updatedAt: "2025-01-15T15:20:28.501Z",
-        title: "기술 스택 정리",
-        content:
-          "React, TypeScript, Next.js 경험 있음. 프로젝트 경험 풍부하고 팀워크 좋음.",
-      },
-      {
-        id: "memo-2",
-        createdAt: "2025-01-16T15:20:28.501Z",
-        updatedAt: "2025-01-16T15:20:28.501Z",
-        title: "면접 준비",
-        content:
-          "포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.",
-      },
-      {
-        id: "memo-3",
-        createdAt: "2025-01-17T15:20:28.501Z",
-        updatedAt: "2025-01-17T15:20:28.501Z",
-        title: "질문 리스트",
-        content:
-          "포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.포트폴리오 정리 완료. 기술 질문 대비 준비 중. 회사 문화 조사 필요.",
-      },
-    ],
-  },
-  {
-    recruitment: {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa7",
-      title: "백엔드 개발자",
-      endDate: "2025-01-20T15:20:28.501Z",
-      deadlineType: "상시_채용",
-      companyName: "토스",
-    },
-    memos: [
-      {
-        id: "memo-4",
-        createdAt: "2025-01-10T15:20:28.501Z",
-        updatedAt: "2025-01-10T15:20:28.501Z",
-        title: "기술 스택 분석",
-        content:
-          "Node.js, Python, PostgreSQL 경험. 마이크로서비스 아키텍처 경험 있음.",
-      },
-      {
-        id: "memo-5",
-        createdAt: "2025-01-12T15:20:28.501Z",
-        updatedAt: "2025-01-12T15:20:28.501Z",
-        title: "회사 조사",
-        content: "토스의 핀테크 서비스, 기술 스택, 개발 문화에 대해 조사 완료.",
-      },
-    ],
-  },
-  {
-    recruitment: {
-      id: "3fa85f64-5717-4562-b3fc-2c963f66afa8",
-      title: "풀스택 개발자",
-      endDate: "2025-01-18T15:20:28.501Z",
-      deadlineType: "상시_채용",
-      companyName: "네이버",
-    },
-    memos: [
-      {
-        id: "memo-6",
-        createdAt: "2025-01-14T15:20:28.501Z",
-        updatedAt: "2025-01-14T15:20:28.501Z",
-        title: "지원 동기",
-        content: "대규모 서비스 개발 경험을 쌓고 싶음. 네이버의 기술력에 관심.",
-      },
-    ],
-  },
-];
+import { useMemoGroups } from "../../../_api/memos/useMemoGroups";
+import {
+  useBulkDeleteMemos,
+  useDeleteMemo,
+} from "../../../_api/memos/useMemos";
 
 export default function MemoBoard() {
   const [selectedMemoId, setSelectedMemoId] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"single" | "split">("single");
   const [leftSelectedMemo, setLeftSelectedMemo] = useState<string | null>(null);
-  const [rightSelectedMemo, setRightSelectedMemo] = useState<string | null>(null);
+  const [rightSelectedMemo, setRightSelectedMemo] = useState<string | null>(
+    null
+  );
+
+  const { data: memoGroups = [], isLoading, error } = useMemoGroups();
+  const bulkDeleteMemosMutation = useBulkDeleteMemos();
+  const deleteMemoMutation = useDeleteMemo();
 
   const handleMemoSelect = (memoId: string) => {
     if (viewMode === "split") {
@@ -131,25 +58,146 @@ export default function MemoBoard() {
     }
   };
 
+  const handleDeleteMemo = (memoId: string) => {
+    deleteMemoMutation.mutate(memoId, {
+      onSuccess: () => {
+        // 삭제된 메모가 현재 선택된 메모라면
+        if (selectedMemoId === memoId) {
+          // 해당 공고에 다른 메모가 있는지 확인
+          const memoGroup = memoGroups.find((group) =>
+            group.memos.some((memo) => memo.id === memoId)
+          );
+          if (memoGroup) {
+            const remainingMemos = memoGroup.memos.filter(
+              (memo) => memo.id !== memoId
+            );
+            if (remainingMemos.length > 0) {
+              // 다른 메모가 있으면 첫 번째 메모를 선택
+              setSelectedMemoId(remainingMemos[0].id);
+            } else {
+              // 메모가 더 이상 없으면 선택 해제
+              setSelectedMemoId(null);
+            }
+          } else {
+            setSelectedMemoId(null);
+          }
+        }
+
+        if (leftSelectedMemo === memoId) {
+          const memoGroup = memoGroups.find((group) =>
+            group.memos.some((memo) => memo.id === memoId)
+          );
+          if (memoGroup) {
+            const remainingMemos = memoGroup.memos.filter(
+              (memo) => memo.id !== memoId
+            );
+            if (remainingMemos.length > 0) {
+              setLeftSelectedMemo(remainingMemos[0].id);
+            } else {
+              setLeftSelectedMemo(null);
+            }
+          } else {
+            setLeftSelectedMemo(null);
+          }
+        }
+
+        if (rightSelectedMemo === memoId) {
+          const memoGroup = memoGroups.find((group) =>
+            group.memos.some((memo) => memo.id === memoId)
+          );
+          if (memoGroup) {
+            const remainingMemos = memoGroup.memos.filter(
+              (memo) => memo.id !== memoId
+            );
+            if (remainingMemos.length > 0) {
+              setRightSelectedMemo(remainingMemos[0].id);
+            } else {
+              setRightSelectedMemo(null);
+            }
+          } else {
+            setRightSelectedMemo(null);
+          }
+        }
+      },
+      onError: (error) => {
+        console.error("메모 삭제 실패:", error);
+      },
+    });
+  };
+
+  const handleBulkDeleteRecruitments = (recruitmentIds: string[]) => {
+    bulkDeleteMemosMutation.mutate(recruitmentIds, {
+      onSuccess: () => {
+        // 삭제된 공고에 속한 메모들의 선택 상태 초기화
+        const deletedMemoIds = new Set<string>();
+        recruitmentIds.forEach((recruitmentId) => {
+          const memoGroup = memoGroups.find(
+            (group) => group.recruitment.id === recruitmentId
+          );
+          if (memoGroup) {
+            memoGroup.memos.forEach((memo) => deletedMemoIds.add(memo.id));
+          }
+        });
+
+        // 삭제된 메모가 현재 선택된 메모라면 선택 해제
+        if (selectedMemoId && deletedMemoIds.has(selectedMemoId)) {
+          setSelectedMemoId(null);
+        }
+        if (leftSelectedMemo && deletedMemoIds.has(leftSelectedMemo)) {
+          setLeftSelectedMemo(null);
+        }
+        if (rightSelectedMemo && deletedMemoIds.has(rightSelectedMemo)) {
+          setRightSelectedMemo(null);
+        }
+      },
+      onError: (error) => {
+        console.error("공고별 메모 일괄 삭제 실패:", error);
+      },
+    });
+  };
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-[522px] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
+          <p className="text-gray-600">메모를 불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full h-[522px] flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-600 mb-2">오류가 발생했습니다</p>
+          <p className="text-gray-600 text-sm">{error.message}</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full h-[522px] flex">
-      <MemoList 
-        memoGroups={sampleMemoGroups}
+      <MemoList
+        memoGroups={memoGroups}
         selectedMemoId={selectedMemoId}
         onMemoSelect={handleMemoSelect}
         viewMode={viewMode}
         leftSelectedMemo={leftSelectedMemo}
         rightSelectedMemo={rightSelectedMemo}
+        onBulkDeleteRecruitments={handleBulkDeleteRecruitments}
       />
-      <MemoView 
-        selectedMemo={selectedMemoId} 
-        memoGroups={sampleMemoGroups}
+      <MemoView
+        selectedMemo={selectedMemoId}
+        memoGroups={memoGroups}
         viewMode={viewMode}
         onViewChange={handleViewChange}
         leftSelectedMemo={leftSelectedMemo}
         rightSelectedMemo={rightSelectedMemo}
-        onLeftMemoChange={setLeftSelectedMemo}
-        onRightMemoChange={setRightSelectedMemo}
+        onDeleteMemo={handleDeleteMemo}
+        onMemoSelect={handleMemoSelect}
       />
     </div>
   );

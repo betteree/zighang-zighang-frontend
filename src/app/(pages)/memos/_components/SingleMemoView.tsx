@@ -2,16 +2,29 @@ import Link from "next/link";
 import { MemoGroup } from "../_types/memoTypes";
 import MemoSection from "./MemoSection";
 import AddMemoButton from "./AddMemoButton";
+import { useCreateMemo } from "../../../_api/memos/useMemos";
 
 interface SingleMemoViewProps {
   selectedMemo?: string | null;
   memoGroups?: MemoGroup[];
+  onDeleteMemo?: (memoId: string) => void;
+  onMemoSelect?: (memoId: string) => void;
 }
 
 export default function SingleMemoView({
   selectedMemo,
   memoGroups,
+  onDeleteMemo,
+  onMemoSelect,
 }: SingleMemoViewProps) {
+  // 선택된 메모가 속한 공고 그룹 찾기
+  const selectedGroup = memoGroups?.find((group) =>
+    group.memos.some((memo) => memo.id === selectedMemo)
+  );
+  const recruitmentId = selectedGroup?.recruitment.id;
+
+  const createMemoMutation = useCreateMemo(recruitmentId);
+
   if (!selectedMemo) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -24,11 +37,6 @@ export default function SingleMemoView({
       </div>
     );
   }
-
-  // 선택된 메모가 속한 공고 그룹 찾기
-  const selectedGroup = memoGroups?.find((group) =>
-    group.memos.some((memo) => memo.id === selectedMemo)
-  );
 
   const selectedMemoData = selectedGroup?.memos.find(
     (memo) => memo.id === selectedMemo
@@ -63,23 +71,33 @@ export default function SingleMemoView({
       {/* 스크롤 가능한 메모 섹션들 */}
       <div className="flex-1 overflow-y-auto px-6 max-h-[450px]">
         <div className="space-y-[6px]">
-          {selectedGroup?.memos.map((memo) => (
+          {selectedGroup?.memos.slice().reverse().map((memo) => (
             <MemoSection
               key={memo.id}
               memo={memo}
-              onDelete={(memoId) => {
-                console.log("Delete memo:", memoId);
-              }}
+              onDelete={onDeleteMemo}
+              recruitmentId={recruitmentId}
             />
           ))}
         </div>
 
-        {/* 메모 추가 버튼 - 스크롤 영역 내부 */}
+        {/* 메모 추가 버튼 - 맨 아래에 위치 */}
         <div className="mt-[6px]">
           <AddMemoButton
             onAdd={() => {
-              // TODO: 메모 추가 로직 구현
-              console.log("Add new memo");
+              if (recruitmentId) {
+                createMemoMutation.mutate({
+                  title: "",
+                  content: ""
+                }, {
+                  onSuccess: (response) => {
+                    // 새로 생성된 메모를 선택
+                    if (response?.memo?.id && onMemoSelect) {
+                      onMemoSelect(response.memo.id);
+                    }
+                  }
+                });
+              }
             }}
           />
         </div>

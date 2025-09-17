@@ -4,19 +4,20 @@ import { useRouter } from "next/navigation";
 import { MemoGroup } from "../_types/memoTypes";
 import MemoSection from "./MemoSection";
 import AddMemoButton from "./AddMemoButton";
+import { useCreateMemo } from "../../../_api/memos/useMemos";
 
 interface SplitMemoViewProps {
   memoGroups?: MemoGroup[];
   leftSelectedMemo?: string | null;
   rightSelectedMemo?: string | null;
-  onLeftMemoChange?: (memoId: string | null) => void;
-  onRightMemoChange?: (memoId: string | null) => void;
+  onDeleteMemo?: (memoId: string) => void;
 }
 
 export default function SplitMemoView({
   memoGroups,
   leftSelectedMemo,
   rightSelectedMemo,
+  onDeleteMemo,
 }: SplitMemoViewProps) {
   const router = useRouter();
   const leftSelectedGroup = memoGroups?.find((group) =>
@@ -26,6 +27,14 @@ export default function SplitMemoView({
   const rightSelectedGroup = memoGroups?.find((group) =>
     group.memos.some((memo) => memo.id === rightSelectedMemo)
   );
+
+  // 왼쪽과 오른쪽 공고의 ID
+  const leftRecruitmentId = leftSelectedGroup?.recruitment.id;
+  const rightRecruitmentId = rightSelectedGroup?.recruitment.id;
+
+  // 메모 생성 훅들
+  const createLeftMemoMutation = useCreateMemo(leftRecruitmentId);
+  const createRightMemoMutation = useCreateMemo(rightRecruitmentId);
 
   const handleRecruitmentNavigation = (recruitmentId: string) => {
     router.push(`/recruitment/${recruitmentId}`);
@@ -57,20 +66,24 @@ export default function SplitMemoView({
           {leftSelectedGroup ? (
             <>
               <div className="space-y-[6px]">
-                {leftSelectedGroup.memos.map((memo) => (
+                {leftSelectedGroup.memos.slice().reverse().map((memo) => (
                   <MemoSection
                     key={memo.id}
                     memo={memo}
-                    onDelete={(memoId) => {
-                      console.log("Delete left memo:", memoId);
-                    }}
+                    onDelete={onDeleteMemo}
+                    recruitmentId={leftRecruitmentId}
                   />
                 ))}
               </div>
               <div className="mt-[6px]">
                 <AddMemoButton
                   onAdd={() => {
-                    console.log("Add new memo to left");
+                    if (leftRecruitmentId) {
+                      createLeftMemoMutation.mutate({
+                        title: "",
+                        content: ""
+                      });
+                    }
                   }}
                 />
               </div>
@@ -121,20 +134,24 @@ export default function SplitMemoView({
           {rightSelectedGroup ? (
             <>
               <div className="space-y-[6px]">
-                {rightSelectedGroup.memos.map((memo) => (
+                {rightSelectedGroup.memos.slice().reverse().map((memo) => (
                   <MemoSection
                     key={memo.id}
                     memo={memo}
-                    onDelete={(memoId) => {
-                      console.log("Delete right memo:", memoId);
-                    }}
+                    onDelete={onDeleteMemo}
+                    recruitmentId={rightRecruitmentId}
                   />
                 ))}
               </div>
               <div className="mt-[6px]">
                 <AddMemoButton
                   onAdd={() => {
-                    console.log("Add new memo to right");
+                    if (rightRecruitmentId) {
+                      createRightMemoMutation.mutate({
+                        title: "",
+                        content: ""
+                      });
+                    }
                   }}
                 />
               </div>

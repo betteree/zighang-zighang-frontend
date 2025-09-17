@@ -10,7 +10,7 @@ interface MemoListProps {
   viewMode?: "single" | "split";
   leftSelectedMemo?: string | null;
   rightSelectedMemo?: string | null;
-  onDeleteMemo?: (memoId: string) => void;
+  onBulkDeleteRecruitments?: (recruitmentIds: string[]) => void;
 }
 
 export default function MemoList({
@@ -20,39 +20,49 @@ export default function MemoList({
   viewMode = "single",
   leftSelectedMemo,
   rightSelectedMemo,
-  onDeleteMemo,
+  onBulkDeleteRecruitments,
 }: MemoListProps) {
   const [isEditMode, setIsEditMode] = useState(false);
-  const [selectedMemosForDelete, setSelectedMemosForDelete] = useState<
+  const [selectedRecruitmentsForDelete, setSelectedRecruitmentsForDelete] = useState<
     Set<string>
   >(new Set());
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   const handleEditClick = () => {
     setIsEditMode(true);
-    setSelectedMemosForDelete(new Set());
+    setSelectedRecruitmentsForDelete(new Set());
   };
 
   const handleCompleteClick = () => {
     setIsEditMode(false);
-    setSelectedMemosForDelete(new Set());
+    setSelectedRecruitmentsForDelete(new Set());
   };
 
   const handleDeleteClick = () => {
-    if (selectedMemosForDelete.size > 0) {
+    if (selectedRecruitmentsForDelete.size > 0) {
       setIsDeleteModalOpen(true);
     }
   };
 
-  const handleConfirmDelete = () => {
-    if (selectedMemosForDelete.size > 0 && onDeleteMemo) {
-      selectedMemosForDelete.forEach((memoId) => {
-        onDeleteMemo(memoId);
-      });
+
+  const handleRecruitmentSelectForDelete = (recruitmentId: string) => {
+    const newSelected = new Set(selectedRecruitmentsForDelete);
+    if (newSelected.has(recruitmentId)) {
+      newSelected.delete(recruitmentId);
+    } else {
+      newSelected.add(recruitmentId);
     }
-    setIsDeleteModalOpen(false);
-    setIsEditMode(false);
-    setSelectedMemosForDelete(new Set());
+    setSelectedRecruitmentsForDelete(newSelected);
+  };
+
+
+  const handleConfirmDelete = () => {
+    if (selectedRecruitmentsForDelete.size > 0 && onBulkDeleteRecruitments) {
+      onBulkDeleteRecruitments(Array.from(selectedRecruitmentsForDelete));
+      setIsDeleteModalOpen(false);
+      setIsEditMode(false);
+      setSelectedRecruitmentsForDelete(new Set());
+    }
   };
 
   const handleCancelDelete = () => {
@@ -60,27 +70,12 @@ export default function MemoList({
   };
 
   const getSelectedMemoTitle = () => {
-    if (selectedMemosForDelete.size === 0) return "선택된 메모";
-    
-    // 첫 번째 선택된 메모의 제목만 표시
-    const selectedMemoIds = Array.from(selectedMemosForDelete);
-    const firstSelectedMemoId = selectedMemoIds[0];
-    const firstSelectedGroup = memoGroups.find(group => 
-      group.memos.some(memo => memo.id === firstSelectedMemoId)
-    );
-    
-    return firstSelectedGroup?.recruitment.title || "선택된 메모";
+    if (selectedRecruitmentsForDelete.size > 0) {
+      return `${selectedRecruitmentsForDelete.size}개 공고의 모든 메모`;
+    }
+    return "선택된 메모";
   };
 
-  const handleMemoSelectForDelete = (memoId: string) => {
-    const newSelected = new Set(selectedMemosForDelete);
-    if (newSelected.has(memoId)) {
-      newSelected.delete(memoId);
-    } else {
-      newSelected.add(memoId);
-    }
-    setSelectedMemosForDelete(newSelected);
-  };
   return (
     <div className="w-1/3 flex flex-col border border-[#E1E1E4] rounded-l-[8px] h-[600px]">
       <div className="h-[58px] flex justify-between px-4 py-[14px] text-Heading3-18sb border-b border-[#E1E1E4] flex-shrink-0">
@@ -89,7 +84,8 @@ export default function MemoList({
           <div className="flex gap-2">
             <button
               onClick={handleDeleteClick}
-              className="text-Button3-14sb text-[#303030] border border-[#E1E1E4] rounded-[8px] px-[14px] py-1 bg-white cursor-pointer"
+              disabled={selectedRecruitmentsForDelete.size === 0}
+              className="text-Button3-14sb text-[#303030] border border-[#E1E1E4] rounded-[8px] px-[14px] py-1 bg-white cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
               삭제
             </button>
@@ -122,8 +118,8 @@ export default function MemoList({
               : leftSelectedMemo === firstMemoId ||
                 rightSelectedMemo === firstMemoId;
 
-          const isSelectedForDelete = selectedMemosForDelete.has(
-            firstMemoId || ""
+          const isRecruitmentSelectedForDelete = selectedRecruitmentsForDelete.has(
+            group.recruitment.id
           );
 
           return (
@@ -133,24 +129,28 @@ export default function MemoList({
                 isSelected ? "bg-[#F7F1FB]" : "hover:bg-gray-50"
               }`}
               onClick={() => {
-                if (isEditMode) {
-                  handleMemoSelectForDelete(firstMemoId || "");
-                } else {
+                if (!isEditMode) {
                   onMemoSelect(firstMemoId || "");
                 }
               }}
             >
               <div className="relative">
                 {isEditMode && (
-                  <div className="absolute right-0 top-0">
+                  <div 
+                    className="absolute right-0 top-0"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRecruitmentSelectForDelete(group.recruitment.id);
+                    }}
+                  >
                     <div
                       className={`w-5 h-5 border rounded-[4px] flex items-center justify-center ${
-                        isSelectedForDelete
+                        isRecruitmentSelectedForDelete
                           ? "bg-black border-black"
                           : "bg-white border-2 border-[#E1E1E4]"
                       }`}
                     >
-                      {isSelectedForDelete && (
+                      {isRecruitmentSelectedForDelete && (
                         <svg
                           width="12"
                           height="9"
