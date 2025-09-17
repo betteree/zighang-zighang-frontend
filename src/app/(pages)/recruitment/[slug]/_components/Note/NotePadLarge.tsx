@@ -7,6 +7,7 @@ import NoteItem from "./NoteItem";
 import { useNotes } from "@/app/(pages)/recruitment/[slug]/_hooks/useNotes";
 import { NoteIcon } from "../Icons/NoteIcon";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 type Props = {
   isOpen: boolean;
@@ -170,7 +171,7 @@ export default function NotePadLarge({
             )}
 
             <div className="w-full flex-1 inline-flex flex-col justify-start items-start gap-2">
-              {isLoggedIn && (
+              {isLoggedIn ? (
                 <div className="w-full flex flex-col gap-2">
                   <div
                     className={[
@@ -200,6 +201,22 @@ export default function NotePadLarge({
                       onTitleBlur={notesHook.flushTitle}
                     />
                   ))}
+                </div>
+              ) : (
+                <div className="mt-20 w-full flex flex-col items-center justify-center h-full">
+                  <div className=" z-50 bg-white shadow-md rounded-lg px-8 py-4 border border-neutral-200 text-center">
+                    <div className="text-center font-semibold text-base mb-2">
+                      로그인하고 관심있는 공고에 <br />
+                      <span className="text-zighang-1000">메모를 기록</span>
+                      해보세요!
+                    </div>
+                    <Link
+                      href="/join"
+                      className="inline-flex items-center justify-center rounded-md bg-zighang-1000 px-6 py-2 text-white text-sm hover:bg-purple-700 transition-colors"
+                    >
+                      로그인
+                    </Link>
+                  </div>
                 </div>
               )}
             </div>

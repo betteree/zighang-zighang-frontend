@@ -75,7 +75,7 @@ export type UserData = {
   interestedJobCategories: string[];
   careerYear: number;
   educationLevel: string;
-  preferredRegion: string[] | null;
+  preferredRegions: string[] | null;
 };
 
 export type OnboardingApiResponse = {

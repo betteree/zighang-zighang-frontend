@@ -82,11 +82,8 @@ export default function SidebarActions({ slug, job }: SidebarActionsProps) {
         />
       )}
 
-      <div className="fixed bottom-20 right-0 z-[49]  px-4 md:hidden">
-        <button
-          onClick={handleTopButtonClick}
-          className="w-full bg-white border border-[#EDEDED] rounded-full px-3 py-3 shadow-lg hover:bg-zinc-50 transition-colors"
-        >
+      <div className="fixed bottom-11 -right-5 z-[49]  px-4 md:hidden">
+        <button onClick={handleTopButtonClick}>
           <NoteIcon />
         </button>
       </div>
@@ -112,14 +109,14 @@ export default function SidebarActions({ slug, job }: SidebarActionsProps) {
             onClick={handleShareClick}
             className="whitespace-nowrap text-sm font-medium focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 hover:bg-zinc-100 active:bg-zinc-200 transition-colors flex h-12 flex-1 items-center justify-center gap-2.5 rounded-lg bg-[#F7F1FB] px-4 py-3"
           >
-            <div className="bg-gradient-to-b from-[#6F00B6] to-[#6F00B6] bg-clip-text text-base font-semibold text-transparent">
+            <div className="bg-gradient-to-b from-[#7951ff] to-[#7951ff] bg-clip-text text-base font-semibold text-transparent">
               {isCopied ? "복사됨!" : "공유하기"}
             </div>
           </button>
           <button
             onClick={handleApplyClick}
             disabled={isLogging}
-            className="whitespace-nowrap rounded-lg text-sm font-medium focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 bg-primary text-white hover:bg-primary/90 transition-colors hover:cursor-pointer px-4 py-2 flex h-12 flex-1 items-center justify-center"
+            className="whitespace-nowrap rounded-lg text-sm font-medium focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 bg-zighang-1000 text-white hover:bg-primary/90 transition-colors hover:cursor-pointer px-4 py-2 flex h-12 flex-1 items-center justify-center"
           >
             <span className="text-base">지원하기</span>
           </button>
@@ -133,35 +130,133 @@ export default function SidebarActions({ slug, job }: SidebarActionsProps) {
 function NoteIcon() {
   return (
     <svg
-      width="28"
-      height="27"
-      viewBox="0 0 28 27"
+      width="76"
+      height="90"
+      viewBox="0 0 76 90"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <rect
-        x="1.09065"
-        y="1.06819"
-        width="19.9841"
-        height="24.7045"
-        rx="2.206"
-        stroke="#5E5E5F"
-        strokeWidth="2.04458"
-      />
-      <path
-        d="M27.3478 8.74868C26.9639 8.33364 26.4314 8.0874 25.8665 8.06374C25.3017 8.04008 24.7504 8.24092 24.3332 8.6224L15.5674 16.6843C15.5128 16.7329 15.47 16.7934 15.4422 16.8611L13.7661 20.5716C13.7243 20.6674 13.7108 20.7732 13.7274 20.8765C13.7439 20.9797 13.7898 21.076 13.8595 21.1539C13.9297 21.2322 14.0218 21.2876 14.1239 21.3129C14.2259 21.3382 14.3332 21.3322 14.4319 21.2957L18.2794 19.9467C18.3474 19.9209 18.4105 19.8837 18.466 19.8367L27.2211 11.7744C27.4282 11.5841 27.5958 11.3549 27.7142 11.0998C27.8327 10.8447 27.8998 10.5688 27.9115 10.2878C27.9233 10.0068 27.8796 9.72622 27.7828 9.46213C27.6861 9.19804 27.5383 8.9556 27.3478 8.74868Z"
-        fill="#5E5E5F"
-      />
-      <path
-        d="M6.16406 7.57812H15.8489"
-        stroke="#5E5E5F"
-        strokeWidth="2.15219"
-      />
-      <path
-        d="M6.16406 11.8828H15.8489"
-        stroke="#5E5E5F"
-        strokeWidth="2.15219"
-      />
+      <g filter="url(#filter0_dddd_4351_46808)">
+        <rect x="6" y="2.42285" width="60" height="60" rx="30" fill="white" />
+        <rect
+          x="6.5"
+          y="2.92285"
+          width="59"
+          height="59"
+          rx="29.5"
+          stroke="#E1E1E4"
+        />
+        <rect
+          x="25.0907"
+          y="19.0682"
+          width="19.9841"
+          height="24.7045"
+          rx="2.206"
+          stroke="#5E5E5F"
+          strokeWidth="2.04458"
+        />
+        <path
+          d="M51.3478 26.7487C50.9639 26.3336 50.4314 26.0874 49.8665 26.0637C49.3017 26.0401 48.7504 26.2409 48.3332 26.6224L39.5674 34.6843C39.5128 34.7329 39.47 34.7934 39.4422 34.8611L37.7661 38.5716C37.7243 38.6674 37.7108 38.7732 37.7274 38.8765C37.7439 38.9797 37.7898 39.076 37.8595 39.1539C37.9297 39.2322 38.0218 39.2876 38.1239 39.3129C38.2259 39.3382 38.3332 39.3322 38.4319 39.2957L42.2794 37.9467C42.3474 37.9209 42.4105 37.8837 42.466 37.8367L51.2211 29.7744C51.4282 29.5841 51.5958 29.3549 51.7142 29.0998C51.8327 28.8447 51.8998 28.5688 51.9115 28.2878C51.9233 28.0068 51.8796 27.7262 51.7828 27.4621C51.6861 27.198 51.5383 26.9556 51.3478 26.7487Z"
+          fill="#5E5E5F"
+        />
+        <path
+          d="M30.1641 25.5781H39.8489"
+          stroke="#5E5E5F"
+          strokeWidth="2.15219"
+        />
+        <path
+          d="M30.1641 29.8828H39.8489"
+          stroke="#5E5E5F"
+          strokeWidth="2.15219"
+        />
+      </g>
+      <defs>
+        <filter
+          id="filter0_dddd_4351_46808"
+          x="0"
+          y="0.422852"
+          width="76"
+          height="89"
+          filterUnits="userSpaceOnUse"
+          colorInterpolationFilters="sRGB"
+        >
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset dy="1" />
+          <feGaussianBlur stdDeviation="1.5" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.121569 0 0 0 0 0.121569 0 0 0 0 0.121569 0 0 0 0.08 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_4351_46808"
+          />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset dy="5" />
+          <feGaussianBlur stdDeviation="2.5" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.121569 0 0 0 0 0.121569 0 0 0 0 0.121569 0 0 0 0.07 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="effect1_dropShadow_4351_46808"
+            result="effect2_dropShadow_4351_46808"
+          />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset dx="1" dy="11" />
+          <feGaussianBlur stdDeviation="3" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.121569 0 0 0 0 0.121569 0 0 0 0 0.121569 0 0 0 0.04 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="effect2_dropShadow_4351_46808"
+            result="effect3_dropShadow_4351_46808"
+          />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feOffset dx="2" dy="19" />
+          <feGaussianBlur stdDeviation="4" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0.121569 0 0 0 0 0.121569 0 0 0 0 0.121569 0 0 0 0.01 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="effect3_dropShadow_4351_46808"
+            result="effect4_dropShadow_4351_46808"
+          />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="effect4_dropShadow_4351_46808"
+            result="shape"
+          />
+        </filter>
+      </defs>
     </svg>
   );
 }

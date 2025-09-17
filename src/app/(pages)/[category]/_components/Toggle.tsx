@@ -7,7 +7,7 @@ export default function Toggle() {
   return (
     <button
       onClick={() => setEnabled(!enabled)}
-      className="flex items-center gap-1.5 rounded-[10px] p-2"
+      className="flex items-center gap-1.5 rounded-[10px] p-2 cursor-pointer"
     >
       <div className="relative inline-flex cursor-pointer items-center">
         <div

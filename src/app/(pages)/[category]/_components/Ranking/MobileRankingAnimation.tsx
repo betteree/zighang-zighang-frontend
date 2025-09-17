@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuthState } from "@/app/_api/auth/useAuthState";
 import { Job } from "@/app/_types/jobs";
+import { useRouter } from "next/navigation";
 
 interface MobileRankingAnimationProps {
   slug: string;
@@ -18,6 +19,7 @@ export function MobileRankingAnimation({
   error,
 }: MobileRankingAnimationProps) {
   const { isLoggedIn } = useAuthState();
+  const router = useRouter();
   const [currentStep] = useState(0);
   const [currentRankingIndex, setCurrentRankingIndex] = useState(-1);
 
@@ -158,7 +160,12 @@ export function MobileRankingAnimation({
             {currentRankingIndex >= 0 && topItems[currentRankingIndex] && (
               <div
                 key={topItems[currentRankingIndex].id}
-                className="flex gap-2 items-center justify-start w-full animate-slide-up"
+                className="flex gap-2 items-center justify-start w-full animate-slide-up cursor-pointer hover:bg-gray-50 rounded-lg p-2 transition-colors"
+                onClick={() =>
+                  router.push(
+                    `/recruitment/${topItems[currentRankingIndex].id}`
+                  )
+                }
               >
                 <p className="text-purple-800 text-sm font-medium">
                   {currentRankingIndex + 1}

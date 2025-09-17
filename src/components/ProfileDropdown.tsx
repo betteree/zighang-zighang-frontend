@@ -62,7 +62,7 @@ export default function ProfileDropdown({
           onClose();
         }}
       >
-        메모장
+        메모관리
       </Link>
       <button
         onClick={onLogout}

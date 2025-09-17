@@ -45,7 +45,10 @@ export function IntroStep({
               <label className="flex items-center justify-center gap-2 text-[#363636] text-[16px] mb-2 md:mb-6">
                 <input
                   type="checkbox"
-                  className="w-4 h-5 md:w-5 md:h-5"
+                  className="w-4 h-5 md:w-5 md:h-5 accent-violet-600 cursor-pointer"
+                  style={{
+                    accentColor: "#7951FF",
+                  }}
                   checked={applyRecent}
                   onChange={(e) => setApplyRecent(e.target.checked)}
                 />

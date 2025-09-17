@@ -37,7 +37,7 @@ export type ApiOnboardingPayload = {
   careerYear: number;
   educationLevel: string;
   graduationStatus: string;
-  preferredRegion: string[] | null;
+  preferredRegions: string[] | null;
 };
 
 function toApiPayload(context: 지역입력): ApiOnboardingPayload {
@@ -47,7 +47,7 @@ function toApiPayload(context: 지역입력): ApiOnboardingPayload {
     careerYear: context.경력 || 0,
     educationLevel: mapEducationLevel(context.학력 || ""),
     graduationStatus: mapGraduationStatus(context.졸업상태 || "졸업"),
-    preferredRegion: context.지역 ?? null,
+    preferredRegions: context.지역 ?? null,
   };
 }
 

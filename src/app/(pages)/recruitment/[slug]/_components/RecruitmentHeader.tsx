@@ -76,7 +76,7 @@ export default function RecruitmentHeader({
           </div>
         )}
       </section>
-      <div className="flex w-full flex-col gap-2">
+      <div className="flex w-full flex-col gap-2 md:gap-0">
         <div className="flex justify-between">
           <h1 className="break-all text-xl font-semibold text-black md:gap-5 md:text-[26px]">
             {job.title}
@@ -85,14 +85,14 @@ export default function RecruitmentHeader({
             <button
               onClick={toggle}
               disabled={isPending}
-              className={`inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 bg-white hover:bg-zinc-100 active:bg-zinc-200 transition-colors h-12 min-w-12 p-2 border border-[#EDEDED] ${
+              className={`cursor-pointer inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 bg-white hover:bg-zinc-100 active:bg-zinc-200 transition-colors h-12 min-w-12 p-2 border border-[#EDEDED] ${
                 bookmarkState ? "bg-[#F7F1FB]" : "bg-[#FAFAFA]"
               }`}
             >
               <Icon
                 variant="bookmark"
                 className={`transition-transform w-7 h-7 ${
-                  bookmarkState ? "text-purple-800" : "text-gray-200"
+                  bookmarkState ? "text-zighang-1000" : "text-gray-200"
                 }`}
               />
             </button>
@@ -100,9 +100,9 @@ export default function RecruitmentHeader({
             <button
               onClick={handleApplyClick}
               disabled={isLogging}
-              className="relative whitespace-nowrap rounded-lg text-sm font-medium focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 bg-primary text-white hover:bg-primary/90 transition-colors hover:cursor-pointer px-18 py-2 flex h-12 flex-1 items-center justify-center"
+              className="relative whitespace-nowrap rounded-lg text-sm font-medium focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 bg-zighang-1000 text-white hover:bg-primary/90 transition-colors hover:cursor-pointer px-18 py-2 flex h-12 flex-1 items-center justify-center"
             >
-              <span className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 z-10 px-3 py-0.5 rounded-full border border-primary bg-white text-primary text-[12px] font-semibold leading-none shadow-sm">
+              <span className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 z-10 px-3 py-0.5 rounded-full border border-zighang-1000 bg-white text-primary text-[12px] font-semibold leading-none shadow-sm">
                 {job.deadlineType}
               </span>
               <span className="text-lg">지원하기</span>

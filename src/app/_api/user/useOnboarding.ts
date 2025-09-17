@@ -9,7 +9,7 @@ type OnboardingPayload = {
   careerYear: number;
   educationLevel: string;
   graduationStatus: string;
-  preferredRegion: string[] | null;
+  preferredRegions: string[] | null;
 };
 
 async function submitOnboarding(

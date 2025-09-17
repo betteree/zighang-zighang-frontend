@@ -224,14 +224,14 @@ export default function NotePad({
                   <div className="absolute h-full inset-0 z-10 flex flex-col items-center justify-center">
                     <div className="bg-white shadow-md rounded-lg px-2 py-4.5 border border-neutral-200">
                       <div className="text-center font-semibold text-sm">
-                        로그인하고 관심있는 공고에{" "}
-                        <span className="text-purple-700">메모를 기록</span>{" "}
+                        로그인하고 관심있는 공고에 <br />
+                        <span className="text-zighang-1000">메모를 기록</span>
                         해보세요!
                       </div>
                     </div>
                     <Link
                       href="/join"
-                      className="mt-2 w-full inline-flex items-center justify-center rounded-md bg-purple-800 px-3 py-1.5 text-white text-sm hover:bg-purple-700"
+                      className="mt-2 w-full inline-flex items-center justify-center rounded-md bg-zighang-1000 px-3 py-1.5 text-white text-sm hover:bg-purple-700"
                     >
                       로그인
                     </Link>

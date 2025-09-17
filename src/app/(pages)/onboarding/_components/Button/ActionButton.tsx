@@ -9,7 +9,7 @@ export function ActionButton({
 }) {
   const getButtonClasses = () => {
     const baseClasses =
-      "flex items-center justify-center text-Button2-16sb w-full md:w-auto px-4 md:px-[64px] h-[50px] md:h-[42px] text-white rounded-[8px] transition-all duration-200";
+      "flex items-center justify-center text-Button2-16sb w-full md:w-auto px-4 md:px-[64px] h-[50px] md:h-[42px] text-white rounded-[8px] transition-all duration-200 ";
 
     switch (state) {
       case "abled":

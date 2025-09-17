@@ -32,9 +32,11 @@ export default function Header() {
 
   const handleLogout = () => {
     localStorage.removeItem("zh_access_token");
+    localStorage.removeItem("zh_refresh_token");
     localStorage.removeItem("user_name");
     setIsLoggedIn(false);
     setIsProfileDropdownOpen(false);
+    window.location.reload();
   };
 
   const handlePersonalClick = () => {
@@ -63,7 +65,7 @@ export default function Header() {
   return (
     <>
       <header className="relative w-full md:px-10">
-        <div className="relative z-10 box-border flex w-full flex-row items-center justify-between py-3 md:py-3">
+        <div className="relative z-50 box-border flex w-full flex-row items-center justify-between py-3 md:py-3">
           <div className="ml-3 flex items-center gap-5">
             <Link href="/" className="mr-4 flex-shrink-0 md:flex-shrink">
               <Image

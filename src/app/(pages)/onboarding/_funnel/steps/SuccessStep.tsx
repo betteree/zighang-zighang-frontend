@@ -135,7 +135,7 @@ export default function SuccessStep({
         </p>
 
         <section
-          className="mx-auto w-full mt-7 relative overflow-hidden
+          className="mx-auto w-full mt-10 relative overflow-hidden
     [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]
     [mask-size:100%_100%] [mask-repeat:no-repeat]
     [-webkit-mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]
@@ -150,9 +150,9 @@ export default function SuccessStep({
           />
         </section>
 
-        <StepActions showBorder={false} className="mt-11">
+        <StepActions showBorder={false} className="mt-7">
           <button
-            className="text-white text-base font-semibold px-10 py-3 bg-violet-500 rounded-lg w-full md:w-auto"
+            className="text-white text-base font-semibold px-10 py-3 bg-violet-500 rounded-lg w-full md:w-auto cursor-pointer"
             onClick={handleComplete}
           >
             공고 탐색 시작

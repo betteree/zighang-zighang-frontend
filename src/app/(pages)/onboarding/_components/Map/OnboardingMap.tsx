@@ -166,7 +166,7 @@ function MapBase({
                 <foreignObject x={-30} y={0} width={56} height={22}>
                   <div
                     className="w-full h-full flex items-center justify-center
-                               border-2 border-violet-600 rounded-full bg-white
+                               border-1 border-violet-600 rounded-full bg-white
                                text-[11px] font-semibold leading-[18px] text-violet-700
                                px-[6px]"
                   >

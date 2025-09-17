@@ -46,7 +46,7 @@ function CallbackInner() {
         user.interestedJobCategories.length === 0 ||
         user.careerYear === 0 ||
         user.educationLevel === null ||
-        user.preferredRegion.length === 0;
+        user.preferredRegions.length === 0;
 
       const next = needsOnboarding ? "/onboarding" : "/";
       router.replace(next);

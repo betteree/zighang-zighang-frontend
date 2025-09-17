@@ -34,8 +34,8 @@ export function LocationStep({
           // 이미 선택된 지역이면 제거
           return prev.filter((region) => region !== next);
         } else {
-          // 선택되지 않은 지역이면 기존 선택 완전 초기화 후 새로 선택한 것만 추가
-          return [next];
+          // 선택되지 않은 지역이면 기존 선택에 추가
+          return [...prev, next];
         }
       });
     },

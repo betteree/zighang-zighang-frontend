@@ -9,7 +9,7 @@ export default function Filter({ activated = false, onClick }: FilterProps) {
     <button
       onClick={onClick}
       aria-label={activated ? "필터 임시 해제" : "필터 적용"}
-      className={`flex h-10 w-10 items-center justify-center rounded-lg md:h-11 md:w-11 active:bg-[#E4DAFF] md:hover:bg-gray-100
+      className={`cursor-pointer flex h-10 w-10 items-center justify-center rounded-lg md:h-11 md:w-11 active:bg-[#E4DAFF] 
         ${
           activated
             ? " bg-violet-100"

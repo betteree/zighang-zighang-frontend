@@ -10,7 +10,7 @@ export const RegionButton = forwardRef<
 >(function RegionButton({ label, active, onClick }, ref) {
   const getButtonClasses = () => {
     const baseClasses =
-      "w-60 md:w-48 px-3.5 py-1.5 text-sm font-medium text-left";
+      "w-60 md:w-48 px-3.5 py-1.5 text-sm font-medium text-left border-b border-zinc-200 cursor-pointer";
     return active
       ? `${baseClasses} bg-purple-100 text-purple-900`
       : `${baseClasses} bg-white text-black`;

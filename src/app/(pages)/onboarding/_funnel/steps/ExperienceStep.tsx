@@ -38,8 +38,14 @@ export function ExperienceStep({
   const touchStartYRef = React.useRef<number | null>(null);
   const accumDeltaRef = React.useRef(0);
   const lastTickRef = React.useRef<number>(0);
-  const SWIPE_STEP_PX = 50; // 1년 변화 기준 거리
-  const SWIPE_COOLDOWN_MS = 80; // 연속 변화 쿨다운
+  const SWIPE_STEP_PX = 220; // 1년 변화 기준 거리
+  const SWIPE_COOLDOWN_MS = 240; // 연속 변화 쿨다운
+
+  // 추가: 너무 작은/큰 움직임 무시·완화
+  const DEADZONE_PX = 18; // 이 값 미만은 무시해서 미세 흔들림 차단
+  const MAX_DELTA_PER_FRAME = 40; // 프레임당 최대 반영 이동량(스파이크 캡)
+  const FRICTION = 0.7; // 스텝 처리 후 누적치에 마찰(잔떨림 완화)
+
   // 마우스 드래그용
   const pointerStartYRef = React.useRef<number | null>(null);
   const pointerActiveRef = React.useRef(false);
@@ -58,6 +64,14 @@ export function ExperienceStep({
   const adjustByDelta = (deltaY: number) => {
     const now = performance.now();
     if (now - lastTickRef.current < SWIPE_COOLDOWN_MS) return;
+
+    // 1) 아주 작은 흔들림은 무시 (데드존)
+    if (Math.abs(deltaY) < DEADZONE_PX) return;
+
+    // 2) 갑작스런 큰 값은 캡 (트랙패드/모바일 스파이크 완화)
+    if (deltaY > MAX_DELTA_PER_FRAME) deltaY = MAX_DELTA_PER_FRAME;
+    if (deltaY < -MAX_DELTA_PER_FRAME) deltaY = -MAX_DELTA_PER_FRAME;
+
     accumDeltaRef.current += deltaY;
 
     while (accumDeltaRef.current <= -SWIPE_STEP_PX) {
@@ -70,6 +84,8 @@ export function ExperienceStep({
       if (!stepped) break;
       accumDeltaRef.current += SWIPE_STEP_PX;
       lastTickRef.current = now;
+
+      accumDeltaRef.current *= FRICTION;
     }
     while (accumDeltaRef.current >= SWIPE_STEP_PX) {
       let stepped = false;
@@ -81,6 +97,7 @@ export function ExperienceStep({
       if (!stepped) break;
       accumDeltaRef.current -= SWIPE_STEP_PX;
       lastTickRef.current = now;
+      accumDeltaRef.current *= FRICTION;
     }
   };
 
@@ -216,7 +233,7 @@ export function ExperienceStep({
         </span>
       </div>
       <div
-        className="w-full flex flex-col items-center md:h-[calc(500px-55px)] select-none"
+        className=" touch-pan-y w-full flex flex-col items-center md:h-[calc(500px-55px)] select-none"
         onTouchStart={onTouchStartPage}
         onTouchMove={onTouchMovePage}
         onTouchEnd={onTouchEndPage}

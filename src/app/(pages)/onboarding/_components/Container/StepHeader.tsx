@@ -22,7 +22,7 @@ export function StepHeader({
       <button
         type="button"
         onClick={onBack}
-        className="text-Button1-18sb flex items-center"
+        className="text-Button1-18sb flex items-center cursor-pointer"
         aria-label="이전"
       >
         <ArrowLeft className="text-black mr-[2px]" />

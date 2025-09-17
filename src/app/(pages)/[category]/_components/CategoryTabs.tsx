@@ -17,7 +17,7 @@ export default function CategoryTabs({ active, onChange }: Props) {
         <button
           key={tab.key}
           onClick={() => onChange(tab.key)}
-          className={`text-lg font-semibold h-11 inline-flex items-center gap-2.5 ml-4 mt-1 transition-colors md:text-2xl md:h-16
+          className={`cursor-pointer text-lg font-semibold h-11 inline-flex items-center gap-2.5 ml-4 mt-1 transition-colors md:text-2xl md:h-16
             border-b-[3px] ${
               active === tab.key
                 ? "border-neutral-700"

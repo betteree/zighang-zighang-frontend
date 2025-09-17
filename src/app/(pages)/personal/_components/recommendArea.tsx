@@ -8,6 +8,7 @@ import UserName from "./UserName";
 import { InfoCircle } from "../../onboarding/_components/Icons/InfoCircle";
 import InfoBubble from "./InfoBubble";
 import { useRouter } from "next/navigation";
+import { useAuthState } from "@/app/_api/auth/useAuthState";
 
 // 임시 목업 데이터 (파일이 없을 때 사용)
 const mockRecruitments = [
@@ -60,6 +61,7 @@ export default function RecommendArea({
   isAnalysisModalOpen = false,
 }: RecommendAreaProps) {
   const router = useRouter();
+  const { isLoggedIn } = useAuthState();
 
   // React Query로 추천 공고 데이터 가져오기
   const {
@@ -86,7 +88,7 @@ export default function RecommendArea({
               </span>
               추천 공고
               <span className="text-purple-800 text-lg md:text-xl font-semibold ml-1">
-                {allRecommendedData.length}
+                N
               </span>
               건
             </>
@@ -111,7 +113,7 @@ export default function RecommendArea({
           <div className="p-3 flex items-center justify-center flex-col w-full md:w-[763px]">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-violet-500 mx-auto mb-2"></div>
             <p className="text-gray-600 text-sm">
-              추천 공고를 불러오고 있습니다...
+              AI가 추천공고를 탐색 중입니다...
             </p>
           </div>
         ) : error ? (
@@ -181,12 +183,14 @@ export default function RecommendArea({
                 받아보세요
               </span>
             </div>
-            <button
-              className="text-white text-Subheading4-12m  bg-violet-500 rounded-lg w-44 px-12 py-2 mt-3 cursor-pointer"
-              onClick={() => router.push("/join")}
-            >
-              로그인
-            </button>
+            {!isLoggedIn && (
+              <button
+                className="text-white text-Subheading4-12m  bg-violet-500 rounded-lg w-44 px-12 py-2 mt-3 cursor-pointer"
+                onClick={() => router.push("/join")}
+              >
+                로그인
+              </button>
+            )}
           </div>
         </div>
       )}

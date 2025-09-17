@@ -9,6 +9,7 @@
   --line: #ededed;
   --zighangtext-60: #646464;
   --label-neutral: #6b7280;
+  --zighang-1000: #7951ff;
 }
 
 /* Tailwind 테마 토큰 — 유틸/브레이크포인트 생성 */
@@ -20,6 +21,7 @@
   --color-line: var(--line);
   --color-zighangtext-60: var(--zighangtext-60);
   --color-label-neutral: var(--label-neutral);
+  --color-zighang-1000: var(--zighang-1000);
 
   /* Fonts → font-sans / font-heading 사용 */
   --font-sans: "Pretendard Variable", "Pretendard", system-ui, -apple-system,

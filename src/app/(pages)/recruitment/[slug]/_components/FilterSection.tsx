@@ -6,7 +6,7 @@ interface FilterSectionProps {
 
 export default function FilterSection({ job }: FilterSectionProps) {
   return (
-    <div className="sticky top-0 z-[30] flex w-full cursor-pointer bg-white border-b border-b-line px-4 py-6 md:border-b md:border-b-line xl:justify-center xl:px-0 xl:py-6">
+    <div className="sticky top-0 flex w-full z-20 cursor-pointer bg-white border-b border-b-line px-4 py-6 md:border-b md:border-b-line xl:justify-center xl:px-0 xl:py-6">
       <div className="flex w-full justify-between md:gap-5 xl:max-w-[1200px] xl:justify-start">
         <div className="flex items-center gap-[6px]">
           {job.jobGroup && (

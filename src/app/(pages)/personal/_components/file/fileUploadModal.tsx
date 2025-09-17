@@ -321,7 +321,7 @@ export default function FileUploadModal({
                   }`}
                   disabled={uploadedFiles.length === 0 || isSubmitting}
                 >
-                  {isSubmitting ? "제출 중..." : "완료"}
+                  {isSubmitting ? "제출 중" : "완료"}
                 </button>
               </div>
               <div className="flex gap-2 mb-2">

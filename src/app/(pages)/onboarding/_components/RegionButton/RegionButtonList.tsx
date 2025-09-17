@@ -20,9 +20,9 @@ export default function RegionButtonList({
 
   useEffect(() => {
     if (value.length === 0) return;
-    // 첫 번째 선택된 항목으로 스크롤
-    const firstSelected = value[0];
-    const el = itemRefs.current[firstSelected];
+    // 가장 최근에 선택된 항목으로 스크롤
+    const lastSelected = value[value.length - 1];
+    const el = itemRefs.current[lastSelected];
     if (el && containerRef.current) {
       el.scrollIntoView({
         block: "center",

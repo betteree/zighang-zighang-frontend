@@ -42,7 +42,7 @@ export default function ResultHeader({ total, className = "" }: Props) {
             aria-checked={onlyHiring}
             onClick={() => setOnlyHiring((v) => !v)}
             className={[
-              "relative inline-flex h-5 w-9 items-center rounded-full transition-colors",
+              "relative inline-flex h-5 w-9 items-center rounded-full transition-colors cursor-pointer",
               onlyHiring ? "bg-[#7a52ff]" : "bg-gray-300",
             ].join(" ")}
           >
@@ -62,7 +62,7 @@ export default function ResultHeader({ total, className = "" }: Props) {
           onClick={() =>
             setSortKey((k) => (k === "views" ? "latest" : "views"))
           }
-          className="ds-mobile-listoption ml-auto flex items-center gap-1 rounded-lg py-3 text-sm font-bold text-[#7D7D7D] focus:outline-none active:bg-zinc-100 md:gap-2"
+          className="cursor-pointer ds-mobile-listoption ml-auto flex items-center gap-1 rounded-lg py-3 text-sm font-bold text-[#7D7D7D] focus:outline-none active:bg-zinc-100 md:gap-2"
         >
           <Image
             src="https://zighang.com/icon/sort.svg"

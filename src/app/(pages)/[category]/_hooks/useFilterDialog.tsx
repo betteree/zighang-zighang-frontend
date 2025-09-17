@@ -92,7 +92,16 @@ function mapApiParamsToFilterState(apiParams: {
       : "전체",
     jobRoles:
       apiParams.jobs && apiParams.jobs.length > 0
-        ? apiParams.jobs.map((job) => jobReverseMap[job] || job)
+        ? (() => {
+            console.log("원본 jobs:", apiParams.jobs);
+            const mappedJobs = apiParams.jobs
+              .map((job) => jobReverseMap[job] || job)
+              .filter((job) => job !== "미정"); // "미정" 제거
+            console.log("미정 제거 후 jobs:", mappedJobs);
+            const result = mappedJobs.length > 0 ? mappedJobs : ["전체"];
+            console.log("최종 jobRoles:", result);
+            return result;
+          })()
         : ["전체"],
     hireTypes: ["전체"],
     educations:
@@ -140,6 +149,7 @@ export function FilterDialogProvider({
       if (savedFilters) {
         const filterState = mapApiParamsToFilterState(savedFilters);
         console.log("변환된 필터 상태:", filterState);
+        console.log("jobRoles:", filterState.jobRoles);
         setFilters(filterState);
       }
       hasLoadedFromStorage.current = true;

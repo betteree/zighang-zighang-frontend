@@ -52,7 +52,7 @@ export default function FilterModal() {
           <h2 className="text-lg font-semibold">필터</h2>
           <button
             onClick={closeDialog}
-            className="text-zinc-500 hover:text-black"
+            className="text-zinc-500 hover:text-black cursor-pointer"
           >
             ✕
           </button>
@@ -71,7 +71,16 @@ export default function FilterModal() {
             title="직무"
             note="중복 선택 가능"
             options={jobRoleOptions}
-            selected={(o) => filters.jobRoles.includes(o)}
+            selected={(o) => {
+              const isSelected = filters.jobRoles.includes(o);
+              console.log(
+                `직무 옵션 "${o}" 선택됨:`,
+                isSelected,
+                "전체 jobRoles:",
+                filters.jobRoles
+              );
+              return isSelected;
+            }}
             onToggle={toggleJobRole}
           />
           <FilterSection
@@ -122,7 +131,7 @@ export default function FilterModal() {
         <div className="sticky bottom-0 flex items-center gap-4 border-t md:rounded-b-lg border-zinc-200 bg-white px-6 py-4">
           <button
             onClick={resetAll}
-            className="px-4 py-3 rounded-lg  border-2 border-zinc-300 text-sm  text-zinc-700 hover:bg-zinc-50"
+            className="px-4 py-3 rounded-lg  border-2 border-zinc-300 text-sm  text-zinc-700 hover:bg-zinc-50 cursor-pointer"
           >
             초기화
           </button>
@@ -130,7 +139,7 @@ export default function FilterModal() {
             onClick={() => {
               closeDialog();
             }}
-            className="flex-1 py-3 rounded-lg font-semibold text-white bg-violet-600 hover:bg-violet-700"
+            className="flex-1 py-3 rounded-lg font-semibold text-white bg-violet-600 hover:bg-violet-700 cursor-pointer"
           >
             적용
           </button>
