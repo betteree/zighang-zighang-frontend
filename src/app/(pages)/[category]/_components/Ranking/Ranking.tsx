@@ -1,23 +1,72 @@
 "use client";
 
-import { usePopularRecruitments } from "@/app/_api/popular/usePopular";
+import { useState, useEffect, useCallback } from "react";
+import {
+  usePopularRecruitments,
+  useCategoryPopularRecruitments,
+} from "@/app/_api/popular/usePopular";
 import { useAuthState } from "@/app/_api/auth/useAuthState";
 import { useRouter } from "next/navigation";
 import { MobileRankingAnimation } from "./MobileRankingAnimation";
 import { Job } from "@/app/_types/jobs";
+import { jobGroupReverseMap } from "../../_utils/filterMapping";
 
 interface RankingProps {
   slug: string;
+  useCategoryApi?: boolean;
 }
 
-export function Ranking({ slug }: RankingProps) {
+export function Ranking({ slug, useCategoryApi = false }: RankingProps) {
   const { isLoggedIn } = useAuthState();
   const router = useRouter();
 
   // 카테고리별 제목 매핑
 
+  // slug를 API 쿼리 파라미터로 매핑하는 함수
+  const getCategoryApiParam = (categorySlug: string) => {
+    const categoryMap: { [key: string]: string } = {
+      it: "IT_개발",
+      ai: "AI_데이터",
+      game: "게임",
+      design: "디자인",
+      strategy: "기획_전략",
+      marketing: "마케팅_광고",
+      md: "상품기획_MD",
+      sales: "영업",
+      logistics: "무역_물류",
+      driver: "운송_배송",
+      legal: "법률_법무",
+      hr: "HR_총무",
+      accounting: "회계_재무_세무",
+      finance: "증권_운용",
+      bank: "은행_카드_보험",
+      research: "엔지니어링_RND",
+      construction: "건설_건축",
+      production: "생산_기능직",
+      medical: "의료_보건",
+      public: "공공_복지",
+      education: "교육",
+      media: "미디어_엔터",
+      customer: "고객상담_TM",
+      service: "서비스",
+      food: "식음료",
+    };
+    return categoryMap[categorySlug] || "IT_개발";
+  };
+
+  // 카테고리명을 한글로 변환하는 함수
+  const getCategoryDisplayName = useCallback((categorySlug: string) => {
+    const categoryApiParam = getCategoryApiParam(categorySlug);
+    return jobGroupReverseMap[categoryApiParam] || "IT·개발";
+  }, []);
+
   // 로컬스토리지에서 jobs 배열 확인하여 제목 결정
-  const getRankingTitle = () => {
+  const getRankingTitle = useCallback(() => {
+    // 카테고리별 API 사용 시 카테고리명 포함 제목 반환
+    if (useCategoryApi) {
+      return `${getCategoryDisplayName(slug)} TOP 인기공고`;
+    }
+
     // 서버 사이드 렌더링 중에는 localStorage 접근 불가
     if (typeof window === "undefined") {
       return "관심직무 TOP 인기공고";
@@ -37,9 +86,24 @@ export function Ranking({ slug }: RankingProps) {
       console.error("로컬스토리지 읽기 실패:", error);
     }
     return `관심직무 TOP 인기공고`;
-  };
+  }, [useCategoryApi, slug, getCategoryDisplayName]);
 
-  const { data, isLoading, error } = usePopularRecruitments();
+  // 클라이언트에서만 실행되는 제목 상태
+  const [title, setTitle] = useState("관심직무 TOP 인기공고");
+
+  // 클라이언트에서 제목 업데이트
+  useEffect(() => {
+    setTitle(getRankingTitle());
+  }, [useCategoryApi, slug, getRankingTitle]);
+
+  // 조건에 따라 다른 API 사용
+  const categoryApiParam = getCategoryApiParam(slug);
+  const popularData = usePopularRecruitments();
+  const categoryData = useCategoryPopularRecruitments(categoryApiParam);
+
+  const { data, isLoading, error } = useCategoryApi
+    ? categoryData
+    : popularData;
 
   // 모바일용 애니메이션 컴포넌트 렌더링
   return (
@@ -50,7 +114,7 @@ export function Ranking({ slug }: RankingProps) {
         data={data?.data}
         isLoading={isLoading}
         error={error}
-        getRankingTitle={getRankingTitle}
+        getRankingTitle={() => title}
       />
 
       {/* 데스크톱용 기존 컴포넌트 */}
@@ -59,7 +123,7 @@ export function Ranking({ slug }: RankingProps) {
         data={data?.data}
         isLoading={isLoading}
         error={error}
-        getRankingTitle={getRankingTitle}
+        getRankingTitle={() => title}
         isLoggedIn={isLoggedIn}
         router={router}
       />

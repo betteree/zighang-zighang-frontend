@@ -10,7 +10,7 @@ export default async function CategoryPage({
   const { category: slug } = await params;
 
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <Header />
       <CategoryShell slug={slug} />
       <Footer />

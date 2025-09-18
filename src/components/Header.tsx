@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Profile from "./Icons/Profile";
 import ProfileDropdown from "./ProfileDropdown";
+import HeaderBookmark from "./Icons/bookMark";
 
 export default function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -134,7 +135,11 @@ export default function Header() {
                 )}
               </div>
             </div>
-
+            {isLoggedIn && (
+              <div className="hidden md:block mb-1">
+                <HeaderBookmark />
+              </div>
+            )}
             {isLoggedIn ? (
               <div className="relative hidden md:block z-50">
                 <button
@@ -214,7 +219,7 @@ export default function Header() {
 
       {/* 사이드바 */}
       <div
-        className={`fixed rounded-l-2xl bg-white h-full right-0 z-[1001] transition-transform duration-300 ease-in-out ${
+        className={`w-2/3 md:w-auto fixed rounded-l-2xl bg-white h-full right-0 z-[1001] transition-transform duration-300 ease-in-out ${
           isSidebarOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -241,34 +246,60 @@ export default function Header() {
 
           <Link
             href="/"
-            className="pointer-events-auto box-border flex w-full px-2 py-2 text-base font-semibold  text-primary"
+            className={`pointer-events-auto box-border flex w-full px-2 py-2 text-base font-semibold ${
+              pathname === "/" ? "text-primary" : "text-[#353535]"
+            }`}
             onClick={closeSidebar}
           >
-            <div className="border-b border-primary">채용 공고</div>
+            <div className={pathname === "/" ? "border-b border-primary" : ""}>
+              채용 공고
+            </div>
           </Link>
 
           <Link
             href="/company"
-            className="pointer-events-auto box-border flex w-full px-2 py-2 text-base font-semibold text-[#353535]"
+            className={`pointer-events-auto box-border flex w-full px-2 py-2 text-base font-semibold ${
+              pathname === "/company" ? "text-primary" : "text-[#353535]"
+            }`}
             onClick={closeSidebar}
           >
-            <div>기업별</div>
+            <div
+              className={
+                pathname === "/company" ? "border-b border-primary" : ""
+              }
+            >
+              기업별
+            </div>
           </Link>
 
           <Link
             href="/today"
-            className="pointer-events-auto box-border flex w-full px-2 py-2 text-base font-semibold text-[#353535]"
+            className={`pointer-events-auto box-border flex w-full px-2 py-2 text-base font-semibold ${
+              pathname === "/today" ? "text-primary" : "text-[#353535]"
+            }`}
             onClick={closeSidebar}
           >
-            <div>실시간 공고</div>
+            <div
+              className={pathname === "/today" ? "border-b border-primary" : ""}
+            >
+              실시간 공고
+            </div>
           </Link>
 
           <Link
             href="/personal"
-            className="pointer-events-auto box-border flex w-full px-2 py-2 text-base font-semibold text-[#353535]"
+            className={`pointer-events-auto box-border flex w-full px-2 py-2 text-base font-semibold ${
+              pathname === "/personal" ? "text-primary" : "text-[#353535]"
+            }`}
             onClick={closeSidebar}
           >
-            <div>맞춤 공고</div>
+            <div
+              className={
+                pathname === "/personal" ? "border-b border-primary" : ""
+              }
+            >
+              맞춤 공고
+            </div>
           </Link>
         </div>
       </div>

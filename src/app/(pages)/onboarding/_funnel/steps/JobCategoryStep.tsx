@@ -10,16 +10,19 @@ import { onboardingJobCategories } from "@/app/_constants/onboardingJobCategorie
 import { JobCategoryItem } from "./JobCategoryItem";
 
 export function JobCategoryStep({
+  onBack,
   onNext,
   onSkip,
   initialSelected = [],
 }: {
   onNext: (직군: string[]) => void;
   onSkip: () => void;
+  onBack: () => void;
   initialSelected?: string[];
 }) {
   const [selectedCategories, setSelectedCategories] =
     React.useState<string[]>(initialSelected);
+  const [showPreview, setShowPreview] = React.useState(false);
 
   const handleCategoryClick = (category: string) => {
     setSelectedCategories((prev) => {
@@ -38,6 +41,13 @@ export function JobCategoryStep({
     }
   };
 
+  const handleBack = () => {
+    if (showPreview) {
+      setShowPreview(false);
+    } else {
+      onBack();
+    }
+  };
   return (
     <StepContainer>
       <StepHeader
@@ -45,6 +55,7 @@ export function JobCategoryStep({
         subTitle="(최대 3개 선택)"
         stepNumber={1}
         totalSteps={4}
+        onBack={handleBack}
       />
 
       <div className="text-Heading2-20sb md:hidden items-center justify-center gap-[6px] text-black p-7 pb-0">

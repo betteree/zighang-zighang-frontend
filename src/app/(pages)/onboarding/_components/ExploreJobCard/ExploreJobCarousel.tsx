@@ -49,7 +49,7 @@ export default function ExploreJobCarousel({
         type="button"
         onClick={() => swiper?.slidePrev()}
         disabled={atBeginning}
-        className={`hidden md:block absolute left-7 top-25 z-10 ${
+        className={`cursor-pointer hidden md:block absolute left-7 top-25 z-10 ${
           atBeginning ? "cursor-not-allowed " : ""
         }`}
         aria-label="이전"
@@ -61,7 +61,7 @@ export default function ExploreJobCarousel({
         type="button"
         onClick={() => swiper?.slideNext()}
         disabled={atEnd}
-        className={`hidden md:block absolute right-7 top-25 z-10 ${
+        className={`cursor-pointer hidden md:block absolute right-7 top-25 z-10 ${
           atEnd ? "cursor-not-allowed " : ""
         }`}
         aria-label="다음"
@@ -71,7 +71,7 @@ export default function ExploreJobCarousel({
 
       {/* 가로 마스크는 유지 */}
       <div
-        className="mx-auto w-full relative overflow-hidden
+        className="mx-auto w-full relative overflow-hidden 
           [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]
           [mask-size:100%_100%] [mask-repeat:no-repeat]
           [-webkit-mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]
@@ -102,7 +102,7 @@ export default function ExploreJobCarousel({
             setAtBeginning(s.isBeginning);
             setAtEnd(s.isEnd);
           }}
-          className="!py-2 overflow-visible "
+          className="!py-2 overflow-visible md:!px-8  "
         >
           {EXPLORE_JOBS_WITH_ICON.map((item) => {
             const isSelected = selectedKey === item.key;

@@ -4,7 +4,7 @@ import TodayShell from "./_components/TodayShell";
 
 export default function TodayPage() {
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <Header />
       <TodayShell />
       <Footer />

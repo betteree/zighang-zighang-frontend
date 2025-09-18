@@ -4,7 +4,7 @@ import MemoBoard from "./_components/MemoBoard";
 
 export default function MemosPage() {
   return (
-    <div>
+    <div className="md:flex flex-col items-center">
       <Header />
       <main className="flex flex-col mx-auto md:w-[70%] mb-[150px]">
         <h1 className="hidden md:block text-Heading1-24sb mt-[26px] mb-[24px] md:mt-[78px] md:mb-6">

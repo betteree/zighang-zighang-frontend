@@ -38,7 +38,7 @@ export default function CategoryClient({
   return (
     <div className="relative w-full overflow-visible px-0 md:mx-auto md:max-w-screen-xl md:px-10">
       <div className="mx-5 my-5">
-        <Ranking slug={slug} />
+        <Ranking slug={slug} useCategoryApi={true} />
       </div>
       <FilterDialogProvider initial={initial}>
         {active === "all" && (

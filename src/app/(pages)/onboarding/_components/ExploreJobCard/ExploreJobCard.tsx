@@ -29,7 +29,7 @@ export default function ExploreJobCard({
       className={[
         "group w-[168px] h-[234px] md:h-[228px] text-left rounded-2xl border",
         "border-gray-200 bg-white",
-        "p-4 cursor-pointer",
+        "p-4 md:p-2 cursor-pointer",
         "shadow-[0_0_12px_rgba(0,0,0,0.08)]",
         "transition-all duration-300",
         selected
