@@ -130,7 +130,10 @@ export function MobileRankingAnimation({
       <div className="flex-1 flex items-center justify-center py-2">
         {!isLoggedIn ? (
           // 로그인하지 않은 경우 - 로그인 유도 메시지만 표시
-          <div className="px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors">
+          <div
+            className="px-3 py-2 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors"
+            onClick={() => router.push("/join")}
+          >
             <span className="text-black text-Subheading3-14m flex ">
               <RankingIcon />
 

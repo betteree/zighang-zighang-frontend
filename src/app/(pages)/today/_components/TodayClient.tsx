@@ -15,10 +15,14 @@ import filterAdapt from "@/app/_utils/filterAdapt";
 import ResultHeaderConnector from "../../[category]/_components/Filter/ResultHeaderConnector";
 import { useInfiniteBookmarks } from "@/app/_api/bookmark/list";
 import { useAuthState } from "@/app/_api/auth/useAuthState";
+import { Ranking } from "../../[category]/_components/Ranking/Ranking";
 
 export default function TodayClient({ active }: { active: string }) {
   return (
     <div className="relative w-full overflow-visible px-0 md:mx-auto md:max-w-screen-xl md:px-10">
+      <div className="mx-5 my-5">
+        <Ranking slug={"today"} />
+      </div>
       <FilterDialogProvider mode="today">
         {active === "all" && (
           <>

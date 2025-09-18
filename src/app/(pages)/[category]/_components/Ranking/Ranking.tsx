@@ -70,11 +70,9 @@ export function Ranking({ slug }: RankingProps) {
 
 // 데스크톱용 랭킹 컴포넌트
 function DesktopRanking({
-  slug,
   data,
   isLoading,
   error,
-  getCategoryTitle,
   getRankingTitle,
   isLoggedIn,
   router,
