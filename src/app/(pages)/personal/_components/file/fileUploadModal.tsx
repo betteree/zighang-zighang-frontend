@@ -72,9 +72,9 @@ export default function FileUploadModal({
       }));
     }
 
-    // 상태 업데이트
-    setOriginalFilesMap(newOriginalFilesMap);
-    setUploadedFiles(newUploadedFiles);
+    // 기존 파일들과 새 파일들을 합쳐서 상태 업데이트
+    setOriginalFilesMap((prev) => ({ ...prev, ...newOriginalFilesMap }));
+    setUploadedFiles((prev) => [...prev, ...newUploadedFiles]);
 
     // 시뮬레이션 애니메이션 (100%까지)
     for (const uploadedFile of newUploadedFiles) {
