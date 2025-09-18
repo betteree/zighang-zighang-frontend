@@ -95,7 +95,7 @@ export default function RecommendArea({
           ) : (
             <>
               <UserName showFirstLetterOnly={true} />
-              에게 맞는 <p className="md:hidden"></p>
+              님에게 맞는 <p className="md:hidden"></p>
               <span className="md:ml-1 mr-0 text-purple-800 text-lg md:text-xl font-semibold">
                 TOP9 공고
               </span>

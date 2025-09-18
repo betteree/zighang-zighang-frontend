@@ -93,13 +93,10 @@ function mapApiParamsToFilterState(apiParams: {
     jobRoles:
       apiParams.jobs && apiParams.jobs.length > 0
         ? (() => {
-            console.log("원본 jobs:", apiParams.jobs);
             const mappedJobs = apiParams.jobs
               .map((job) => jobReverseMap[job] || job)
               .filter((job) => job !== "미정"); // "미정" 제거
-            console.log("미정 제거 후 jobs:", mappedJobs);
             const result = mappedJobs.length > 0 ? mappedJobs : ["전체"];
-            console.log("최종 jobRoles:", result);
             return result;
           })()
         : ["전체"],
@@ -141,15 +138,9 @@ export function FilterDialogProvider({
   useEffect(() => {
     if (mode === "today" && !hasLoadedFromStorage.current) {
       const savedFilters = loadOnboardingFiltersFromStorage();
-      console.log(
-        "[today] 페이지 로드됨 - loadOnboardingFiltersFromStorage 결과:",
-        savedFilters
-      );
 
       if (savedFilters) {
         const filterState = mapApiParamsToFilterState(savedFilters);
-        console.log("변환된 필터 상태:", filterState);
-        console.log("jobRoles:", filterState.jobRoles);
         setFilters(filterState);
       }
       hasLoadedFromStorage.current = true;
@@ -161,7 +152,6 @@ export function FilterDialogProvider({
     if (mode === "today") {
       const apiParams = mapFilterStateToApiParams(filters);
       localStorage.setItem("userFilters", JSON.stringify(apiParams));
-      console.log("필터 변경됨, userFilters에 저장:", apiParams);
     }
   }, [filters, mode]);
 

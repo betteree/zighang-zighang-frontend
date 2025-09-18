@@ -140,7 +140,7 @@ export default function Header() {
                 <button
                   onClick={toggleProfileDropdown}
                   aria-label="내 프로필"
-                  className="relative"
+                  className="relative cursor-pointer"
                 >
                   <Profile />
                 </button>

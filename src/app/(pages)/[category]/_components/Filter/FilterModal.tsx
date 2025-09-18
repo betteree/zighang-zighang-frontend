@@ -73,12 +73,7 @@ export default function FilterModal() {
             options={jobRoleOptions}
             selected={(o) => {
               const isSelected = filters.jobRoles.includes(o);
-              console.log(
-                `직무 옵션 "${o}" 선택됨:`,
-                isSelected,
-                "전체 jobRoles:",
-                filters.jobRoles
-              );
+
               return isSelected;
             }}
             onToggle={toggleJobRole}

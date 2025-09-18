@@ -51,7 +51,7 @@ export default function KebabMenu({
             ) : (
               <button
                 onClick={onToggle}
-                className="cursor-pointer text-xs font-medium px-3 py-2.5 hover:bg-neutral-100 rounded-lg md:rounded-t-lg flex gap-0.5 border-b border-b-neutral-200"
+                className="cursor-pointer text-xs font-medium px-3 py-2.5 hover:bg-neutral-100 rounded-t-lg flex gap-0.5 border-b border-b-neutral-200"
               >
                 <HoverIcon
                   variant="maximize"

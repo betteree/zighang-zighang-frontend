@@ -15,18 +15,20 @@ export default function SuccessStep({
 }) {
   const router = useRouter();
   const { data: popularData } = usePopularRecruitments();
-
   // API 데이터를 RecruitmentItem 형식으로 변환
   const transformedData =
     popularData?.data?.map((item) => ({
       id: item.id,
-      experience: item.experience,
+      experience: item.minExperience
+        ? `${item.minExperience}년차 이상`
+        : "경력 무관",
       logo: item.companyImageUrl || "/",
       title: item.title,
       company: item.companyName || item.company || "회사명 없음",
-      location: Array.isArray(item.locations) && item.locations.length > 0 
-        ? item.locations.join(", ") 
-        : item.location || "지역 정보 없음",
+      location:
+        Array.isArray(item.locations) && item.locations.length > 0
+          ? item.locations.join(", ")
+          : item.location || "지역 정보 없음",
     })) || [];
 
   // 로딩 중이거나 에러가 있으면 mock 데이터 사용, 아니면 API 데이터 사용

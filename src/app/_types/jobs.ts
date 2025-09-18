@@ -16,6 +16,7 @@ export interface Job {
   jobGroup?: string;
   companyName?: string;
   locations?: string[];
+  minExperience?: number;
 }
 
 // 추천 채용공고 API 응답 타입

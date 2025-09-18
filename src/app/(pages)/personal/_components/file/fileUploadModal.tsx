@@ -135,7 +135,6 @@ export default function FileUploadModal({
 
           if (response.success) {
             // 업로드 성공 - 상태는 그대로 유지 (이미 success로 표시됨)
-            console.log(`파일 ${file.name} 업로드 성공`);
           } else {
             throw new Error(response.message || "업로드에 실패했습니다.");
           }

@@ -4,56 +4,26 @@ import { useEffect, useState } from "react";
 import { useAuthState } from "@/app/_api/auth/useAuthState";
 import { Job } from "@/app/_types/jobs";
 import { useRouter } from "next/navigation";
+import { TriangleUpIcon } from "./Ranking";
 
 interface MobileRankingAnimationProps {
   slug: string;
   data?: Job[];
   isLoading: boolean;
   error: Error | null;
+  getRankingTitle: () => string;
 }
 
 export function MobileRankingAnimation({
-  slug,
   data,
   isLoading,
   error,
+  getRankingTitle,
 }: MobileRankingAnimationProps) {
   const { isLoggedIn } = useAuthState();
   const router = useRouter();
   const [currentStep] = useState(0);
   const [currentRankingIndex, setCurrentRankingIndex] = useState(-1);
-
-  // 카테고리별 제목 매핑
-  const getCategoryTitle = (categorySlug: string) => {
-    const categoryMap: { [key: string]: string } = {
-      it: "IT개발",
-      ai: "AI데이터",
-      game: "게임",
-      design: "디자인",
-      strategy: "기획전략",
-      marketing: "마케팅광고",
-      md: "상품기획MD",
-      sales: "영업",
-      logistics: "무역물류",
-      driver: "운송배송",
-      legal: "법률법무",
-      hr: "HR총무",
-      accounting: "회계재무세무",
-      finance: "증권운용",
-      bank: "은행카드보험",
-      research: "엔지니어링RND",
-      construction: "건설건축",
-      production: "생산기능직",
-      medical: "의료보건",
-      public: "공공복지",
-      education: "교육",
-      media: "미디어엔터",
-      customer: "고객상담TM",
-      service: "서비스",
-      food: "식음료",
-    };
-    return categoryMap[categorySlug] || "IT개발";
-  };
 
   // 애니메이션 단계별 실행 (무한 루프)
   useEffect(() => {
@@ -87,7 +57,7 @@ export function MobileRankingAnimation({
       <div className="flex w-full border px-2 py-3 border-neutral-200 rounded-lg items-center gap-3 md:hidden">
         <div className="w-32">
           <h3 className="text-purple-800 text-sm font-semibold">
-            {getCategoryTitle(slug)} 실시간 공고
+            {getRankingTitle()}
           </h3>
           <p className="text-neutral-400 text-[10px] font-medium">오류 발생</p>
         </div>
@@ -106,7 +76,7 @@ export function MobileRankingAnimation({
       <div className="flex w-full border px-2 py-1 border-neutral-200 rounded-lg items-center gap-3 md:hidden">
         <div className="w-32">
           <h3 className="text-purple-800 text-sm font-semibold">
-            {getCategoryTitle(slug)} 실시간 공고
+            {getRankingTitle()}
           </h3>
           <p className="text-neutral-400 text-[10px] font-medium">
             {new Date().toLocaleString("ko-KR")}
@@ -151,7 +121,7 @@ export function MobileRankingAnimation({
             {currentStep === 0 && currentRankingIndex < 0 && (
               <div className="flex flex-col items-start justify-center animate-slide-up">
                 <h3 className="text-purple-800 text-sm font-semibold">
-                  {getCategoryTitle(slug)} 실시간 공고
+                  {getRankingTitle()}
                 </h3>
                 <p className="text-neutral-400 text-[10px] font-medium">
                   {new Date().toLocaleString("ko-KR")}
@@ -181,9 +151,12 @@ export function MobileRankingAnimation({
                     {topItems[currentRankingIndex].companyName || "회사명 없음"}
                   </p>
                 </div>
-                <p className="text-red-500 text-xs font-medium">
-                  {topItems[currentRankingIndex].views}
-                </p>
+                <div className="flex items-center pb-4">
+                  <TriangleUpIcon />
+                  <p className="text-red-500 text-xs font-medium">
+                    {topItems[currentRankingIndex].views}
+                  </p>
+                </div>
               </div>
             )}
           </div>

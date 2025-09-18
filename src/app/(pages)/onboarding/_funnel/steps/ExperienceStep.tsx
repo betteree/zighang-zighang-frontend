@@ -105,12 +105,10 @@ export function ExperienceStep({
 
   const canProceed = true; // 기본값 선택(1년)으로 바로 진행 가능
   const handleNext = () => {
-    console.log("handleNext 호출됨, selectedYears:", selectedYears);
     onNext(selectedYears);
   };
 
   const handleButtonClick = () => {
-    console.log("버튼 클릭됨!");
     handleNext();
   };
 

@@ -63,7 +63,7 @@ export default function NoteItem({
         />
         <button
           onClick={goDetail}
-          className="group relative inline-block h-6 w-6"
+          className="group relative inline-block h-6 w-6 cursor-pointer"
         >
           <HoverIcon
             variant="right"
