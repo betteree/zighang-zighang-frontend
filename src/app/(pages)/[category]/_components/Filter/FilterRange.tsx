@@ -30,7 +30,7 @@ export default function FilterRange({ min, max, onChange }: Props) {
       <div className="relative h-10 flex items-center">
         <div className="absolute left-0 right-0 h-[3px] bg-zinc-200 rounded" />
         <div
-          className="absolute h-[3px] bg-violet-500 rounded"
+          className="absolute h-[3px] bg-zighang-1000 rounded"
           style={{ left: `${leftPct}%`, right: `${rightPct}%` }}
         />
 

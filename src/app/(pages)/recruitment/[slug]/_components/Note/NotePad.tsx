@@ -175,7 +175,7 @@ export default function NotePad({
                       "transition filter",
                     ].join(" ")}
                   >
-                    <div className="w-full px-3.5 py-2.5 text-purple-700 text-sm font-semibold leading-tight flex justify-between items-center">
+                    <div className="w-full px-3.5 py-2.5 text-zighang-1000 text-sm font-semibold leading-tight flex justify-between items-center">
                       <p>메모 추가</p>
                       <button
                         onClick={addNote}

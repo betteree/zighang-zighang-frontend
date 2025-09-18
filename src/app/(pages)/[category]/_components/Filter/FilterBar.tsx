@@ -19,7 +19,7 @@ function Chip({
       className={[
         "h-11 px-4 shrink-0 rounded-lg font-semibold border text-laptop inline-flex items-center gap-1 transition cursor-pointer",
         active
-          ? "border-violet-500 text-violet-700 bg-violet-50"
+          ? "border-zighang-1000 text-zighang-1000 bg-violet-50"
           : "border-zinc-200 hover:bg-zinc-50",
       ].join(" ")}
     >

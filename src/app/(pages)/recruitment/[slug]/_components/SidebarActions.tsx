@@ -101,7 +101,7 @@ export default function SidebarActions({ slug, job }: SidebarActionsProps) {
             <Icon
               variant="bookmark"
               className={`transition-transform w-7 h-7 ${
-                bookmarkState ? "text-purple-800" : "text-gray-200"
+                bookmarkState ? "text-zighang-1000" : "text-gray-200"
               }`}
             />
           </button>

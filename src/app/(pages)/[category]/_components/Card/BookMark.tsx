@@ -26,7 +26,7 @@ export default function Bookmark({ active, disabled, onClick }: BookmarkProps) {
         <Icon
           variant="bookmark"
           className={`transition-transform w-5 h-5 md:w-7 md:h-7 ${
-            active ? "text-purple-800" : "text-gray-200"
+            active ? "text-zighang-1000" : "text-gray-200"
           }`}
         />
       </button>

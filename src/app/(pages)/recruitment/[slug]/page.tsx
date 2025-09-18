@@ -136,12 +136,12 @@ function RecruitmentPageContent({ slug }: { slug: string }) {
             <div className="flex w-full flex-col items-center py-5 px-3 md:px-0">
               <RecruitmentHeader job={displayJob} slug={slug} />
               <RecruitmentInfo job={displayJob} />
-              <div className="hidden md:flex md:w-[762px] mt-5  justify-between rounded-lg">
+              <div className="hidden md:flex md:w-[836px] mt-5  justify-between rounded-lg">
                 <Link href="/personal" className="cursor-pointer">
                   <Image
                     src="/banner/detail_banner.svg"
                     alt="DetailBanner"
-                    width={762}
+                    width={836}
                     height={152}
                   />
                 </Link>

@@ -102,7 +102,7 @@ export default function RecruitmentHeader({
               disabled={isLogging}
               className="relative whitespace-nowrap rounded-lg text-sm font-medium focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 bg-zighang-1000 text-white hover:bg-primary/90 transition-colors hover:cursor-pointer px-18 py-2 flex h-12 flex-1 items-center justify-center"
             >
-              <span className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 z-10 px-3 py-0.5 rounded-full border border-zighang-1000 bg-white text-primary text-[12px] font-semibold leading-none shadow-sm">
+              <span className="pointer-events-none absolute -top-2 left-1/2 -translate-x-1/2 z-10 px-3 py-0.5 rounded-full border border-zighang-1000 bg-white text-zighang-1000 text-[12px] font-semibold leading-none shadow-sm">
                 {job.deadlineType}
               </span>
               <span className="text-lg">지원하기</span>
