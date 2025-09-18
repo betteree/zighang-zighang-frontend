@@ -10,6 +10,7 @@ interface MemoContentViewProps {
   rightSelectedMemo?: string | null;
   onDeleteMemo?: (memoId: string) => void;
   onMemoSelect?: (memoId: string) => void;
+  isMobile?: boolean;
 }
 
 export default function MemoContentView({
@@ -20,6 +21,7 @@ export default function MemoContentView({
   rightSelectedMemo,
   onDeleteMemo,
   onMemoSelect,
+  isMobile = false,
 }: MemoContentViewProps) {
   return (
     <div className="h-full w-full">
@@ -29,6 +31,7 @@ export default function MemoContentView({
           memoGroups={memoGroups}
           onDeleteMemo={onDeleteMemo}
           onMemoSelect={onMemoSelect}
+          isMobile={isMobile}
         />
       ) : (
         <SplitMemoView
@@ -36,6 +39,7 @@ export default function MemoContentView({
           leftSelectedMemo={leftSelectedMemo}
           rightSelectedMemo={rightSelectedMemo}
           onDeleteMemo={onDeleteMemo}
+          isMobile={isMobile}
         />
       )}
     </div>

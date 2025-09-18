@@ -11,6 +11,7 @@ interface SplitMemoViewProps {
   leftSelectedMemo?: string | null;
   rightSelectedMemo?: string | null;
   onDeleteMemo?: (memoId: string) => void;
+  isMobile?: boolean;
 }
 
 export default function SplitMemoView({
@@ -66,14 +67,17 @@ export default function SplitMemoView({
           {leftSelectedGroup ? (
             <>
               <div className="space-y-[6px]">
-                {leftSelectedGroup.memos.slice().reverse().map((memo) => (
-                  <MemoSection
-                    key={memo.id}
-                    memo={memo}
-                    onDelete={onDeleteMemo}
-                    recruitmentId={leftRecruitmentId}
-                  />
-                ))}
+                {leftSelectedGroup.memos
+                  .slice()
+                  .reverse()
+                  .map((memo) => (
+                    <MemoSection
+                      key={memo.id}
+                      memo={memo}
+                      onDelete={onDeleteMemo}
+                      recruitmentId={leftRecruitmentId}
+                    />
+                  ))}
               </div>
               <div className="mt-[6px]">
                 <AddMemoButton
@@ -81,7 +85,7 @@ export default function SplitMemoView({
                     if (leftRecruitmentId) {
                       createLeftMemoMutation.mutate({
                         title: "",
-                        content: ""
+                        content: "",
                       });
                     }
                   }}
@@ -134,14 +138,17 @@ export default function SplitMemoView({
           {rightSelectedGroup ? (
             <>
               <div className="space-y-[6px]">
-                {rightSelectedGroup.memos.slice().reverse().map((memo) => (
-                  <MemoSection
-                    key={memo.id}
-                    memo={memo}
-                    onDelete={onDeleteMemo}
-                    recruitmentId={rightRecruitmentId}
-                  />
-                ))}
+                {rightSelectedGroup.memos
+                  .slice()
+                  .reverse()
+                  .map((memo) => (
+                    <MemoSection
+                      key={memo.id}
+                      memo={memo}
+                      onDelete={onDeleteMemo}
+                      recruitmentId={rightRecruitmentId}
+                    />
+                  ))}
               </div>
               <div className="mt-[6px]">
                 <AddMemoButton
@@ -149,7 +156,7 @@ export default function SplitMemoView({
                     if (rightRecruitmentId) {
                       createRightMemoMutation.mutate({
                         title: "",
-                        content: ""
+                        content: "",
                       });
                     }
                   }}
