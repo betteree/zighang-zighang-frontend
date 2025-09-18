@@ -2,30 +2,54 @@
 export function mapJobGroup(직군: string): string {
   const jobGroupMap: Record<string, string> = {
     "IT ⋅ 개발": "IT_개발",
+    "IT·개발": "IT_개발",
     "AI · 데이터": "AI_데이터",
+    "AI·데이터": "AI_데이터",
     게임: "게임",
     디자인: "디자인",
     "기획 · 전략": "기획_전략",
+    "기획·전략": "기획_전략",
     "마케팅 · 광고": "마케팅_광고",
+    "마케팅·광고": "마케팅_광고",
     "상품기획 · MD": "상품기획_MD",
+    "상품기획·MD": "상품기획_MD",
     영업: "영업",
     무역: "무역_물류",
+    "무역·물류": "무역_물류",
     운송: "운송_배송",
+    "운송·배송": "운송_배송",
     법률: "법률_법무",
     "HR · 총무": "HR_총무",
+    "HR·총무": "HR_총무",
     "회계 · 재무 · 세무": "회계_재무_세무",
+    "회계·재무·세무": "회계_재무_세무",
     "증권 · 운용": "증권_운용",
+    "증권·운용": "증권_운용",
     "은행 · 카드 · 보험": "은행_카드_보험",
+    "은행·카드·보험": "은행_카드_보험",
     엔지니어링: "엔지니어링_RND",
+    "엔지니어링·연구·R&D": "엔지니어링_RND",
     건설: "건설_건축",
+    "건설·건축": "건설_건축",
     "생산 · 기능직": "생산_기능직",
+    "생산·기능직": "생산_기능직",
+    "생산·기능": "생산_기능직",
     "의료 · 보건": "의료_보건",
+    "의료·보건": "의료_보건",
     "공공 · 복지": "공공_복지",
+    "공공·복지": "공공_복지",
     교육: "교육",
     "미디어 · 엔터": "미디어_엔터",
+    "미디어·엔터": "미디어_엔터",
     "고객상담 · TM": "고객상담_TM",
+    "고객상담·TM": "고객상담_TM",
     서비스: "서비스",
     식음료: "식음료",
+    "출판·공간": "출판_공간",
+    "회계·세무·재무": "회계_재무_세무",
+    "은행·보험·카드·캐피탈": "은행_카드_보험",
+    "물류 (실무·운영 측면)": "무역_물류",
+    "법률, 법무": "법률_법무",
   };
   return jobGroupMap[직군] || 직군;
 }
@@ -58,7 +82,7 @@ export function mapGraduationStatus(졸업상태: string): string {
 // 온보딩 데이터를 API 파라미터 형식으로 변환하는 함수
 export function mapOnboardingToApiParams(onboardingData: {
   직군: string[];
-  직무: string[];
+  직무: string[] | null;
   경력: number;
   학력: string;
   졸업상태: string;
@@ -77,7 +101,7 @@ export function mapOnboardingToApiParams(onboardingData: {
 // 로컬 스토리지에 필터 데이터 저장하는 함수
 export function saveOnboardingFiltersToStorage(onboardingData: {
   직군: string[];
-  직무: string[];
+  직무: string[] | null;
   경력: number;
   학력: string;
   졸업상태: string;

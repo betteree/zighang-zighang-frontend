@@ -97,7 +97,7 @@ export function JobStep({
       new Set(Object.values(selectedJobsByGroup).flat())
     );
     if (aggregated.length === 0) {
-      onNext(["미정"]);
+      onNext([]);
     } else {
       onNext(aggregated);
     }

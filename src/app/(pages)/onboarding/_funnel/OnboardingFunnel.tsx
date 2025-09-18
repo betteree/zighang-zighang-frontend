@@ -43,7 +43,9 @@ export type ApiOnboardingPayload = {
 function toApiPayload(context: 지역입력): ApiOnboardingPayload {
   return {
     interestedJobs: context.직군.map(mapJobGroup),
-    interestedJobCategories: context.직무 || [],
+    interestedJobCategories: (context.직무 || [])
+      .filter((job) => job.trim() !== "")
+      .map(mapJobGroup), // 직무도 매핑 적용
     careerYear: context.경력 || 0,
     educationLevel: mapEducationLevel(context.학력 || ""),
     graduationStatus: mapGraduationStatus(context.졸업상태 || "졸업"),
@@ -117,8 +119,8 @@ export default function OnboardingFunnel() {
           }
           onSkip={() =>
             history.push("모르겠어요", () => ({
-              직군: ["미정"],
-              직무: ["미정"],
+              직군: [],
+              직무: [],
             }))
           }
         />

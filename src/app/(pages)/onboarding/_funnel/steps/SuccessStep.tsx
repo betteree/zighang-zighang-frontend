@@ -3,90 +3,7 @@ import { useRouter } from "next/navigation";
 import { StepActions, StepContainer } from "../../_components";
 import RecruitmentCardList from "../../_components/RecommendCard/RecruitmentCardList";
 import type { RecruitmentItem } from "../../_types/context";
-
-// 임시 데이터 api 연동시 삭제
-const mock = [
-  {
-    id: "1",
-    experience: "1년차 이상",
-    logo: "/",
-    title: "프론트엔드 엔지니어",
-    company: "ACME",
-    location: "서울 강남구",
-  },
-  {
-    id: "2",
-    experience: "신입 가능",
-    logo: "/",
-    title: "백엔드 개발자 (Java)",
-    company: "BetaSoft",
-    location: "서울 마포구",
-  },
-  {
-    id: "3",
-    experience: "3년차 이상",
-    logo: "/",
-    title: "풀스택 엔지니어",
-    company: "CyberWorks",
-    location: "경기 성남시",
-  },
-  {
-    id: "4",
-    experience: "2년차 이상",
-    logo: "/",
-    title: "데이터 분석가",
-    company: "Delta Analytics",
-    location: "서울 송파구",
-  },
-  {
-    id: "5",
-    experience: "신입 가능",
-    logo: "/",
-    title: "모바일 앱 개발자 (iOS)",
-    company: "Echo Mobile",
-    location: "부산 해운대구",
-  },
-  {
-    id: "6",
-    experience: "5년차 이상",
-    logo: "/",
-    title: "DevOps 엔지니어",
-    company: "FoxTech",
-    location: "서울 용산구",
-  },
-  {
-    id: "7",
-    experience: "경력무관",
-    logo: "/",
-    title: "QA 엔지니어",
-    company: "Green Labs",
-    location: "대전 유성구",
-  },
-  {
-    id: "8",
-    experience: "2년차 이상",
-    logo: "/",
-    title: "AI 리서처",
-    company: "Helios AI",
-    location: "서울 강동구",
-  },
-  {
-    id: "9",
-    experience: "신입 가능",
-    logo: "/",
-    title: "UI/UX 디자이너",
-    company: "Iris Studio",
-    location: "인천 연수구",
-  },
-  {
-    id: "10",
-    experience: "4년차 이상",
-    logo: "/",
-    title: "프로덕트 매니저",
-    company: "Jupiter Systems",
-    location: "서울 서초구",
-  },
-];
+import { usePopularRecruitments } from "@/app/_api/popular/usePopular";
 
 export default function SuccessStep({
   name,
@@ -97,6 +14,22 @@ export default function SuccessStep({
   onComplete?: () => void;
 }) {
   const router = useRouter();
+  const { data: popularData } = usePopularRecruitments();
+
+  // API 데이터를 RecruitmentItem 형식으로 변환
+  const transformedData =
+    popularData?.data?.map((item) => ({
+      id: item.id,
+      experience: item.experience,
+      logo: item.companyImageUrl || "/",
+      title: item.title,
+      company: item.companyName || item.company || "회사명 없음",
+      location: Array.isArray(item.locations) && item.locations.length > 0 
+        ? item.locations.join(", ") 
+        : item.location || "지역 정보 없음",
+    })) || [];
+
+  // 로딩 중이거나 에러가 있으면 mock 데이터 사용, 아니면 API 데이터 사용
 
   const handleComplete = () => {
     if (onComplete) {
@@ -142,9 +75,9 @@ export default function SuccessStep({
     [-webkit-mask-size:100%_100%] [-webkit-mask-repeat:no-repeat]
     "
         >
-          <RecruitmentCardList items={mock} />
+          <RecruitmentCardList items={transformedData} />
           <RecruitmentCardList
-            items={mock}
+            items={transformedData}
             className="md:hidden"
             reverse={true}
           />

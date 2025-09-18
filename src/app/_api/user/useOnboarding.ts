@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 import type { OnboardingApiResponse } from "@/app/(pages)/onboarding/_types/context";
 
 type OnboardingPayload = {
@@ -21,29 +22,28 @@ async function submitOnboarding(
     throw new Error("토큰이 없습니다");
   }
 
+  // 브라우저 내장 FormData 사용
   const formData = new FormData();
 
-  // request 필드에 JSON 데이터 추가
-  formData.append("request", JSON.stringify(payload));
+  // request 필드에 JSON 데이터 추가 (Blob으로 감싸서)
+  const jsonBlob = new Blob([JSON.stringify(payload)], {
+    type: "application/json"
+  });
+  formData.append("request", jsonBlob);
 
   // resumeFile 필드에 파일 추가 (파일이 있는 경우)
   if (file) {
     formData.append("resumeFile", file);
   }
 
-  const response = await fetch("/api/users/filter", {
-    method: "POST",
+  const response = await axios.post("/api/users/filter", formData, {
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
     },
-    body: formData,
   });
 
-  if (!response.ok) {
-    throw new Error(`Failed to submit onboarding: ${response.status}`);
-  }
-
-  return response.json();
+  return response.data;
 }
 
 export function useSubmitOnboarding() {

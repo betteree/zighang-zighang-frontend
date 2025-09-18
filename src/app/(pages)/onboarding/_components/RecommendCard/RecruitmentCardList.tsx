@@ -11,10 +11,10 @@ import RecruitmentCard from "./RecruitmentCard";
 interface Item {
   id: string;
   experience: string;
-  logo: string;
   title: string;
   company: string;
   location: string;
+  logo: string;
 }
 
 interface RecruitmentCardListProps {

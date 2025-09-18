@@ -9,7 +9,7 @@ export const EXPLORE_JOBS = [
     key: "communicate-persuade",
     category: "사람들과 소통하고\n설득하는 활동",
     iconKey: "CommunicatePersuadeIcon",
-    jobs: ["영업", "무역·물류 (현장/거래 촉진)", "고객상담·TM", "서비스"],
+    jobs: ["영업", "무역·물류", "고객상담·TM", "서비스"],
   },
   {
     key: "creative-content",

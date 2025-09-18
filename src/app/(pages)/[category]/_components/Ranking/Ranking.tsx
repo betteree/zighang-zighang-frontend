@@ -15,38 +15,6 @@ export function Ranking({ slug }: RankingProps) {
   const { isLoggedIn } = useAuthState();
   const router = useRouter();
 
-  // slug를 API용 job 파라미터로 변환
-  const getJobParam = (categorySlug: string) => {
-    const categoryMap: { [key: string]: string } = {
-      it: "IT_개발",
-      ai: "AI_데이터",
-      game: "게임",
-      design: "디자인",
-      strategy: "기획_전략",
-      marketing: "마케팅_광고",
-      md: "상품기획_MD",
-      sales: "영업",
-      logistics: "무역_물류",
-      driver: "운송_배송",
-      legal: "법률_법무",
-      hr: "HR_총무",
-      accounting: "회계_재무_세무",
-      finance: "증권_운용",
-      bank: "은행_카드_보험",
-      research: "엔지니어링_RND",
-      construction: "건설_건축",
-      production: "생산_기능직",
-      medical: "의료_보건",
-      public: "공공_복지",
-      education: "교육",
-      media: "미디어_엔터",
-      customer: "고객상담_TM",
-      service: "서비스",
-      food: "식음료",
-    };
-    return categoryMap[categorySlug] || "IT_개발";
-  };
-
   // 카테고리별 제목 매핑
   const getCategoryTitle = (categorySlug: string) => {
     const category = jobCategories.find(
@@ -55,8 +23,24 @@ export function Ranking({ slug }: RankingProps) {
     return category?.name || "전체";
   };
 
-  const jobParam = getJobParam(slug);
-  const { data, isLoading, error } = usePopularRecruitments(jobParam);
+  // 로컬스토리지에서 jobs 배열 확인하여 제목 결정
+  const getRankingTitle = () => {
+    try {
+      const stored = localStorage.getItem("userFilters");
+      if (stored) {
+        const userFilters = JSON.parse(stored);
+        const jobs = userFilters.jobs || [];
+        if (jobs.length === 0) {
+          return "흥미직군 TOP 인기공고";
+        }
+      }
+    } catch (error) {
+      console.error("로컬스토리지 읽기 실패:", error);
+    }
+    return `${getCategoryTitle(slug)} 실시간 공고`;
+  };
+
+  const { data, isLoading, error } = usePopularRecruitments();
 
   // 모바일용 애니메이션 컴포넌트 렌더링
   return (
@@ -76,6 +60,7 @@ export function Ranking({ slug }: RankingProps) {
         isLoading={isLoading}
         error={error}
         getCategoryTitle={getCategoryTitle}
+        getRankingTitle={getRankingTitle}
         isLoggedIn={isLoggedIn}
         router={router}
       />
@@ -90,6 +75,7 @@ function DesktopRanking({
   isLoading,
   error,
   getCategoryTitle,
+  getRankingTitle,
   isLoggedIn,
   router,
 }: {
@@ -98,6 +84,7 @@ function DesktopRanking({
   isLoading: boolean;
   error: Error | null;
   getCategoryTitle: (slug: string) => string;
+  getRankingTitle: () => string;
   isLoggedIn: boolean;
   router: ReturnType<typeof useRouter>;
 }) {
@@ -107,7 +94,7 @@ function DesktopRanking({
       <div className="hidden md:flex w-full border px-7 py-4 border-neutral-200 rounded-lg items-center gap-5">
         <div className="w-45">
           <h3 className="text-purple-800 text-sm font-semibold">
-            {getCategoryTitle(slug)} 실시간 공고
+            {getRankingTitle()}
           </h3>
           <p className="text-neutral-400 text-[10px] font-medium">로딩 중...</p>
         </div>
@@ -126,7 +113,7 @@ function DesktopRanking({
       <div className="hidden md:flex w-full border px-7 py-4 border-neutral-200 rounded-lg items-center gap-5">
         <div className="w-45">
           <h3 className="text-purple-800 text-sm font-semibold">
-            {getCategoryTitle(slug)} 실시간 공고
+            {getRankingTitle()}
           </h3>
           <p className="text-neutral-400 text-[10px] font-medium">오류 발생</p>
         </div>
@@ -145,7 +132,7 @@ function DesktopRanking({
       <div className="hidden md:flex w-full border px-7 py-4 border-neutral-200 rounded-lg items-center gap-5">
         <div className="w-45">
           <h3 className="text-purple-800 text-sm font-semibold">
-            {getCategoryTitle(slug)} 실시간 공고
+            {getRankingTitle()}
           </h3>
           <p className="text-neutral-400 text-[10px] font-medium">
             {new Date().toLocaleString("ko-KR")}
@@ -164,9 +151,9 @@ function DesktopRanking({
   return (
     <div className="hidden md:flex w-full border px-7 py-4 border-neutral-200 rounded-lg items-center gap-5">
       <div className="w-45">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 w-[140px]">
           <h3 className="text-purple-800 text-sm font-semibold">
-            {getCategoryTitle(slug)} 실시간 공고
+            {getRankingTitle()}
           </h3>
         </div>
         <p className="text-neutral-400 text-[10px] font-medium">
