@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import axios from "axios";
+import client from "@/app/_api/client";
 import type { OnboardingApiResponse } from "@/app/(pages)/onboarding/_types/context";
 
 type OnboardingPayload = {
@@ -15,19 +15,14 @@ type OnboardingPayload = {
 
 async function submitOnboarding(
   payload: OnboardingPayload,
-  file?: File | null
+  file?: File | null,
 ): Promise<OnboardingApiResponse> {
-  const token = localStorage.getItem("zh_access_token");
-  if (!token) {
-    throw new Error("토큰이 없습니다");
-  }
-
   // 브라우저 내장 FormData 사용
   const formData = new FormData();
 
   // request 필드에 JSON 데이터 추가 (Blob으로 감싸서)
   const jsonBlob = new Blob([JSON.stringify(payload)], {
-    type: "application/json"
+    type: "application/json",
   });
   formData.append("request", jsonBlob);
 
@@ -36,9 +31,8 @@ async function submitOnboarding(
     formData.append("resumeFile", file);
   }
 
-  const response = await axios.post("/api/users/filter", formData, {
+  const response = await client.post("/api/users/filter", formData, {
     headers: {
-      Authorization: `Bearer ${token}`,
       "Content-Type": "multipart/form-data",
     },
   });

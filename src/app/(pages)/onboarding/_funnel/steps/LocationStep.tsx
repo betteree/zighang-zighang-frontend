@@ -39,10 +39,9 @@ export function LocationStep({
         }
       });
     },
-    []
+    [],
   );
   const handleChange = useCallback((next: RegionValue) => {
-    console.log("handleChange next:", next);
     setRegions((prev) => {
       if (next === "전체") {
         return ["전체"];

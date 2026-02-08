@@ -1,13 +1,6 @@
-const API_BASE = "/api/resumes/keywords";
+import client from "@/app/_api/client";
 
-function getAccessToken(): string | null {
-  try {
-    if (typeof window === "undefined") return null;
-    return localStorage.getItem("zh_access_token");
-  } catch {
-    return null;
-  }
-}
+const API_BASE = "/api/resumes/keywords";
 
 export interface KeywordResponse {
   success: boolean;
@@ -19,20 +12,7 @@ export interface KeywordResponse {
 }
 
 export async function fetchKeywords(): Promise<string[]> {
-  const token = getAccessToken();
   const url = API_BASE;
-
-  const res = await fetch(url, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-    cache: "no-store",
-  });
-
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-  const json: KeywordResponse = await res.json();
-  return json?.data?.keywords ?? [];
+  const res = await client.get<KeywordResponse>(url);
+  return res.data?.data?.keywords ?? [];
 }

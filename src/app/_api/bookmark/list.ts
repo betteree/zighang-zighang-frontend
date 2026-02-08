@@ -1,7 +1,7 @@
 "use client";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { apiFetch } from "./client";
+import client from "@/app/_api/client";
 import type { GetRecruitmentsResponse } from "@/app/(pages)/recruitment/[slug]/_types/types";
 
 const API_BASE = "/api/bookmarks";
@@ -12,15 +12,17 @@ export async function fetchBookmarksClient({
   size = 20,
 }: { page?: number; size?: number } = {}): Promise<GetRecruitmentsResponse> {
   const qs = new URLSearchParams({ page: String(page), size: String(size) });
-  const res = await apiFetch(`${API_BASE}?${qs.toString()}`, { method: "GET" });
+  const res = await client.get<GetRecruitmentsResponse>(
+    `${API_BASE}?${qs.toString()}`,
+  );
 
-  return res.json();
+  return res.data;
 }
 
 /** 북마크 무한 쿼리 훅 */
 export function useInfiniteBookmarks(
   params: { size?: number } = {},
-  options?: { enabled?: boolean }
+  options?: { enabled?: boolean },
 ) {
   return useInfiniteQuery({
     queryKey: ["bookmarks:infinite", params],

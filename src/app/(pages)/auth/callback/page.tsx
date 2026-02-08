@@ -2,6 +2,9 @@
 
 import { Suspense, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import client from "@/app/_api/client";
+import { UserData } from "@/app/(pages)/onboarding/_types/context";
+import { ApiResponse } from "@/app/(pages)/recruitment/[slug]/_types/types";
 
 export const dynamic = "force-dynamic";
 
@@ -20,20 +23,8 @@ function CallbackInner() {
         return;
       }
 
-      const response = await fetch("/api/users/me", {
-        method: "GET",
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch user: ${response.status}`);
-      }
-
-      const result = await response.json();
-      const user = result.data;
+      const response = await client.get<ApiResponse<UserData>>("/api/users/me");
+      const user = response.data.data;
 
       // 사용자 이름만 로컬 스토리지에 저장
       if (user.name) {
@@ -46,7 +37,7 @@ function CallbackInner() {
         user.interestedJobCategories.length === 0 ||
         user.careerYear === 0 ||
         user.educationLevel === null ||
-        user.preferredRegions.length === 0;
+        (user.preferredRegions?.length ?? 0) === 0;
 
       const next = needsOnboarding ? "/onboarding" : "/";
       router.replace(next);

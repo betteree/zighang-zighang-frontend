@@ -1,4 +1,5 @@
 import type { GetRecruitmentsResponse } from "@/app/(pages)/recruitment/[slug]/_types/types";
+import client from "@/app/_api/client";
 
 export type FetchParams = {
   page?: number;
@@ -15,14 +16,6 @@ export type FetchParams = {
 
 const appendArr = (qs: URLSearchParams, k: string, v?: string[]) =>
   v?.forEach((x) => qs.append(k, x));
-
-function getAccessToken(): string | null {
-  try {
-    return localStorage.getItem("zh_access_token");
-  } catch {
-    return null;
-  }
-}
 
 export async function fetchRecruitmentsClient({
   page = 0,
@@ -46,15 +39,7 @@ export async function fetchRecruitmentsClient({
   if (minExperience != null) qs.set("minExperience", String(minExperience));
   if (maxExperience != null) qs.set("maxExperience", String(maxExperience));
 
-  const token = getAccessToken();
   const url = `/api/recruitments?${qs.toString()}`;
-  const res = await fetch(url, {
-    headers: {
-      Accept: "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-    cache: "no-store",
-  });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return res.json();
+  const res = await client.get<GetRecruitmentsResponse>(url);
+  return res.data;
 }
